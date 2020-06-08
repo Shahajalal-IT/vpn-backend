@@ -18,7 +18,7 @@ mongoose
         console.log("MongoDB Connected Successfully.");
     })
     .catch((err) => {
-        console.log("Database connection failed." + err);
+        console.log("Database connection failed.");
     });
 
 // Configure Express

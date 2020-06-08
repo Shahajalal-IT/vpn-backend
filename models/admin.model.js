@@ -17,6 +17,10 @@ var AdminsSchema = new Schema({
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     created_at: {
         type: Date,
         default: Date.now()
