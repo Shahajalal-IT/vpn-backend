@@ -1,7 +1,5 @@
 /*
-
 Update Admin Controller
-
 */
 const bcrypt = require('bcryptjs');
 const admin = require('../../models/admin.model');
