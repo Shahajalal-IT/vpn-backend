@@ -1,0 +1,16 @@
+{
+  "name": "fixnetworks",
+  "version": "1.0.0",
+  "description": "Fix Networks Vpn Panel",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://Sketch_@bitbucket.org/Sketch_/fixnetworks.git"
+  },
+  "author": "fixnetworks",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/Sketch_/fixnetworks#readme"
+}
