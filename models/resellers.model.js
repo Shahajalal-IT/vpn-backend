@@ -1,5 +1,5 @@
-/*
-Reseller Model-----------------------
+/**
+* Reseller Model-----------------------
 */
 
 var mongoose = require('mongoose')
@@ -14,6 +14,10 @@ var ResellersSchema = new Schema({
         required: true
     },
     email: {
+        type: String,
+        required: true
+    },
+    name: {
         type: String,
         required: true
     },

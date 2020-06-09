@@ -13,5 +13,9 @@ router.post('/update', updateSuperAdmin.updateSuperAdmin);
 const deleteSuperAdmin = require('../../controllers/superadmin/delete.controller');
 router.post('/delete', deleteSuperAdmin.deleteSuperAdmin);
 
+//Super Admin Login--------------------------
+const loginSuperAdmin = require('../../controllers/superadmin/login.controller');
+router.post('/login', loginSuperAdmin.superAdminLogin);
+
 // Export the Router
 module.exports = router;

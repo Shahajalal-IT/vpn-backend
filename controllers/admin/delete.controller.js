@@ -1,7 +1,5 @@
-/*
-
-Admin Delete Controller
-
+/**
+* Admin Delete Controller
 */
 const admin = require('../../models/admin.model');
 

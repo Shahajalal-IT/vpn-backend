@@ -1,7 +1,5 @@
-/*
-
-Admin create Controller
-
+/**
+*Admin create Controller
 */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
