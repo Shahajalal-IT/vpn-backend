@@ -18,5 +18,9 @@ router.post('/update', updateReseller.updateReseller);
 const getAllReseller = require('../../controllers/reseller/getall.controller');
 router.post('/getall', adminAuth, getAllReseller.getAllReseller);
 
+//Login Reseller--------------------------
+const loginReseller = require('../../controllers/reseller/login.controller');
+router.post('/login', loginReseller.resellerLogin);
+
 // Export the Router
 module.exports = router;
