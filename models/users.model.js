@@ -1,5 +1,5 @@
-/*
-User Model-----------------------
+/**
+* User Model-----------------------
 */
 
 var mongoose = require('mongoose')
