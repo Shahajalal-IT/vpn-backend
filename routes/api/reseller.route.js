@@ -22,5 +22,9 @@ router.post('/getall', adminAuth, getAllReseller.getAllReseller);
 const loginReseller = require('../../controllers/reseller/login.controller');
 router.post('/login', loginReseller.resellerLogin);
 
+//Add Balance to Reseller--------------------------
+const addBalance = require('../../controllers/reseller/addbalance.controller');
+router.post('/add-balance', addBalance.addBalanceReseller);
+
 // Export the Router
 module.exports = router;
