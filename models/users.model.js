@@ -7,6 +7,16 @@ const Schema = mongoose.Schema;
 var UsersSchema = new Schema({
     pin: {
         type: String,
+        required: true,
+        unique: true
+    },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
         required: true
     },
     phone_unique: {
@@ -18,6 +28,9 @@ var UsersSchema = new Schema({
     created_at: {
         type: Date,
         default: Date.now()
+    },
+    activated_at: {
+        type: Date
     },
     expired_at: {
         type: Date
@@ -31,6 +44,12 @@ var UsersSchema = new Schema({
     },
     active: {
         type: Number
+    },
+    notes: {
+        type: String
+    },
+    device: {
+        type: String
     },
     admin_id: {
         type: String

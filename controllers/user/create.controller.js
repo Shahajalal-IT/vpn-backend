@@ -13,8 +13,12 @@ exports.createUser =  (req, res, next) => {
         }).then(admin => {
         const newUser = new user({
             pin: req.body.pin,
+            username: req.body.username,
+            password: req.body.password,
             type: req.body.type,
             active: 0,
+            notes: req.body.notes,
+            device: req.body.device,
             creator: resellerId,
             admin_id: admin
         });

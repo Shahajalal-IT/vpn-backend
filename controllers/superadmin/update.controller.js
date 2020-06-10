@@ -1,7 +1,6 @@
-/*
 
-Update Super Admin Controller
-
+/**
+* Update Super Admin Controller
 */
 const bcrypt = require('bcryptjs');
 const superAdmin = require('../../models/superadmin.model');
