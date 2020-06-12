@@ -21,8 +21,18 @@ var ResellersSchema = new Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        required: true
+    },
     balance: {
        type: Number
+    },
+    ios_price: {
+        type: Number
+    },
+    android_price: {
+        type: Number
     },
     created_at: {
         type: Date,

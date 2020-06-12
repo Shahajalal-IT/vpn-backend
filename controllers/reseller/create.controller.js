@@ -13,12 +13,17 @@ exports.createReseller =  (req, res, next) => {
         password: hash,
         email: req.body.email,
         name: req.body.name,
+        role: 'reseller',
+        balance: req.body.balance,
+        ios_price: req.body.ios_price,
+        android_price: req.body.android_price,
         creator: AdminId
     });
     newReseller.save().then((result) => {
         const token = jwt.sign({id: result._id}, process.env.SECRET, {
             expiresIn: "1h"
         });
+
         return res.status(201).json({
             token: token,
             data: result,
