@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const superAdminAuth = require('../../auth/superadmin.auth');
+const adminAuth = require('../../auth/admin.auth');
 
 //Admin Create--------------------------
 const createAdmin = require('../../controllers/admin/create.controller');
@@ -21,6 +22,10 @@ router.post('/get-all', superAdminAuth, readAllAdmin.getAllAdmin);
 //Log In Admin--------------------------
 const loginAdmin = require('../../controllers/admin/login.controller');
 router.post('/login',  loginAdmin.adminLogin);
+
+//get Admin Info--------------------------
+const getAdminInfo = require('../../controllers/admin/send.admin.info.controller');
+router.post('/get-admin-info', adminAuth, getAdminInfo.getAdminInfo);
 
 // Export the Router
 module.exports = router;
