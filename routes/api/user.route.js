@@ -23,5 +23,13 @@ router.post('/disconnect', disConnectUser.disConnectVpn);
 const createUserByAdmin = require('../../controllers/user/create.by.admin.controller');
 router.post('/create-user-by-admin', adminAuth, createUserByAdmin.createUser);
 
+//Create Bulk User By Admin--------------------------
+const createBulkUserByAdmin = require('../../controllers/user/create.bulk.by.admin.controller');
+router.post('/create-bulk-user-by-admin', adminAuth, createBulkUserByAdmin.createUser);
+
+//Get All User By Admin--------------------------
+const getAllUserByAdmin = require('../../controllers/user/get.all.by.admin.controller');
+router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByAdmin);
+
 // Export the Router
 module.exports = router;

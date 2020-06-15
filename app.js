@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require("express");
-const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
@@ -8,18 +7,12 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT;
 
-// Configure Mongoose to Connect to MongoDB
-mongoose
-    .connect(process.env.DATABASE_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then((response) => {
-        console.log("MongoDB Connected Successfully.");
-    })
-    .catch((err) => {
-        console.log("Database connection failed.");
-    });
+//Configure Sequelize and mySql2
+
+const db = require("./models");
+db.sequelize.sync({ force: false }).then(() => {
+    console.log("Drop and re-sync db.");
+});
 
 // Configure Express
 app.use(express.json());

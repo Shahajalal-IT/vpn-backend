@@ -1,41 +1,35 @@
-/*
-Admin Model-----------------------
+/**
+ * Admin Model-----------------------
 */
 
-var mongoose = require('mongoose')
-const Schema = mongoose.Schema;
-var AdminsSchema = new Schema({
-    user: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    created_at: {
-        type: Date,
-        default: Date.now()
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now()
-    },
-    creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "SuperAdmins",
-        required: true
-    },
-})
+module.exports = (sequelize, Sequelize) => {
+    const Admin = sequelize.define("admins", {
+        user: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
+        },
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
+        },
+        name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        creator: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: "superAdmins",
+                key:   "id"
+            }
+        },
+    });
 
-const Admins = mongoose.model('Admins', AdminsSchema)
-
-module.exports = Admins;
+    return Admin;
+};

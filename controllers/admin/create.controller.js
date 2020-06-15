@@ -1,26 +1,27 @@
 /**
-*Admin create Controller
+ * Admin create Controller
 */
+const db = require("../../models");
+const Admin = db.admin;
+const Op = db.Sequelize.Op;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const Admin = require('../../models/admin.model');
 exports.createAdmin =  (req, res, next) => {
     const hash = bcrypt.hashSync(req.body.password, 8);
     const superAdminId = req.superAdminData.userId;
-    const newAdmin = new Admin({
+    const newAdmin = {
         user: req.body.user,
         password: hash,
         email: req.body.email,
         name: req.body.name,
         creator: superAdminId
-    });
-    newAdmin.save().then((result) => {
-        const token = jwt.sign({id: result._id}, process.env.SECRET, {
+    };
+    Admin.create(newAdmin).then((result) => {
+        const token = jwt.sign({id: result.id}, process.env.SECRET, {
             expiresIn: "1h"
         });
         return res.status(201).json({
             token: token,
-            data: result,
             msg: "Successfully Created Admin",
             error:false
         })

@@ -1,15 +1,18 @@
-/*
-
-Get Admin Information Controller
-
+/**
+ * Get Admin Information Controller
 */
-const admin = require('../../models/admin.model');
+const db = require("../../models");
+const admin = db.admin;
+const Op = db.Sequelize.Op;
 
 exports.getAdminInfo = (req, res, next) => {
     const adminId = req.adminData.userId;
 
-    admin.findOne({_id:adminId})
+    admin.findOne({
+        where:{id: adminId}
+    })
         .then(result => {
+            console.log(result);
             res.status(200).json({
                 data: result,
                 msg: "Successfully Read Admin Data",

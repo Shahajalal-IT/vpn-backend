@@ -1,14 +1,20 @@
 /**
 * Admin Delete Controller
 */
-const admin = require('../../models/admin.model');
+const db = require("../../models");
+const admin = db.admin;
+const Op = db.Sequelize.Op;
 
 exports.deleteAdmin = (req, res, next) => {
 
-    admin.deleteOne({_id: req.body.id, creator: req.superAdminData.userId})
+    admin.destroy({
+        where: {
+            id: req.body.id,
+            creator: req.superAdminData.userId
+        }
+    })
         .then(result => {
-            console.log(result);
-            if(result.n > 0){
+            if(result > 0){
                 return res.status(201).json({
                     msg: "Successfully Deleted Admin",
                     error:false

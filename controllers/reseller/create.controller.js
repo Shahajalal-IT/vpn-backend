@@ -2,31 +2,39 @@
 /**
  * Reseller create Controller------
  */
+const db = require("../../models");
+const reseller = db.reseller;
+const Op = db.Sequelize.Op;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const reseller = require('../../models/resellers.model');
 exports.createReseller =  (req, res, next) => {
-    const hash = bcrypt.hashSync(req.body.password, 8);
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
+
+    const hash = bcrypt.hashSync(decodedToken.password, 8);
     const AdminId = req.adminData.userId;
-    const newReseller = new reseller({
-        user: req.body.user,
+
+    const newReseller = {
+        user: decodedToken.username,
         password: hash,
-        email: req.body.email,
-        name: req.body.name,
+        email: decodedToken.email,
         role: 'reseller',
-        balance: req.body.balance,
-        ios_price: req.body.ios_price,
-        android_price: req.body.android_price,
-        creator: AdminId
-    });
-    newReseller.save().then((result) => {
-        const token = jwt.sign({id: result._id}, process.env.SECRET, {
+        balance: decodedToken.balance,
+        ios_price: decodedToken.ios_price,
+        android_price: decodedToken.android_price,
+        creator: AdminId,
+        admin_id: AdminId
+    };
+    reseller.create(newReseller).then((result) => {
+        const token = jwt.sign({id: result.id}, process.env.SECRET, {
             expiresIn: "1h"
         });
 
         return res.status(201).json({
             token: token,
-            data: result,
             msg: "Successfully Created Reseller",
             error:false
         })

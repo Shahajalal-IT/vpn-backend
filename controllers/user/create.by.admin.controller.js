@@ -2,40 +2,39 @@
 /**
  * User create By Admin Controller------
  */
+
+const db = require("../../models");
+const user = db.user;
+const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
-const user = require('../../models/users.model');
-const admin = require('../../models/admin.model');
+
 exports.createUser =  (req, res, next) => {
     const adminId = req.adminData.userId;
-    console.log(adminId);
-    admin.findOne({_id: adminId})
-        .then(user => {
-            return user._id;
-        }).then(admin => {
-        const newUser = new user({
-            pin: req.body.pin,
-            username: req.body.username,
-            password: req.body.password,
-            type: req.body.type,
-            active: 0,
-            notes: req.body.notes,
-            device: req.body.device,
-            creator: admin,
-            admin_id: admin
-        });
-        newUser.save().then((result) => {
-            const token = jwt.sign({id: result._id}, process.env.SECRET, {
-                expiresIn: "1h"
-            });
-            return res.status(201).json({
-                token: token,
-                data: result,
-                msg: "Successfully Created User",
-                error:false
-            })
-        }).catch((err) => {
-            console.log(err);
-            return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
-        });
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
+
+    const newUser = {
+        pin: decodedToken.pin,
+        user: decodedToken.username,
+        password: decodedToken.password,
+        type: decodedToken.duration,
+        active: 1,
+        notes: decodedToken.notes,
+        device: decodedToken.device,
+        creator: adminId,
+        creator_type: 'admin',
+        admin_id: adminId
+    };
+    user.create(newUser).then((result) => {
+        return res.status(201).json({
+            msg: "Successfully Created User",
+            error:false
+        })
+    }).catch((err) => {
+        console.log(err);
+        return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
     });
 }

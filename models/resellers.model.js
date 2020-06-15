@@ -1,54 +1,51 @@
 /**
-* Reseller Model-----------------------
+ * Reseller Model-----------------------
 */
 
-var mongoose = require('mongoose')
-const Schema = mongoose.Schema;
-var ResellersSchema = new Schema({
-    user: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        required: true
-    },
-    balance: {
-       type: Number
-    },
-    ios_price: {
-        type: Number
-    },
-    android_price: {
-        type: Number
-    },
-    created_at: {
-        type: Date,
-        default: Date.now()
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now()
-    },
-    creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Admins",
-        required: true
-    },
-})
+module.exports = (sequelize, Sequelize) => {
+    const Reseller = sequelize.define("resellers", {
+        user: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
+        },
+        password: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
+        },
+        role: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        balance: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        ios_price: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        android_price: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        creator: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
+        admin_id: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: "admins",
+                key:   "id"
+            }
+        },
+    });
 
-const Resellers = mongoose.model('Resellers', ResellersSchema)
-
-module.exports = Resellers;
+    return Reseller;
+};
