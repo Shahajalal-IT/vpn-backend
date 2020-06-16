@@ -24,15 +24,19 @@ router.post('/login', loginReseller.resellerLogin);
 
 //Add Balance to Reseller--------------------------
 const addBalance = require('../../controllers/reseller/addbalance.controller');
-router.post('/add-balance', addBalance.addBalanceReseller);
+router.post('/add-balance', adminAuth, addBalance.addBalanceReseller);
 
 //Cut Balance from Reseller--------------------------
 const cutBalance = require('../../controllers/reseller/cutbalance.controller');
-router.post('/cut-balance', cutBalance.cutBalanceReseller);
+router.post('/cut-balance', adminAuth, cutBalance.cutBalanceReseller);
 
 //Get Reseller By Id--------------------------
 const getResellerById = require('../../controllers/reseller/get.by.id.controller');
 router.post('/get-by-id', getResellerById.getResellerById);
+
+//Get Reseller For Dropdown--------------------------
+const getResellerForDropdown = require('../../controllers/reseller/getall.for.dropdown.controller');
+router.post('/get-all-for-dropdown', adminAuth, getResellerForDropdown.getAllForDropdown);
 
 // Export the Router
 module.exports = router;

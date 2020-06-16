@@ -23,5 +23,6 @@ db.superadmin = require("./superadmin.model.js")(sequelize, Sequelize);
 db.admin = require("./admin.model.js")(sequelize, Sequelize);
 db.reseller = require("./resellers.model.js")(sequelize, Sequelize);
 db.user = require("./users.model.js")(sequelize, Sequelize);
+db.transaction = require("./transactions.model")(sequelize, Sequelize);
 
 module.exports = db;
