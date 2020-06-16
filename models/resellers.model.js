@@ -1,7 +1,7 @@
 /**
  * Reseller Model-----------------------
 */
-
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, Sequelize) => {
     const Reseller = sequelize.define("resellers", {
         user: {
@@ -50,5 +50,6 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
 
+    sequelizePaginate.paginate(Reseller)
     return Reseller;
 };

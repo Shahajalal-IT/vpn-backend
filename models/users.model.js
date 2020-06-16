@@ -1,7 +1,7 @@
 /**
  * User Model-----------------------
 */
-
+const sequelizePaginate = require('sequelize-paginate')
 module.exports = (sequelize, Sequelize) => {
     const Users = sequelize.define("users", {
         pin: {
@@ -59,5 +59,6 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
 
+    sequelizePaginate.paginate(Users)
     return Users;
 };

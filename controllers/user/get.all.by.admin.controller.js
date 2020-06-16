@@ -8,19 +8,23 @@ const reseller = db.reseller;
 const Op = db.Sequelize.Op;
 
 exports.getAllUserByAdmin = (req, res, next) => {
+
     const adminId = req.adminData.userId;
-    const pageSize = +req.body.pagesize;
-    const currentPage = +req.body.page;
-    user.findAll({
-        where:{admin_id: adminId },
-        offset: (pageSize * (currentPage - 1)), limit: pageSize
-    })
+    const options = {
+        page: +req.body.page, // Default 1
+        paginate: +req.body.pagesize, // Default 25
+        order: [['id', 'DESC']],
+        where: {
+            user: { [Op.like]: `%`+req.body.key+`%` },
+            admin_id: adminId
+        }
+    }
+
+    user.paginate(options)
         .then(
             documents => {
-
                 var finalDocuments = [];
-                documents.forEach(function(obj,i) {
-
+                documents.docs.forEach(function(obj,i) {
                     if(obj.creator_type === 'admin'){
                         admin.findByPk(obj.creator).then(result => {
                             var newObj = {
@@ -39,10 +43,12 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                 device:obj.device,
                             };
                             finalDocuments.push(newObj);
-                            if(i === documents.length-1){
+                            if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    msg: "Successfully Read Admin Data",
+                                    pages:documents.pages,
+                                    total:documents.total,
+                                    msg: "Successfully Read User Data",
                                     error:false
                                 })
                             }
@@ -65,10 +71,12 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                 device:obj.device,
                             };
                             finalDocuments.push(newObj);
-                            if(i === documents.length-1){
+                            if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    msg: "Successfully Read Admin Data",
+                                    pages:documents.pages,
+                                    total:documents.total,
+                                    msg: "Successfully Read User Data",
                                     error:false
                                 })
                             }
@@ -79,6 +87,6 @@ exports.getAllUserByAdmin = (req, res, next) => {
             }
         )
         .catch(error => {
-            return res.status(400).json({error: true, msg: "Admin Reading Was Unsuccessful",err: error})
+            return res.status(400).json({error: true, msg: "User Reading Was Unsuccessful",err: error})
         })
 };
