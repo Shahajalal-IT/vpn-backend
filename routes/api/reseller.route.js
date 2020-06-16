@@ -26,6 +26,10 @@ router.post('/login', loginReseller.resellerLogin);
 const addBalance = require('../../controllers/reseller/addbalance.controller');
 router.post('/add-balance', addBalance.addBalanceReseller);
 
+//Cut Balance from Reseller--------------------------
+const cutBalance = require('../../controllers/reseller/cutbalance.controller');
+router.post('/cut-balance', cutBalance.cutBalanceReseller);
+
 //Get Reseller By Id--------------------------
 const getResellerById = require('../../controllers/reseller/get.by.id.controller');
 router.post('/get-by-id', getResellerById.getResellerById);

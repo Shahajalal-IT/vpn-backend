@@ -4,11 +4,17 @@
 const db = require("../../models");
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
-exports.addBalanceReseller=  (req, res, next) => {
+exports.cutBalanceReseller=  (req, res, next) => {
 
     reseller.findByPk(req.body.id)
         .then( reseller => {
-            balance = +req.body.balance + reseller.balance;
+            if(reseller.balance <= 0 || +req.body.balance > reseller.balance){
+                return res.status(201).json({
+                    msg: "Not sufficient Balance",
+                    error:true
+                })
+            }
+            balance = reseller.balance - +req.body.balance ;
             return balance;
         }).then(balance => {
         var newReseller = {
@@ -18,16 +24,16 @@ exports.addBalanceReseller=  (req, res, next) => {
             .then( result => {
                 if(result > 0) {
                     return res.status(201).json({
-                        msg: "Successfully Added Balance",
+                        msg: "Successfully Cut Balance",
                         error:false
                     })
                 }else {
-                    return res.status(400).json({error: true,status: 201, msg: "Problem in Adding Balance"})
+                    return res.status(400).json({error: true,status: 201, msg: "Problem in Cutting Balance"})
                 }
             })
             .catch((err) => {
                 console.log(err);
-                return res.status(400).json({error: true,status: 201, msg: "Problem in Adding Balance",err: err})
+                return res.status(400).json({error: true,status: 201, msg: "Problem in Cutting Balance",err: err})
             })
 
     });

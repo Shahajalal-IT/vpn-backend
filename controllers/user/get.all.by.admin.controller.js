@@ -9,7 +9,12 @@ const Op = db.Sequelize.Op;
 
 exports.getAllUserByAdmin = (req, res, next) => {
     const adminId = req.adminData.userId;
-    user.findAll({where:{admin_id: adminId }})
+    const pageSize = +req.body.pagesize;
+    const currentPage = +req.body.page;
+    user.findAll({
+        where:{admin_id: adminId },
+        offset: (pageSize * (currentPage - 1)), limit: pageSize
+    })
         .then(
             documents => {
 

@@ -39,6 +39,10 @@ router.post('/update-user', updateUser.updateUser);
 const getUserById = require('../../controllers/user/get.by.id.controller');
 router.post('/get-user-by-id', getUserById.getUserById);
 
+//Get User By user--------------------------
+const getUserByUser = require('../../controllers/user/get.by.user.controller');
+router.post('/get-user-by-user', getUserByUser.getUserByUser);
+
 //Deactive User By ID--------------------------
 const deactiveUser = require('../../controllers/user/deactive.controller');
 router.post('/deactive-user', deactiveUser.deactiveUser);
