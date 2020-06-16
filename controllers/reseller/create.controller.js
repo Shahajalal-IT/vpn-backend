@@ -13,6 +13,7 @@ exports.createReseller =  (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
+    console.log(decodedToken);
 
     const hash = bcrypt.hashSync(decodedToken.password, 8);
     const AdminId = req.adminData.userId;

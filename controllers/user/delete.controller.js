@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op;
 exports.deleteUser = (req, res, next) => {
 
     user.destroy({
-        where: { id: req.body.id,creator: req.resellerData.userId }
+        where: { id: req.body.id}
     })
         .then(result => {
             if(result > 0){
