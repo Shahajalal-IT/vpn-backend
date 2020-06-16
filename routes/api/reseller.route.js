@@ -26,5 +26,9 @@ router.post('/login', loginReseller.resellerLogin);
 const addBalance = require('../../controllers/reseller/addbalance.controller');
 router.post('/add-balance', addBalance.addBalanceReseller);
 
+//Get Reseller By Id--------------------------
+const getResellerById = require('../../controllers/reseller/get.by.id.controller');
+router.post('/get-by-id', getResellerById.getResellerById);
+
 // Export the Router
 module.exports = router;

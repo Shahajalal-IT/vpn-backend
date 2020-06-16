@@ -2,25 +2,26 @@
 * Update Reseller Controller
 */
 const bcrypt = require('bcryptjs');
-const reseller = require('../../models/resellers.model');
+const db = require("../../models");
+const reseller = db.reseller;
+const Op = db.Sequelize.Op;
 exports.updateReseller=  (req, res, next) => {
 
     var newReseller = {
         user: req.body.user,
         email: req.body.email,
-        name: req.body.name,
-        updated_at: Date.now()
+        android_price: req.body.android_price,
+        ios_price: req.body.ios_price
     };
 
     if(req.body.password !== ''){
         newReseller.password =  bcrypt.hashSync(req.body.password, 8);
     }
 
-    reseller.updateOne({_id: req.body.id}, newReseller)
+    reseller.update(newReseller,{where:{id: req.body.id}})
         .then( result => {
-            if(result.n > 0) {
+            if(result > 0) {
                 return res.status(201).json({
-                    data: newReseller,
                     msg: "Successfully Updated Reseller",
                     error:false
                 })

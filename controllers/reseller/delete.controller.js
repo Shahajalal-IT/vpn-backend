@@ -1,13 +1,17 @@
 /**
  * Reseller Delete Controller
  */
-const reseller = require('../../models/resellers.model');
+const db = require("../../models");
+const reseller = db.reseller;
+const Op = db.Sequelize.Op;
 
 exports.deleteReseller = (req, res, next) => {
 
-    reseller.deleteOne({_id: req.body.id, creator: req.adminData.userId})
+    reseller.destroy({
+        where:{id: req.body.id, creator: req.adminData.userId}
+    })
         .then(result => {
-            if(result.n > 0){
+            if(result > 0){
                 return res.status(201).json({
                     msg: "Successfully Deleted Reseller",
                     error:false

@@ -3,11 +3,13 @@
  */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const reseller = require('../../models/resellers.model');
+const db = require("../../models");
+const reseller = db.reseller;
+const Op = db.Sequelize.Op;
 
 exports.resellerLogin = (req, res, next) => {
     let fetchReseller;
-    reseller.findOne({user: req.body.user})
+    reseller.findOne({where:{user: req.body.user}})
         .then(user => {
             if(!user){
                 return res.status(201).json(
@@ -28,13 +30,11 @@ exports.resellerLogin = (req, res, next) => {
                     msg: "Auth Failed"
                 });
             }
-            const token = jwt.sign({id: fetchReseller._id}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchReseller.id}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({
-                reseller: fetchReseller,
                 token: token,
-                data: result,
                 msg: "Successfully Log in Reseller",
                 error:false
             })
