@@ -41,6 +41,9 @@ module.exports = (sequelize, Sequelize) => {
         active: {
             type: Sequelize.INTEGER,
         },
+        status: {
+            type: Sequelize.INTEGER,
+        },
         notes: {
             type: Sequelize.STRING,
         },

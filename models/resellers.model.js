@@ -26,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        status: {
+            type: Sequelize.INTEGER,
+        },
         ios_price: {
             type: Sequelize.INTEGER,
             allowNull: false,

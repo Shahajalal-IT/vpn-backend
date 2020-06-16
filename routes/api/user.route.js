@@ -31,5 +31,21 @@ router.post('/create-bulk-user-by-admin', adminAuth, createBulkUserByAdmin.creat
 const getAllUserByAdmin = require('../../controllers/user/get.all.by.admin.controller');
 router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByAdmin);
 
+//Update User--------------------------
+const updateUser = require('../../controllers/user/update.controller');
+router.post('/update-user', updateUser.updateUser);
+
+//Get User By ID--------------------------
+const getUserById = require('../../controllers/user/get.by.id.controller');
+router.post('/get-user-by-id', getUserById.getUserById);
+
+//Deactive User By ID--------------------------
+const deactiveUser = require('../../controllers/user/deactive.controller');
+router.post('/deactive-user', deactiveUser.deactiveUser);
+
+//Deactive User By ID--------------------------
+const activeUser = require('../../controllers/user/active.controller');
+router.post('/active-user', activeUser.activeUser);
+
 // Export the Router
 module.exports = router;

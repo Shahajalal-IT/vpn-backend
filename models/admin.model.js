@@ -22,6 +22,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        status: {
+            type: Sequelize.INTEGER,
+        },
         creator: {
             type: Sequelize.INTEGER,
             references: {

@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken');
 exports.adminLogin = (req, res, next) => {
     let fetchAdmin;
     admin.findOne({
-        where:{user: req.body.user}
+        where:{user: req.body.user,status: 1}
     })
         .then(user => {
             if(!user){

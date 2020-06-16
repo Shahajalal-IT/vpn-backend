@@ -13,7 +13,6 @@ exports.createReseller =  (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
-    console.log(decodedToken);
 
     const hash = bcrypt.hashSync(decodedToken.password, 8);
     const AdminId = req.adminData.userId;
@@ -24,6 +23,7 @@ exports.createReseller =  (req, res, next) => {
         email: decodedToken.email,
         role: 'reseller',
         balance: decodedToken.balance,
+        status: 1,
         ios_price: decodedToken.ios_price,
         android_price: decodedToken.android_price,
         creator: AdminId,

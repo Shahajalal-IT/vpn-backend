@@ -2,47 +2,57 @@
 /**
  * Connect Vpn Controller
  */
-const user = require('../../models/users.model');
+const db = require("../../models");
+const user = db.user;
+const Op = db.Sequelize.Op;
 exports.connectVpn =  (req, res, next) => {
 
-    user.findOne({username: req.body.username, password: req.body.password})
+    user.findOne({
+        where:{
+            user: req.body.user,
+            password: req.body.password
+        }
+    })
         .then(user => {
             var newUser;
             var expired_at;
-            for(var i=0;i<=5;i++){
+            for(var i=1;i<=12;i++){
                 if(user.type === i){
                     var today = new Date();
-                    expired_at = today.setMonth(today.getMonth() + (++i));
+                    expired_at = today.setMonth(today.getMonth() + i);
                 }
             }
-            if(user.activated_at === undefined){
+            if(user.activated_at === null){
                 newUser = {
-                    user: user,
                     activated_at: Date.now(),
                     expired_at: expired_at,
                     active: 1,
-                    updated_at: Date.now()
+                    status: 1
+
                 };
             }else {
                 newUser = {
-                    user: user,
+                    activated_at: user.activated_at,
+                    expired_at: user.expired_at,
                     active: 1,
-                    updated_at: Date.now()
                 };
             }
+
             return newUser;
         }).then(new_user => {
-            if(new_user.user.expired_at < Date.now()){
+            if(new_user.expired_at < Date.now()){
                 return res.status(201).json({
                     msg: "Date Expired",
                     error:true
                 })
             }
-        user.updateOne({username: req.body.username, password: req.body.password}, new_user)
+        user.update(new_user,
+            {
+                where:{user: req.body.user, password: req.body.password}
+            })
             .then( result => {
-                if(result.n > 0) {
+                if(result > 0) {
                     return res.status(201).json({
-                        data: new_user,
                         msg: "Successfully Connected",
                         error:false
                     })

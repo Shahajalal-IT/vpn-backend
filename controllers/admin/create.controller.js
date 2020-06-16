@@ -14,6 +14,7 @@ exports.createAdmin =  (req, res, next) => {
         password: hash,
         email: req.body.email,
         name: req.body.name,
+        status: 1,
         creator: superAdminId
     };
     Admin.create(newAdmin).then((result) => {
