@@ -1,8 +1,8 @@
 module.exports = {
-    HOST: '159.89.51.6',
-    USER: 'fixnetwork',
-    PASSWORD: 'fix1network',
-    DB: 'fixnetworkspanel',
+    HOST: '176.9.146.239',
+    USER: 'bajwhaco_fixnetwork',
+    PASSWORD: 'b_bM[XJRIfzW',
+    DB: 'bajwhaco_fixnetworkspanel',
     dialect: 'mysql',
     pool: {
         max: 5,
