@@ -1,41 +1,37 @@
 
 /**
- * Update User Controller
+ * Active Reseller Controller
  */
 const db = require("../../models");
-const user = db.user;
+const reseller = db.reseller;
 const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
-exports.updateUser =  (req, res, next) => {
-
+exports.activeStatus =  (req, res, next) => {
     const fetchedData = req.body.data;
     const decodedToken = jwt.verify(
         fetchedData,
         process.env.SECRET
     );
-    var newUser = {
-        pin: decodedToken.pin,
-        user: decodedToken.username,
-        password: decodedToken.password,
-        notes: decodedToken.notes
+    var newReseller = {
+        status:1
     };
 
-    user.update(newUser,{
+    reseller.update(newReseller,{
         where:{id: decodedToken.id}
     })
         .then( result => {
             if(result > 0) {
                 return res.status(201).json({
-                    msg: "Successfully Updated User",
+                    msg: "Successfully Changed Status",
                     error:false
                 })
             }else {
-                return res.status(400).json({error: true,status: 201, msg: "Problem in Updating User"})
+                return res.status(400).json({error: true,status: 201, msg: "Problem in Changed Status"})
             }
         })
         .catch((err) => {
             console.log(err);
-            return res.status(400).json({error: true,status: 201, msg: "Problem in Updating Data",err: err})
+            return res.status(400).json({error: true,status: 201, msg: "Problem in Changed Status",err: err})
         })
 
 }

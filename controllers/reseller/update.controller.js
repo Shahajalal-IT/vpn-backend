@@ -5,20 +5,26 @@ const bcrypt = require('bcryptjs');
 const db = require("../../models");
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
+const jwt = require('jsonwebtoken');
 exports.updateReseller=  (req, res, next) => {
 
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
     var newReseller = {
-        user: req.body.user,
-        email: req.body.email,
-        android_price: req.body.android_price,
-        ios_price: req.body.ios_price
+        user: decodedToken.username,
+        email: decodedToken.email,
+        android_price: decodedToken.android_price,
+        ios_price: decodedToken.ios_price
     };
 
-    if(req.body.password !== ''){
-        newReseller.password =  bcrypt.hashSync(req.body.password, 8);
+    if(decodedToken.password !== ''){
+        newReseller.password =  bcrypt.hashSync(decodedToken.password, 8);
     }
 
-    reseller.update(newReseller,{where:{id: req.body.id}})
+    reseller.update(newReseller,{where:{id: decodedToken.id}})
         .then( result => {
             if(result > 0) {
                 return res.status(201).json({

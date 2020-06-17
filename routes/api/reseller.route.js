@@ -38,5 +38,13 @@ router.post('/get-by-id', getResellerById.getResellerById);
 const getResellerForDropdown = require('../../controllers/reseller/getall.for.dropdown.controller');
 router.post('/get-all-for-dropdown', adminAuth, getResellerForDropdown.getAllForDropdown);
 
+//Active Status--------------------------
+const activeStatus = require('../../controllers/reseller/active.status.conrtoller');
+router.post('/active-status', activeStatus.activeStatus);
+
+//Deactive Status--------------------------
+const deactiveStatus = require('../../controllers/reseller/deactive.status.conrtoller');
+router.post('/deactive-status', deactiveStatus.deactiveStatus);
+
 // Export the Router
 module.exports = router;

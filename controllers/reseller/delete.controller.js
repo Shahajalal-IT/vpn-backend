@@ -4,11 +4,15 @@
 const db = require("../../models");
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
-
+const jwt = require('jsonwebtoken');
 exports.deleteReseller = (req, res, next) => {
-
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
     reseller.destroy({
-        where:{id: req.body.id, creator: req.adminData.userId}
+        where:{id: decodedToken.id, creator: req.adminData.userId}
     })
         .then(result => {
             if(result > 0){

@@ -9,7 +9,7 @@ router.post('/create', resellerAuth, createUser.createUser);
 
 //User Delete--------------------------
 const deleteUser = require('../../controllers/user/delete.controller');
-router.post('/delete', resellerAuth, deleteUser.deleteUser);
+router.post('/delete', deleteUser.deleteUser);
 
 //Vpn Connect--------------------------
 const connectUser = require('../../controllers/user/connect.controller');
