@@ -39,6 +39,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                 expired_at:obj.expired_at,
                                 type:obj.type,
                                 active:obj.active,
+                                status:obj.status,
                                 notes:obj.notes,
                                 device:obj.device,
                             };
@@ -67,6 +68,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                 expired_at:obj.expired_at,
                                 type:obj.type,
                                 active:obj.active,
+                                status:obj.status,
                                 notes:obj.notes,
                                 device:obj.device,
                             };
