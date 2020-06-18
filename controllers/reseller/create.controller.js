@@ -4,6 +4,7 @@
  */
 const db = require("../../models");
 const reseller = db.reseller;
+const transaction = db.transaction;
 const Op = db.Sequelize.Op;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -27,11 +28,28 @@ exports.createReseller =  (req, res, next) => {
         ios_price: decodedToken.ios_price,
         android_price: decodedToken.android_price,
         creator: AdminId,
-        admin_id: AdminId
+        admin_id: AdminId,
+
     };
+
     reseller.create(newReseller).then((result) => {
         const token = jwt.sign({id: result.id}, process.env.SECRET, {
             expiresIn: "1h"
+        });
+
+        const transactionData = {
+            given_by:AdminId,
+            given_by_type:'admin',
+            given_to:result.id,
+            previous_balance: 0,
+            current_balance: decodedToken.balance,
+            transaction_type: 1,
+            admin_id: AdminId,
+            notes:'Creating and First Transaction'
+        }
+
+        transaction.create(transactionData).then(result => {
+            console.log('Successfully Created Transaction')
         });
 
         return res.status(201).json({

@@ -28,6 +28,9 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
+        notes: {
+            type: Sequelize.STRING
+        },
         admin_id: {
             type: Sequelize.INTEGER,
             references: {

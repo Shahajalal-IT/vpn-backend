@@ -47,7 +47,7 @@ router.post('/get-user-by-user', getUserByUser.getUserByUser);
 const deactiveUser = require('../../controllers/user/deactive.controller');
 router.post('/deactive-user', deactiveUser.deactiveUser);
 
-//Deactive User By ID--------------------------
+//Active User By ID--------------------------
 const activeUser = require('../../controllers/user/active.controller');
 router.post('/active-user', activeUser.activeUser);
 

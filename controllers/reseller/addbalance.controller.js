@@ -29,7 +29,8 @@ exports.addBalanceReseller=  (req, res, next) => {
             previous_balance: balance - +decodedToken.amount,
             current_balance: balance,
             transaction_type: 1,
-            admin_id: adminId
+            admin_id: adminId,
+            notes:decodedToken.notes
         }
 
         reseller.update(newReseller,{where:{id: decodedToken.reseller_id}})

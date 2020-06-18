@@ -21,7 +21,7 @@ exports.createUser =  (req, res, next) => {
         user: decodedToken.username,
         password: decodedToken.password,
         type: decodedToken.duration,
-        active: 1,
+        active: 0,
         status: 0,
         notes: decodedToken.notes,
         device: decodedToken.device,

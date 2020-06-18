@@ -5,15 +5,21 @@
 const db = require("../../models");
 const user = db.user;
 const Op = db.Sequelize.Op;
-
+const jwt = require('jsonwebtoken');
 exports.deactiveUser =  (req, res, next) => {
+
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
 
     var newUser = {
         status:0
     };
 
     user.update(newUser,{
-        where:{id: req.body.id}
+        where:{id: decodedToken.id}
     })
         .then( result => {
             if(result > 0) {
