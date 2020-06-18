@@ -20,6 +20,7 @@ exports.createUser =  (req, res, next) => {
         randonPin.add(decodedToken.username_prefix+randomstring.generate(6))
     }
 
+    let i = 0;
     for (const value of randonPin.values()) {
         const pass = randomstring.generate(6);
         const newUser = {
@@ -35,12 +36,20 @@ exports.createUser =  (req, res, next) => {
             creator_type: 'admin',
             admin_id: adminId
         };
-        user.create(newUser)
+
+        user.create(newUser).then(result => {
+            i++;
+            if(i === randonPin.size){
+                return res.status(201).json({
+                    msg: `Successfully Created `+ i +` Users`,
+                    error:false
+                })
+            }
+        }).catch(error => {
+            return res.status(400).json({error: true,status: 201, msg: "User Creation unsuccessful",err: error})
+        })
     }
-    return res.status(201).json({
-        msg: "Successfully Created Users",
-        error:false
-    })
+
 
 }
 
