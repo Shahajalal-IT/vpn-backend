@@ -27,5 +27,9 @@ router.post('/login',  loginAdmin.adminLogin);
 const getAdminInfo = require('../../controllers/admin/send.admin.info.controller');
 router.post('/get-admin-info', adminAuth, getAdminInfo.getAdminInfo);
 
+//get Admin Info--------------------------
+const sendHomePageData = require('../../controllers/admin/send.home.page.data.controller');
+router.post('/send-home-page-data', adminAuth, sendHomePageData.sendHomePageData);
+
 // Export the Router
 module.exports = router;

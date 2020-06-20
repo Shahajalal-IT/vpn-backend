@@ -1,5 +1,5 @@
 /**
- * Get All Admin Controller
+ * Get All Transaction Controller
  */
 const db = require("../../models");
 const transaction = db.transaction;
@@ -30,7 +30,7 @@ exports.getAllTransaction = (req, res, next) => {
                             if(i === documents.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    msg: "Successfully Read User Data",
+                                    msg: "Successfully Read Transaction Data",
                                     error:false
                                 })
                             }
@@ -40,6 +40,6 @@ exports.getAllTransaction = (req, res, next) => {
         )
         .catch(error => {
             console.log(error)
-            return res.status(400).json({error: true, msg: "Admin Reading Was Unsuccessful",err: error})
+            return res.status(400).json({error: true, msg: "Transaction Reading Was Unsuccessful",err: error})
         })
 };
