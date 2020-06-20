@@ -17,4 +17,8 @@ router.use('/reseller', reseller);
 let user = require('./api/user.route');
 router.use('/user', user);
 
+// Transaction Routes------------------
+let transaction = require('./api/transaction.route');
+router.use('/transaction', transaction);
+
 module.exports = router;
