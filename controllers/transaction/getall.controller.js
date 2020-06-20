@@ -5,13 +5,34 @@ const db = require("../../models");
 const transaction = db.transaction;
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
-
+const jwt = require('jsonwebtoken');
 exports.getAllTransaction = (req, res, next) => {
     const adminId = req.adminData.userId;
-    transaction.findAll({where:{given_by: adminId }})
+    // const fetchedData = req.body.data;
+    // const decodedToken = jwt.verify(
+    //     fetchedData,
+    //     process.env.SECRET
+    // );
+    var d = new Date();
+    var ed = new Date();
+    d.setMonth(d.getMonth() - 1);
+
+    var decodedToken = {
+        startDate:'',
+        endDate:''
+    }
+    var startDate =decodedToken.startDate === '' ? d:decodedToken.startDate;
+    var endDate = decodedToken.endDate === '' ? ed:decodedToken.endDate;
+    var where = {
+        given_by: adminId,
+        createdAt: {
+            [Op.between]: [startDate, endDate]
+        }
+    };
+    console.log(where);
+    transaction.findAll({where:where})
         .then(
             documents => {
-
 
                 var finalDocuments = [];
                 documents.forEach(function(obj,i) {
