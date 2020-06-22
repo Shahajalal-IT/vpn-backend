@@ -28,7 +28,7 @@ exports.createUser =  (req, res, next) => {
             notes: decodedToken.notes,
             device: decodedToken.device,
             creator: resellerId,
-            creator_type: 'admin',
+            creator_type: 'reseller',
             admin_id: result.admin_id
         };
         user.create(newUser).then((result) => {

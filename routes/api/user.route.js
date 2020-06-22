@@ -7,6 +7,10 @@ const adminAuth = require('../../auth/admin.auth');
 const createUser = require('../../controllers/user/create.controller');
 router.post('/create', resellerAuth, createUser.createUser);
 
+//Bulk User Create by reseller--------------------------
+const bulkcreateUserByReseller = require('../../controllers/user/create.bulk.controller');
+router.post('/create-bulk-by-reseller', resellerAuth, bulkcreateUserByReseller.createUser);
+
 //User Delete--------------------------
 const deleteUser = require('../../controllers/user/delete.controller');
 router.post('/delete', deleteUser.deleteUser);
