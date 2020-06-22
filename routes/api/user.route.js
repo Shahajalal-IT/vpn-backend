@@ -55,5 +55,9 @@ router.post('/deactive-user', deactiveUser.deactiveUser);
 const activeUser = require('../../controllers/user/active.controller');
 router.post('/active-user', activeUser.activeUser);
 
+//Get All User by Reseller--------------------------
+const getAllUserByReseller = require('../../controllers/user/get.all.by.reseller.controller');
+router.post('/get-all-user-by-reseller',resellerAuth, getAllUserByReseller.getAllUserByReseller);
+
 // Export the Router
 module.exports = router;
