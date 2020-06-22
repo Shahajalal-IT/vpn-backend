@@ -6,6 +6,7 @@ const transaction = db.transaction;
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 exports.getAllTransaction = (req, res, next) => {
     const resellerId = req.resellerData.userId;
     // const fetchedData = req.body.data;
@@ -21,8 +22,13 @@ exports.getAllTransaction = (req, res, next) => {
         startDate:'',
         endDate:''
     }
-    var startDate =decodedToken.startDate === '' ? d:decodedToken.startDate;
-    var endDate = decodedToken.endDate === '' ? ed:decodedToken.endDate;
+
+    //var startOfDay = ;
+    //var endOfDay = ;
+    // console.log(startOfDay);
+    // console.log(endOfDay);
+    var startDate =req.body.startDate === '' ? d:moment(req.body.startDate, "YYYY-MM-DD").startOf('day').fromNow();
+    var endDate = req.body.endDate === '' ? ed:moment(req.body.endDate, "YYYY-MM-DD").endOf('day').fromNow();
     var where = {
         given_by: resellerId,
         createdAt: {
