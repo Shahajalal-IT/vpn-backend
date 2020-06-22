@@ -21,7 +21,7 @@ exports.createReseller =  (req, res, next) => {
 
     reseller.findByPk(ResellerId).then(resellerResult => {
 
-        var fatherbalance = resellerResult.balance - +decodedToken.amount;
+        var fatherbalance = +resellerResult.balance - +decodedToken.amount;
 
         var fatherUpdateData = {
             balance: fatherbalance
