@@ -25,28 +25,30 @@ exports.getAllReseller = (req, res, next) => {
                 documents.docs.forEach(function(obj,i) {
 
                         reseller.findByPk(obj.creator).then(result => {
-                            var newObj = {
-                                id:obj.id,
-                                user:obj.user,
-                                password:obj.password,
-                                email:obj.email,
-                                role:obj.role,
-                                balance:obj.balance,
-                                status:obj.status,
-                                ios_price:obj.ios_price,
-                                android_price:obj.android_price,
-                                created_by:result.user,
-                                creator_id:result.id,
-                            };
-                            finalDocuments.push(newObj);
-                            if(i === documents.docs.length-1){
-                                res.status(200).json({
-                                    data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
-                                    msg: "Successfully Read Reseller Data",
-                                    error:false
-                                })
+                            if(obj.role === 'sub-reseller') {
+                                var newObj = {
+                                    id: obj.id,
+                                    user: obj.user,
+                                    password: obj.password,
+                                    email: obj.email,
+                                    role: obj.role,
+                                    balance: obj.balance,
+                                    status: obj.status,
+                                    ios_price: obj.ios_price,
+                                    android_price: obj.android_price,
+                                    created_by: result.user,
+                                    creator_id: result.id,
+                                };
+                                finalDocuments.push(newObj);
+                                if (i === documents.docs.length - 1) {
+                                    res.status(200).json({
+                                        data: finalDocuments,
+                                        pages: documents.pages,
+                                        total: documents.total,
+                                        msg: "Successfully Read Reseller Data",
+                                        error: false
+                                    })
+                                }
                             }
                         })
 
