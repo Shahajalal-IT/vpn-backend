@@ -51,5 +51,9 @@ router.post('/deactive-status', deactiveStatus.deactiveStatus);
 const sendResellerData = require('../../controllers/reseller/send.reseller.info.controller');
 router.post('/send-reseller-data', resellerAuth, sendResellerData.getResellerInfo);
 
+//Create Sub Reseller--------------------------
+const createSubReseller = require('../../controllers/reseller/create.subreseller.controller');
+router.post('/create-sub-reseller', resellerAuth, createSubReseller.createReseller);
+
 // Export the Router
 module.exports = router;
