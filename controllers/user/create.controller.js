@@ -1,34 +1,38 @@
 
 /**
- * User create Controller------
+ * User create By Reseller Controller------
  */
+
+const db = require("../../models");
+const user = db.user;
+const reseller = db.reseller;
+const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
-const user = require('../../models/users.model');
-const reseller = require('../../models/resellers.model');
+
 exports.createUser =  (req, res, next) => {
     const resellerId = req.resellerData.userId;
-    reseller.findOne({_id: resellerId})
-        .then(user => {
-            return user.creator;
-        }).then(admin => {
-        const newUser = new user({
-            pin: req.body.pin,
-            username: req.body.username,
-            password: req.body.password,
-            type: req.body.type,
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
+
+    reseller.findByPk(resellerId).then(result => {
+        const newUser = {
+            pin: decodedToken.pin,
+            user: decodedToken.username,
+            password: decodedToken.password,
+            type: decodedToken.duration,
             active: 0,
-            notes: req.body.notes,
-            device: req.body.device,
+            status: 0,
+            notes: decodedToken.notes,
+            device: decodedToken.device,
             creator: resellerId,
-            admin_id: admin
-        });
-        newUser.save().then((result) => {
-            const token = jwt.sign({id: result._id}, process.env.SECRET, {
-                expiresIn: "1h"
-            });
+            creator_type: 'admin',
+            admin_id: result.admin_id
+        };
+        user.create(newUser).then((result) => {
             return res.status(201).json({
-                token: token,
-                data: result,
                 msg: "Successfully Created User",
                 error:false
             })
@@ -36,5 +40,6 @@ exports.createUser =  (req, res, next) => {
             console.log(err);
             return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
         });
-    });
+    })
+
 }
