@@ -10,10 +10,14 @@ module.exports = (req, res, next) => {
             token,
             process.env.SECRET
         );
-        req.resellerData = {
-            userId: decodedToken.id
-        };
-        next();
+        if(decodedToken.role === 'reseller') {
+            req.resellerData = {
+                userId: decodedToken.id
+            };
+            next();
+        }else{
+            return res.status(400).json({error: true,status: 201, msg: "You are not authenticated",err: err})
+        }
 
     }catch (err) {
         return res.status(400).json({error: true,status: 201, msg: "You are not authenticated",err: err})
