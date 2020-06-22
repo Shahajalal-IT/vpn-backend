@@ -24,6 +24,7 @@ exports.getAllTransaction = (req, res, next) => {
     var startDate =decodedToken.startDate === '' ? d:decodedToken.startDate;
     var endDate = decodedToken.endDate === '' ? ed:decodedToken.endDate;
     var where = {
+        role: 'sub_reseller',
         given_by: resellerId,
         createdAt: {
             [Op.between]: [startDate, endDate]
