@@ -31,7 +31,7 @@ exports.sendHomePageData = (req, res, next) => {
                                         }}}).then(expiredAccount => {
                                     data.expiredAccount = expiredAccount;
 
-                                    reseller.findAll({where:{creator: resellerId,creator_type:'reseller'},attributes: ['id', 'user']})
+                                    reseller.findAll({where:{creator: resellerId,role:'sub_reseller'},attributes: ['id', 'user']})
                                         .then(
                                             resellerList => {
                                                 data.resellerList = resellerList;
