@@ -1,5 +1,5 @@
 /**
- * Send Home page value Controller
+ * Send Home page value For Reseller Controller
  */
 const db = require("../../models");
 const admin = db.admin;
@@ -8,28 +8,30 @@ const user = db.user;
 const Op = db.Sequelize.Op;
 
 exports.sendHomePageData = (req, res, next) => {
-    const adminId = req.adminData.userId;
+    const resellerId = req.resellerData.userId;
 
     var data = {};
 
-    reseller.count({where:{creator: adminId }})
+    reseller.count({where:{creator: resellerId, role:'sub_reseller'}})
         .then(
             documents => {
                 data.resellerCount = documents;
-                user.count({where:{creator: adminId, creator_type:'admin'}}).then(ownuser => {
+                user.count({where:{creator: resellerId,creator_type:'reseller'}}).then(ownuser => {
                     data.ownAccount = ownuser;
-                    user.count({where:{admin_id: adminId, creator_type:'reseller'}}).then(resellerAccount => {
+                    user.count({where:{creator_type:'reseller', creator:{
+                                [Op.ne]: resellerId
+                            }}}).then(resellerAccount => {
                         data.resellerAccount = resellerAccount;
-                        user.count({where:{admin_id: adminId,active:1}}).then(onlineAccount => {
+                        user.count({where:{creator: resellerId,creator_type:'reseller',active:1}}).then(onlineAccount => {
                             data.online = onlineAccount;
-                            user.count({where:{admin_id: adminId,status:1}}).then(activeAccount => {
+                            user.count({where:{creator: resellerId,creator_type:'reseller',status:1}}).then(activeAccount => {
                                 data.activeAccount = activeAccount;
-                                user.count({where:{admin_id: adminId,expired_at:{
+                                user.count({where:{creator: resellerId,creator_type:'reseller',expired_at:{
                                             [Op.lt]: Date.now()
                                         }}}).then(expiredAccount => {
                                     data.expiredAccount = expiredAccount;
 
-                                    reseller.findAll({where:{creator: adminId },attributes: ['id', 'user']})
+                                    reseller.findAll({where:{creator: resellerId,creator_type:'reseller'},attributes: ['id', 'user']})
                                         .then(
                                             resellerList => {
                                                 data.resellerList = resellerList;

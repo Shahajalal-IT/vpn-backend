@@ -75,5 +75,9 @@ router.post('/delete-sub-reseller', resellerAuth, deleteSubReseller.deleteResell
 const getallSubReseller = require('../../controllers/reseller/getall.subreseller.controller');
 router.post('/getall-sub-reseller', resellerAuth, getallSubReseller.getAllReseller);
 
+//Send Home Page Value--------------------------
+const sendHomePageValue = require('../../controllers/reseller/send.home.page.data.controller');
+router.post('/send-home-page-value', resellerAuth, sendHomePageValue.sendHomePageData);
+
 // Export the Router
 module.exports = router;
