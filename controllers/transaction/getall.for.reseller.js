@@ -24,40 +24,46 @@ exports.getAllTransaction = (req, res, next) => {
     var startDate =decodedToken.startDate === '' ? d:decodedToken.startDate;
     var endDate = decodedToken.endDate === '' ? ed:decodedToken.endDate;
     var where = {
-        role: 'sub_reseller',
         given_by: resellerId,
         createdAt: {
             [Op.between]: [startDate, endDate]
-        }
+        },
+        given_by_type:'reseller'
     };
 
     transaction.findAll({where:where})
         .then(
             documents => {
-
                 var finalDocuments = [];
                 documents.forEach(function(obj,i) {
 
                     reseller.findByPk(obj.given_to).then(result => {
-                        var newObj = {
-                            id:obj.id,
-                            given_to:result.user,
-                            given_to_id:obj.given_to,
-                            previous_balance:obj.previous_balance,
-                            current_balance:obj.current_balance,
-                            transaction_type:result.transaction_type,
-                            notes:obj.notes,
-                            createdAt: obj.createdAt
-                        };
-                        finalDocuments.push(newObj);
-                        if(i === documents.length-1){
-                            res.status(200).json({
-                                data: finalDocuments,
-                                msg: "Successfully Read Transaction Data",
-                                error:false
-                            })
+
+                        if(result === null){
+
+                        }else {
+
+                            var newObj = {
+                                id: obj.id,
+                                given_to: result.user,
+                                given_to_id: obj.given_to,
+                                previous_balance: obj.previous_balance,
+                                current_balance: obj.current_balance,
+                                transaction_type: result.transaction_type,
+                                notes: obj.notes,
+                                createdAt: obj.createdAt
+                            };
+                            finalDocuments.push(newObj);
+                            if (i === documents.length - 1) {
+                                res.status(200).json({
+                                    data: finalDocuments,
+                                    msg: "Successfully Read Transaction Data",
+                                    error: false
+                                })
+                            }
                         }
                     })
+
                 });
             }
         )
