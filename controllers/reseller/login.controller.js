@@ -30,7 +30,7 @@ exports.resellerLogin = (req, res, next) => {
                     msg: "Auth Failed"
                 });
             }
-            const token = jwt.sign({id: fetchReseller.id}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchReseller.id,role:"reseller"}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({

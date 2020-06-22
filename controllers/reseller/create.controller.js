@@ -33,7 +33,7 @@ exports.createReseller =  (req, res, next) => {
     };
 
     reseller.create(newReseller).then((result) => {
-        const token = jwt.sign({id: result.id}, process.env.SECRET, {
+        const token = jwt.sign({id: result.id,role:"reseller"}, process.env.SECRET, {
             expiresIn: "1h"
         });
 

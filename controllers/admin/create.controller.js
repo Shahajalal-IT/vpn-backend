@@ -20,7 +20,7 @@ exports.createAdmin =  (req, res, next) => {
         creator: superAdminId
     };
     Admin.create(newAdmin).then((result) => {
-        const token = jwt.sign({id: result.id}, process.env.SECRET, {
+        const token = jwt.sign({id: result.id,role:"admin"}, process.env.SECRET, {
             expiresIn: "1h"
         });
         return res.status(201).json({

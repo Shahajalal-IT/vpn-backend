@@ -32,7 +32,7 @@ exports.adminLogin = (req, res, next) => {
                     msg: "Auth Failed"
                 });
             }
-            const token = jwt.sign({id: fetchAdmin.id}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchAdmin.id,role:"admin"}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({
