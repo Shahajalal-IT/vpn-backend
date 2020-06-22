@@ -18,8 +18,18 @@ exports.createReseller =  (req, res, next) => {
     const hash = bcrypt.hashSync(decodedToken.password, 8);
     const ResellerId = req.resellerData.userId;
 
+
     reseller.findByPk(ResellerId).then(resellerResult => {
 
+        var fatherbalance = resellerResult.balance - +decodedToken.amount;
+
+        var fatherUpdateData = {
+            balance: fatherbalance
+        }
+
+        if(fatherbalance < 0){
+            return res.status(400).json({error: true,status: 201, msg: "Not Succificient Balance"})
+        }
 
         const newReseller = {
             user: decodedToken.username,
@@ -54,6 +64,10 @@ exports.createReseller =  (req, res, next) => {
             transaction.create(transactionData).then(result => {
                 console.log('Successfully Created Transaction')
             });
+
+            reseller.update(fatherUpdateData,{where:{id:ResellerId}}).then(result => {
+                console.log('Reseller balance cut successfully')
+            })
 
             return res.status(201).json({
                 token: token,

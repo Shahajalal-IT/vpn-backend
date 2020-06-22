@@ -15,6 +15,13 @@ exports.cutBalanceReseller=  (req, res, next) => {
         process.env.SECRET
     );
 
+    reseller.findByPk(resellerId).then(fatherReseller => {
+        var fatherbalance = fatherReseller.balance + +decodedToken.amount;
+
+        var fatherUpdateData = {
+            balance: fatherbalance
+        }
+
     reseller.findByPk(decodedToken.reseller_id)
         .then( reseller => {
             if(reseller.balance <= 0 || +decodedToken.amount > reseller.balance){
@@ -47,6 +54,9 @@ exports.cutBalanceReseller=  (req, res, next) => {
                     transaction.create(transactionData).then(result => {
                         console.log('Successfully Created Transaction')
                     });
+                    reseller.update(fatherUpdateData,{where:{id:resellerId}}).then(result => {
+                        console.log('Reseller balance cut successfully')
+                    })
                     return res.status(201).json({
                         msg: "Successfully Cut Balance",
                         error:false
@@ -61,4 +71,5 @@ exports.cutBalanceReseller=  (req, res, next) => {
             })
 
     });
+    })
 }

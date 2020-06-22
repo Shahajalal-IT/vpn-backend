@@ -14,7 +14,18 @@ exports.addBalanceReseller=  (req, res, next) => {
         process.env.SECRET
     );
 
-    reseller.findByPk(decodedToken.reseller_id)
+    reseller.findByPk(resellerId).then(fatherReseller => {
+        var fatherbalance = fatherReseller.balance - +decodedToken.amount;
+
+        var fatherUpdateData = {
+            balance: fatherbalance
+        }
+
+        if(fatherbalance < 0){
+            return res.status(400).json({error: true,status: 201, msg: "Not Succificient Balance"})
+        }
+
+        reseller.findByPk(decodedToken.reseller_id)
         .then( reseller => {
             balance = +decodedToken.amount + reseller.balance;
             return balance;
@@ -41,6 +52,10 @@ exports.addBalanceReseller=  (req, res, next) => {
                         console.log('Successfully Created Transaction')
                     });
 
+                    reseller.update(fatherUpdateData,{where:{id:resellerId}}).then(result => {
+                        console.log('Reseller balance cut successfully')
+                    })
+
                     return res.status(201).json({
                         msg: "Successfully Added Balance",
                         error:false
@@ -55,4 +70,6 @@ exports.addBalanceReseller=  (req, res, next) => {
             })
 
     });
+
+    })
 }
