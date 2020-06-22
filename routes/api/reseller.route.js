@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const adminAuth = require('../../auth/admin.auth');
+const resellerAuth = require('../../auth/reseller.auth');
 
 //Create Reseller--------------------------
 const reseller = require('../../controllers/reseller/create.controller');
@@ -45,6 +46,10 @@ router.post('/active-status', activeStatus.activeStatus);
 //Deactive Status--------------------------
 const deactiveStatus = require('../../controllers/reseller/deactive.status.conrtoller');
 router.post('/deactive-status', deactiveStatus.deactiveStatus);
+
+//Send Reseller Data--------------------------
+const sendResellerData = require('../../controllers/reseller/send.reseller.info.controller');
+router.post('/send-reseller-data', sendResellerData.getResellerInfo);
 
 // Export the Router
 module.exports = router;

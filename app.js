@@ -10,7 +10,7 @@ const PORT = process.env.PORT;
 //Configure Sequelize and mySql2
 
 const db = require("./models");
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
     console.log("Drop and re-sync db.");
 });
 

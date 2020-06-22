@@ -5,7 +5,7 @@ const db = require("../../models");
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
 
-exports.getAdminInfo = (req, res, next) => {
+exports.getResellerInfo = (req, res, next) => {
     const resellerId = req.resellerData.userId;
 
     reseller.findOne({
@@ -15,10 +15,10 @@ exports.getAdminInfo = (req, res, next) => {
             console.log(result);
             res.status(200).json({
                 data: result,
-                msg: "Successfully Read Admin Data",
+                msg: "Successfully Read Reseller Data",
                 error:false
             })
         }).catch(error => {
-        return res.status(400).json({error: true, msg: "Admin Reading Was Unsuccessful",err: error})
+        return res.status(400).json({error: true, msg: "Reseller Reading Was Unsuccessful",err: error})
     });
 };
