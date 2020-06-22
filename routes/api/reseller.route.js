@@ -49,7 +49,7 @@ router.post('/deactive-status', deactiveStatus.deactiveStatus);
 
 //Send Reseller Data--------------------------
 const sendResellerData = require('../../controllers/reseller/send.reseller.info.controller');
-router.post('/send-reseller-data', sendResellerData.getResellerInfo);
+router.post('/send-reseller-data', resellerAuth, sendResellerData.getResellerInfo);
 
 // Export the Router
 module.exports = router;
