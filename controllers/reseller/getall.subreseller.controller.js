@@ -50,6 +50,14 @@ exports.getAllReseller = (req, res, next) => {
                                     })
                                 }
                             }
+
+                            if(finalDocuments.length == 0){
+                                res.status(200).json({
+                                    data: [],
+                                    msg: "No Data Available",
+                                    error: false
+                                })
+                            }
                         })
 
                 });
