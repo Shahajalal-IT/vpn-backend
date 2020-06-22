@@ -67,5 +67,9 @@ router.post('/add-balance-to-sub-reseller', resellerAuth, addBalanceToSubReselle
 const cutBalanceFromSubReseller = require('../../controllers/reseller/cutbalance.from.subreseller.controller');
 router.post('/cut-balance-from-sub-reseller', resellerAuth, cutBalanceFromSubReseller.cutBalanceReseller);
 
+//Delete Sub Reseller--------------------------
+const deleteSubReseller = require('../../controllers/reseller/delete.subreseller.controller');
+router.post('/delete-sub-reseller', resellerAuth, deleteSubReseller.deleteReseller);
+
 // Export the Router
 module.exports = router;
