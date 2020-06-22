@@ -71,5 +71,9 @@ router.post('/cut-balance-from-sub-reseller', resellerAuth, cutBalanceFromSubRes
 const deleteSubReseller = require('../../controllers/reseller/delete.subreseller.controller');
 router.post('/delete-sub-reseller', resellerAuth, deleteSubReseller.deleteReseller);
 
+//Get All Sub Reseller--------------------------
+const getallSubReseller = require('../../controllers/reseller/getall.subreseller.controller');
+router.post('/getall-sub-reseller', resellerAuth, getallSubReseller.getAllReseller);
+
 // Export the Router
 module.exports = router;
