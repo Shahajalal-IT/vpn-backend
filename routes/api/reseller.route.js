@@ -59,5 +59,13 @@ router.post('/create-sub-reseller', resellerAuth, createSubReseller.createResell
 const getAllSubReseller = require('../../controllers/reseller/getall.subreseller.for.dropdown.controller');
 router.post('/get-all-sub-reseller-for-dropdown', resellerAuth, getAllSubReseller.getAllForDropdown);
 
+//Add Balance To Sub Reseller--------------------------
+const addBalanceToSubReseller = require('../../controllers/reseller/addbalance.to.subreseller.controller');
+router.post('/add-balance-to-sub-reseller', resellerAuth, addBalanceToSubReseller.addBalanceReseller);
+
+//Cut Balance from Sub Reseller--------------------------
+const cutBalanceFromSubReseller = require('../../controllers/reseller/cutbalance.from.subreseller.controller');
+router.post('/cut-balance-from-sub-reseller', resellerAuth, cutBalanceFromSubReseller.cutBalanceReseller);
+
 // Export the Router
 module.exports = router;

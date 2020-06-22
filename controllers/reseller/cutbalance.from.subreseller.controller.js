@@ -1,5 +1,5 @@
 /**
- * Cut Balance from Reseller Controller
+ * Cut balance from Sub Reseller Controller
  */
 const db = require("../../models");
 const reseller = db.reseller;
@@ -7,7 +7,7 @@ const transaction = db.transaction;
 const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
 exports.cutBalanceReseller=  (req, res, next) => {
-    const adminId = req.adminData.userId;
+    const resellerId = req.resellerData.userId;
 
     const fetchedData = req.body.data;
     const decodedToken = jwt.verify(
@@ -31,13 +31,13 @@ exports.cutBalanceReseller=  (req, res, next) => {
         };
 
         const transactionData = {
-            given_by:adminId,
-            given_by_type:'admin',
+            given_by:resellerId,
+            given_by_type:'reseller',
             given_to:decodedToken.reseller_id,
             previous_balance: balance + +decodedToken.amount,
             current_balance: balance,
             transaction_type: 2,
-            admin_id: adminId,
+            admin_id: reseller.admin_id,
             notes:decodedToken.notes
         }
 
