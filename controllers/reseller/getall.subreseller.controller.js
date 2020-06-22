@@ -14,18 +14,28 @@ exports.getAllReseller = (req, res, next) => {
         order: [['id', 'DESC']],
         where: {
             user: { [Op.like]: `%`+req.body.key+`%` },
-            creator: resellerId
+            creator: resellerId,
+            role: 'sub_reseller'
         }
     }
     reseller.paginate(options)
         .then(
             documents => {
-
+                if(documents.total === 0){
+                    res.status(200).json({
+                        data: [],
+                        pages: 1,
+                        total: 1,
+                        msg: "Successfully Read Reseller Data",
+                        error: false
+                    })
+                }
+                console.log(documents);
                 var finalDocuments = [];
                 documents.docs.forEach(function(obj,i) {
 
                         reseller.findByPk(obj.creator).then(result => {
-                            if(obj.role === 'sub-reseller') {
+
                                 var newObj = {
                                     id: obj.id,
                                     user: obj.user,
@@ -49,17 +59,7 @@ exports.getAllReseller = (req, res, next) => {
                                         error: false
                                     })
                                 }
-                            }
 
-                            if(finalDocuments.length == 0){
-                                res.status(200).json({
-                                    data: [],
-                                    pages: 1,
-                                    total: 1,
-                                    msg: "No Data Available",
-                                    error: false
-                                })
-                            }
                         })
 
                 });
