@@ -22,6 +22,14 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false
         },
+        site_name: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        site_title: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
         status: {
             type: Sequelize.INTEGER,
         },

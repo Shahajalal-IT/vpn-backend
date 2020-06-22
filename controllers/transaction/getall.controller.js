@@ -46,6 +46,7 @@ exports.getAllTransaction = (req, res, next) => {
                                 current_balance:obj.current_balance,
                                 transaction_type:result.transaction_type,
                                 notes:obj.notes,
+                                createdAt: obj.createdAt
                             };
                             finalDocuments.push(newObj);
                             if(i === documents.length-1){
