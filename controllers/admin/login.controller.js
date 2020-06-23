@@ -8,9 +8,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.adminLogin = (req, res, next) => {
+
+    const fetchedData = req.body.data;
+
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
+    console.log(decodedToken);
     let fetchAdmin;
     admin.findOne({
-        where:{user: req.body.user,status: 1}
+        where:{user: decodedToken.user.username,status: 1}
     })
         .then(user => {
             if(!user){
@@ -23,7 +31,7 @@ exports.adminLogin = (req, res, next) => {
 
             }
             fetchAdmin = user;
-            return bcrypt.compare(req.body.password, user.password);
+            return bcrypt.compare(decodedToken.user.password, user.password);
         })
         .then(result => {
             if(!result){

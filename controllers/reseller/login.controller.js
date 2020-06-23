@@ -6,10 +6,16 @@ const jwt = require('jsonwebtoken');
 const db = require("../../models");
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
-
 exports.resellerLogin = (req, res, next) => {
+
+    const fetchedData = req.body.data;
+    const decodedToken = jwt.verify(
+        fetchedData,
+        process.env.SECRET
+    );
+
     let fetchReseller;
-    reseller.findOne({where:{user: req.body.user}})
+    reseller.findOne({where:{user: decodedToken.user.username}})
         .then(user => {
             if(!user){
                 return res.status(201).json(
@@ -21,7 +27,7 @@ exports.resellerLogin = (req, res, next) => {
 
             }
             fetchReseller = user;
-            return bcrypt.compare(req.body.password, user.password);
+            return bcrypt.compare(decodedToken.user.password, user.password);
         })
         .then(result => {
             if(!result){
