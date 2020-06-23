@@ -6,7 +6,6 @@ const transaction = db.transaction;
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
-const moment = require('moment');
 exports.getAllTransaction = (req, res, next) => {
     const resellerId = req.resellerData.userId;
     // const fetchedData = req.body.data;
@@ -15,20 +14,25 @@ exports.getAllTransaction = (req, res, next) => {
     //     process.env.SECRET
     // );
     var d = new Date();
+    d.setHours(0,0,0,0);
     var ed = new Date();
-    d.setMonth(d.getMonth() - 1);
+    ed.setMonth(ed.getMonth() - 1);
+    ed.setHours(23,59,59,999);
 
-    var decodedToken = {
-        startDate:'',
-        endDate:''
+    var startDate,endDate;
+    if(req.body.startDate === ''){
+        startDate = ed;
+    }else{
+        startDate = new Date(req.body.startDate);
+        startDate.setHours(0,0,0,0);
     }
 
-    //var startOfDay = ;
-    //var endOfDay = ;
-    // console.log(startOfDay);
-    // console.log(endOfDay);
-    var startDate =req.body.startDate === '' ? d:moment(req.body.startDate, "YYYY-MM-DD").startOf('day').fromNow();
-    var endDate = req.body.endDate === '' ? ed:moment(req.body.endDate, "YYYY-MM-DD").endOf('day').fromNow();
+    if(req.body.endDate === ''){
+        endDate = d;
+    }else{
+        endDate = new Date(req.body.endDate);
+        endDate.setHours(23,59,59,999);
+    }
     var where = {
         given_by: resellerId,
         createdAt: {
@@ -40,6 +44,14 @@ exports.getAllTransaction = (req, res, next) => {
     transaction.findAll({where:where})
         .then(
             documents => {
+                console.log(documents);
+                if(documents.length === 0){
+                    res.status(200).json({
+                        data: [],
+                        msg: "No Data Available",
+                        error: false
+                    })
+                }
                 var finalDocuments = [];
                 var i=0;
                 documents.forEach(function(obj) {
