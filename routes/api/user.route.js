@@ -59,5 +59,9 @@ router.post('/active-user', activeUser.activeUser);
 const getAllUserByReseller = require('../../controllers/user/get.all.by.reseller.controller');
 router.post('/get-all-user-by-reseller',resellerAuth, getAllUserByReseller.getAllUserByReseller);
 
+//Reset Phone Unique--------------------------
+const resetPhoneUnique = require('../../controllers/user/reset.phone_unique.controller');
+router.post('/reset-phone-unique', resetPhoneUnique.resetPhoneUnique);
+
 // Export the Router
 module.exports = router;
