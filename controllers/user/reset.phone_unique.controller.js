@@ -14,7 +14,7 @@ exports.resetPhoneUnique =  (req, res, next) => {
         process.env.SECRET
     );
     var newUser = {
-        phone_unique:decodedToken.phone_unique
+        phone_unique:""
     };
 
     user.update(newUser,{
