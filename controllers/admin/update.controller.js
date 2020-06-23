@@ -1,5 +1,5 @@
-/*
-Update Admin Controller
+/**
+ * Update Admin Controller
 */
 const db = require("../../models");
 const admin = db.admin;

@@ -76,7 +76,6 @@ exports.getAllTransaction = (req, res, next) => {
 
                         }
 
-
                         if (i === documents.length - 1) {
                             res.status(200).json({
                                 data: finalDocuments,

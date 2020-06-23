@@ -16,7 +16,7 @@ exports.createsuperAdmin =  (req, res, next) => {
 
     superAdmin.create(newsuperAdmin)
         .then((result) => {
-            const token = jwt.sign({id: result.id}, process.env.SECRET, {
+            const token = jwt.sign({id: result.id,role:'super_admin'}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({

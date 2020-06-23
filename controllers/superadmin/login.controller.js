@@ -32,7 +32,7 @@ exports.superAdminLogin = (req, res, next) => {
                 });
             }
 
-            const token = jwt.sign({id: fetchSuperAdmin.id}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchSuperAdmin.id,role:'super_admin'}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({
