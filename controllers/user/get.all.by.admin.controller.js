@@ -24,7 +24,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
         .then(
             documents => {
                 var finalDocuments = [];
-                documents.docs.forEach(function(obj,i) {
+                var i=0;
+                documents.docs.forEach(function(obj) {
                     if(obj.creator_type === 'admin'){
                         admin.findByPk(obj.creator).then(result => {
                             var newObj = {
@@ -53,6 +54,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                     error:false
                                 })
                             }
+                            i++;
                         })
                     }else{
                         reseller.findByPk(obj.creator).then(result => {

@@ -24,7 +24,8 @@ exports.getAllUserByReseller = (req, res, next) => {
         .then(
             documents => {
                 var finalDocuments = [];
-                documents.docs.forEach(function(obj,i) {
+                var i=0;
+                documents.docs.forEach(function(obj) {
                     reseller.findByPk(obj.creator).then(result => {
                         var newObj = {
                             id:obj.id,
@@ -52,6 +53,7 @@ exports.getAllUserByReseller = (req, res, next) => {
                                 error:false
                             })
                         }
+                        i++;
                     })
 
                 });

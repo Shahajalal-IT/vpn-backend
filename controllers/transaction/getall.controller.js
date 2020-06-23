@@ -35,7 +35,8 @@ exports.getAllTransaction = (req, res, next) => {
             documents => {
 
                 var finalDocuments = [];
-                documents.forEach(function(obj,i) {
+                var i=0;
+                documents.forEach(function(obj) {
 
                         reseller.findByPk(obj.given_to).then(result => {
                             var newObj = {
@@ -56,6 +57,7 @@ exports.getAllTransaction = (req, res, next) => {
                                     error:false
                                 })
                             }
+                            i++;
                         })
                 });
             }

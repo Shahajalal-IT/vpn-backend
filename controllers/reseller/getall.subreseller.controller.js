@@ -32,7 +32,8 @@ exports.getAllReseller = (req, res, next) => {
                 }
                 console.log(documents);
                 var finalDocuments = [];
-                documents.docs.forEach(function(obj,i) {
+                var i=0;
+                documents.docs.forEach(function(obj) {
 
                         reseller.findByPk(obj.creator).then(result => {
 
@@ -59,6 +60,7 @@ exports.getAllReseller = (req, res, next) => {
                                         error: false
                                     })
                                 }
+                                i++;
 
                         })
 

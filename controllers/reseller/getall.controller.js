@@ -23,7 +23,8 @@ exports.getAllReseller = (req, res, next) => {
             documents => {
 
                 var finalDocuments = [];
-                documents.docs.forEach(function(obj,i) {
+                var i=0;
+                documents.docs.forEach(function(obj) {
                     if(obj.role === 'reseller'){
                         admin.findByPk(obj.creator).then(result => {
                             var newObj = {
@@ -40,6 +41,7 @@ exports.getAllReseller = (req, res, next) => {
                                 creator_id:result.id,
                             };
                             finalDocuments.push(newObj);
+
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
@@ -49,6 +51,7 @@ exports.getAllReseller = (req, res, next) => {
                                     error:false
                                 })
                             }
+                            i++;
                         })
                     }else{
                         reseller.findByPk(obj.creator).then(result => {
