@@ -83,5 +83,9 @@ router.post('/send-home-page-value', resellerAuth, sendHomePageValue.sendHomePag
 const updateResellerProfile = require('../../controllers/reseller/update.reseller.profile.controller');
 router.post('/update-reseller-profile', resellerAuth, updateResellerProfile.updateReseller);
 
+//Get all sub reseller by id--------------------------
+const getAllSubresellerById = require('../../controllers/reseller/get.all.sub.reseller.by.id');
+router.post('/get-all-sub-reseller-by-id', adminAuth, getAllSubresellerById.getAllReseller);
+
 // Export the Router
 module.exports = router;
