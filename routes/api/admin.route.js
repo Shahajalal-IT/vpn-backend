@@ -31,5 +31,13 @@ router.post('/get-admin-info', adminAuth, getAdminInfo.getAdminInfo);
 const sendHomePageData = require('../../controllers/admin/send.home.page.data.controller');
 router.post('/send-home-page-data', adminAuth, sendHomePageData.sendHomePageData);
 
+//Update Admin Profile--------------------------
+const updateAdminProfile = require('../../controllers/admin/update.admin.profile.controller');
+router.post('/update-admin-profile', adminAuth, updateAdminProfile.updateAdmin);
+
+//Update Admin Profile--------------------------
+const updateAdminSiteData = require('../../controllers/admin/update.site.data.controller');
+router.post('/update-site-data', adminAuth, updateAdminSiteData.updateAdminSiteData);
+
 // Export the Router
 module.exports = router;
