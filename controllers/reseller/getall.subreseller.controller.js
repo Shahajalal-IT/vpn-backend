@@ -37,6 +37,9 @@ exports.getAllReseller = (req, res, next) => {
 
                         reseller.findByPk(obj.creator).then(result => {
 
+                            if(result === null){
+
+                            }else{
                                 var newObj = {
                                     id: obj.id,
                                     user: obj.user,
@@ -51,6 +54,8 @@ exports.getAllReseller = (req, res, next) => {
                                     creator_id: result.id,
                                 };
                                 finalDocuments.push(newObj);
+                            }
+
                                 if (i === documents.docs.length - 1) {
                                     res.status(200).json({
                                         data: finalDocuments,

@@ -23,28 +23,42 @@ exports.getAllUserByAdmin = (req, res, next) => {
     user.paginate(options)
         .then(
             documents => {
+                if(documents.total === 0){
+                    res.status(200).json({
+                        data: [],
+                        pages: 1,
+                        total: 1,
+                        msg: "Successfully Read User Data",
+                        error: false
+                    })
+                }
                 var finalDocuments = [];
                 var i=0;
                 documents.docs.forEach(function(obj) {
                     if(obj.creator_type === 'admin'){
                         admin.findByPk(obj.creator).then(result => {
-                            var newObj = {
-                                id:obj.id,
-                                pin:obj.pin,
-                                user:obj.user,
-                                password:obj.password,
-                                phone_unique:obj.phone_unique,
-                                created_by:result.user,
-                                creator_id:obj.creator,
-                                activated_at:obj.activated_at,
-                                expired_at:obj.expired_at,
-                                type:obj.type,
-                                active:obj.active,
-                                status:obj.status,
-                                notes:obj.notes,
-                                device:obj.device,
-                            };
-                            finalDocuments.push(newObj);
+                            if(result === null){
+
+                            }else{
+                                var newObj = {
+                                    id:obj.id,
+                                    pin:obj.pin,
+                                    user:obj.user,
+                                    password:obj.password,
+                                    phone_unique:obj.phone_unique,
+                                    created_by:result.user,
+                                    creator_id:obj.creator,
+                                    activated_at:obj.activated_at,
+                                    expired_at:obj.expired_at,
+                                    type:obj.type,
+                                    active:obj.active,
+                                    status:obj.status,
+                                    notes:obj.notes,
+                                    device:obj.device,
+                                };
+                                finalDocuments.push(newObj);
+                            }
+
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
@@ -58,23 +72,28 @@ exports.getAllUserByAdmin = (req, res, next) => {
                         })
                     }else{
                         reseller.findByPk(obj.creator).then(result => {
-                            var newObj = {
-                                id:obj.id,
-                                pin:obj.pin,
-                                user:obj.user,
-                                password:obj.password,
-                                phone_unique:obj.phone_unique,
-                                created_by:result.user,
-                                creator_id:obj.creator,
-                                activated_at:obj.activated_at,
-                                expired_at:obj.expired_at,
-                                type:obj.type,
-                                active:obj.active,
-                                status:obj.status,
-                                notes:obj.notes,
-                                device:obj.device,
-                            };
-                            finalDocuments.push(newObj);
+                            if(result === null){
+
+                            }else{
+                                var newObj = {
+                                    id:obj.id,
+                                    pin:obj.pin,
+                                    user:obj.user,
+                                    password:obj.password,
+                                    phone_unique:obj.phone_unique,
+                                    created_by:result.user,
+                                    creator_id:obj.creator,
+                                    activated_at:obj.activated_at,
+                                    expired_at:obj.expired_at,
+                                    type:obj.type,
+                                    active:obj.active,
+                                    status:obj.status,
+                                    notes:obj.notes,
+                                    device:obj.device,
+                                };
+                                finalDocuments.push(newObj);
+                            }
+
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
