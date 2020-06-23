@@ -84,6 +84,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                                     error:false
                                 })
                             }
+                            i++;
                         })
                     }
 
