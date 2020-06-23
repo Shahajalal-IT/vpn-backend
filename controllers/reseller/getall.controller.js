@@ -78,6 +78,7 @@ exports.getAllReseller = (req, res, next) => {
                                     error:false
                                 })
                             }
+                            i++;
                         })
                     }
 
