@@ -63,5 +63,13 @@ router.post('/get-all-user-by-reseller',resellerAuth, getAllUserByReseller.getAl
 const resetPhoneUnique = require('../../controllers/user/reset.phone_unique.controller');
 router.post('/reset-phone-unique', resetPhoneUnique.resetPhoneUnique);
 
+//Connect Vpn Using Pin--------------------------
+const connectUsingPin = require('../../controllers/user/connect.using.pin.controller');
+router.post('/connect-using-pin', connectUsingPin.connectVpnUsingPin);
+
+//DisConnect Vpn Using Pin--------------------------
+const disConnectUsingPin = require('../../controllers/user/disconnect.using.pin.controller');
+router.post('/disconnect-using-pin', disConnectUsingPin.disConnectVpn);
+
 // Export the Router
 module.exports = router;

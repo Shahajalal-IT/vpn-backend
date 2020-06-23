@@ -1,17 +1,16 @@
 
 /**
- * Connect Vpn Controller
+ * Connect Vpn Using Pin Controller
  */
 const db = require("../../models");
 const user = db.user;
 const reseller = db.reseller;
 const Op = db.Sequelize.Op;
-exports.connectVpn =  (req, res, next) => {
+exports.connectVpnUsingPin =  (req, res, next) => {
 
     user.findOne({
         where:{
-            user: req.body.user,
-            password: req.body.password
+            pin: req.body.pin
         }
     })
         .then(user => {
@@ -70,15 +69,15 @@ exports.connectVpn =  (req, res, next) => {
 
             return newUser;
         }).then(new_user => {
-            if(new_user.expired_at < Date.now()){
-                return res.status(201).json({
-                    msg: "Date Expired",
-                    error:true
-                })
-            }
+        if(new_user.expired_at < Date.now()){
+            return res.status(201).json({
+                msg: "Date Expired",
+                error:true
+            })
+        }
         user.update(new_user,
             {
-                where:{user: req.body.user, password: req.body.password}
+                where:{pin: req.body.pin}
             })
             .then( result => {
                 if(result > 0) {
