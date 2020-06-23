@@ -14,7 +14,8 @@ exports.getAllReseller = (req, res, next) => {
         order: [['id', 'DESC']],
         where: {
             user: { [Op.like]: `%`+req.body.key+`%` },
-            admin_id: adminId
+            admin_id: adminId,
+            role:'reseller'
         }
     }
     reseller.paginate(options)
