@@ -56,7 +56,6 @@ exports.getAllTransaction = (req, res, next) => {
                 var i=0;
                 documents.forEach(function(obj) {
 
-
                         reseller.findByPk(obj.given_to).then(result => {
                             if(result === null){
 
@@ -72,15 +71,17 @@ exports.getAllTransaction = (req, res, next) => {
                                     createdAt: obj.createdAt
                                 };
                                 finalDocuments.push(newObj);
-                                if (i === documents.length - 1) {
-                                    res.status(200).json({
-                                        data: finalDocuments,
-                                        msg: "Successfully Read Transaction Data",
-                                        error: false
-                                    })
-                                }
-                                i++;
+
                             }
+
+                            if (i === documents.length - 1) {
+                                res.status(200).json({
+                                    data: finalDocuments,
+                                    msg: "Successfully Read Transaction Data",
+                                    error: false
+                                })
+                            }
+                            i++;
                         })
 
                 });

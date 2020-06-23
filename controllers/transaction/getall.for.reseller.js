@@ -33,6 +33,7 @@ exports.getAllTransaction = (req, res, next) => {
         endDate = new Date(req.body.endDate);
         endDate.setHours(23,59,59,999);
     }
+
     var where = {
         given_by: resellerId,
         createdAt: {
@@ -44,7 +45,7 @@ exports.getAllTransaction = (req, res, next) => {
     transaction.findAll({where:where})
         .then(
             documents => {
-                console.log(documents);
+
                 if(documents.length === 0){
                     res.status(200).json({
                         data: [],
@@ -61,7 +62,6 @@ exports.getAllTransaction = (req, res, next) => {
                         if(result === null){
 
                         }else {
-
                             var newObj = {
                                 id: obj.id,
                                 given_to: result.user,
@@ -73,15 +73,19 @@ exports.getAllTransaction = (req, res, next) => {
                                 createdAt: obj.createdAt
                             };
                             finalDocuments.push(newObj);
-                            if (i === documents.length - 1) {
-                                res.status(200).json({
-                                    data: finalDocuments,
-                                    msg: "Successfully Read Transaction Data",
-                                    error: false
-                                })
-                            }
-                            i++;
+
                         }
+
+
+                        if (i === documents.length - 1) {
+                            res.status(200).json({
+                                data: finalDocuments,
+                                msg: "Successfully Read Transaction Data",
+                                error: false
+                            })
+                        }
+
+                        i++;
                     })
 
                 });
