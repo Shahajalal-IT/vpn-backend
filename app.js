@@ -3,9 +3,17 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const compression = require('compression');
+const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT;
+//process.env.NODE_ENV = 'production'
+
+//Compress all routes
+app.use(compression());
+//User Helmet
+app.use(helmet());
 
 //Configure Sequelize and mySql2
 

@@ -20,6 +20,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 if(user.type === i){
                     var today = new Date();
                     expired_at = today.setMonth(today.getMonth() + i);
+                    expired_at = new Date(expired_at);
                 }
             }
             if(user.activated_at === null){
@@ -83,7 +84,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 if(result > 0) {
                     return res.status(201).json({
                         msg: "Successfully Connected",
-                        expired_date:new_user.expired_at,
+                        expired_date:new_user.expired_at.toLocaleDateString(),
                         error:false
                     })
                 }else {

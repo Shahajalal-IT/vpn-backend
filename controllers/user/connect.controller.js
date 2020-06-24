@@ -21,6 +21,7 @@ exports.connectVpn =  (req, res, next) => {
                 if(user.type === i){
                     var today = new Date();
                     expired_at = today.setMonth(today.getMonth() + i);
+                    expired_at = new Date(expired_at);
                 }
             }
             if(user.activated_at === null){
@@ -48,6 +49,7 @@ exports.connectVpn =  (req, res, next) => {
                     status: 1
 
                 };
+
             }else {
 
                 newUser = {
@@ -70,12 +72,14 @@ exports.connectVpn =  (req, res, next) => {
 
             return newUser;
         }).then(new_user => {
-            if(new_user.expired_at < Date.now()){
-                return res.status(201).json({
-                    msg: "Date Expired",
-                    error:true
-                })
-            }
+        if(new_user.expired_at < Date.now()){
+            return res.status(201).json({
+                msg: "Date Expired",
+                error:true
+            })
+        }
+
+
         user.update(new_user,
             {
                 where:{user: req.body.user, password: req.body.password}
@@ -84,7 +88,7 @@ exports.connectVpn =  (req, res, next) => {
                 if(result > 0) {
                     return res.status(201).json({
                         msg: "Successfully Connected",
-                        expired_date:new_user.expired_at,
+                        expired_date:new_user.expired_at.toLocaleDateString(),
                         error:false
                     })
                 }else {
