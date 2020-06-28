@@ -1,8 +1,8 @@
 module.exports = {
     HOST: '176.9.146.239',
-    USER: 'bajwhaco_fixnetwork',
-    PASSWORD: 'b_bM[XJRIfzW',
-    DB: 'bajwhaco_fixnetworkspanel',
+    USER: 'ituk_panel',
+    PASSWORD: 'L^mH&e$(N^Zh',
+    DB: 'ituk_panel',
     dialect: 'mysql',
     pool: {
         max: 5,

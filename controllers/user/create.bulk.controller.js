@@ -21,8 +21,9 @@ exports.createUser =  (req, res, next) => {
     while (randonPin.size < +decodedToken.no_of_account) {
         randonPin.add(decodedToken.username_prefix+randomstring.generate(6))
     }
-
+    let sendData = [];
     reseller.findByPk(resellerId).then(resellerResult => {
+
 
         let i = 0;
         for (const value of randonPin.values()) {
@@ -41,12 +42,15 @@ exports.createUser =  (req, res, next) => {
                 admin_id: resellerResult.admin_id
             };
 
+            sendData.push(newUser);
+
             user.create(newUser).then(result => {
                 i++;
                 if(i === randonPin.size){
                     return res.status(201).json({
                         msg: `Successfully Created `+ i +` Users`,
-                        error:false
+                        error:false,
+                        data:sendData
                     })
                 }
             }).catch(error => {
