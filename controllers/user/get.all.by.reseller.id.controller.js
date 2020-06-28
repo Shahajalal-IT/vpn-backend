@@ -1,5 +1,5 @@
 /**
- * Get All Users by Reseller Controller
+ * Get All Users by Reseller Id Controller
  */
 const db = require("../../models");
 const user = db.user;
@@ -9,7 +9,7 @@ const Op = db.Sequelize.Op;
 
 exports.getAllUserByReseller = (req, res, next) => {
 
-    const resellerId = req.resellerData.userId;
+    const resellerId = req.body.id;
     const options = {
         page: +req.body.page, // Default 1
         paginate: +req.body.pagesize, // Default 25
