@@ -18,8 +18,16 @@ exports.sendHomePageData = (req, res, next) => {
                 data.resellerCount = documents;
                 user.count({where:{creator: resellerId,creator_type:'reseller'}}).then(ownuser => {
                     data.ownAccount = ownuser;
+                    reseller.findAll({where:{role:'sub_reseller',creator:resellerId}}).then(allsub =>{
+
+                        var all_sub_id=[];
+                        allsub.map(sub =>{
+                            all_sub_id.push(sub.id)
+                        })
+
+
                     user.count({where:{creator_type:'reseller', creator:{
-                                [Op.ne]: resellerId
+                                [Op.in]: all_sub_id
                             }}}).then(resellerAccount => {
                         data.resellerAccount = resellerAccount;
                         user.count({where:{creator: resellerId,creator_type:'reseller',active:1}}).then(onlineAccount => {
@@ -51,6 +59,7 @@ exports.sendHomePageData = (req, res, next) => {
                             })
                         })
                     })
+                })
                 })
             }
         )
