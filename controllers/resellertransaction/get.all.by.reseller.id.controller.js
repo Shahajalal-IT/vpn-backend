@@ -18,7 +18,7 @@ exports.getAllResTransByResellerId = (req, res, next) => {
         order: [['id', 'DESC']],
         where: {
             reseller_id: resellerId,
-            adminId: adminId
+            admin_id: adminId
         }
     }
 
