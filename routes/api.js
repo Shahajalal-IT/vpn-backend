@@ -21,4 +21,8 @@ router.use('/user', user);
 let transaction = require('./api/transaction.route');
 router.use('/transaction', transaction);
 
+// Reseller Transaction Routes------------------
+let reseller_transaction = require('./api/reseller.transaction.route');
+router.use('/reseller-transaction', reseller_transaction);
+
 module.exports = router;

@@ -5,6 +5,7 @@
 const db = require("../../models");
 const user = db.user;
 const reseller = db.reseller;
+const reseller_transaction = db.reseller_transaction;
 const Op = db.Sequelize.Op;
 exports.connectVpnUsingPin =  (req, res, next) => {
 
@@ -32,10 +33,22 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                             balance: newBalance
                         }
 
+                        var resellerTransaction = {
+                            reseller_id: result.id,
+                            user_id:user.id,
+                            p_balance:+result.balance,
+                            c_balance:newBalance,
+                            price:user.device === 'android'?result.android_price:result.ios_price,
+                            admin_id:result.admin_id
+                        }
+
                         reseller.update(newRes,{
                             where:{id: result.id}
                         }).then(resu => {
-                            console.log('Balance Cut Successfully');
+
+                            reseller_transaction.create(resellerTransaction).then(res_t=>{
+                                console.log('Balance Cut Successfully');
+                            })
                         })
                     })
                 }
