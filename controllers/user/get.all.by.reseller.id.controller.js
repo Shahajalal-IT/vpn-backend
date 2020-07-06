@@ -10,13 +10,41 @@ const Op = db.Sequelize.Op;
 exports.getAllUserByReseller = (req, res, next) => {
 
     const resellerId = req.body.id;
+
+
+    var d = new Date();
+    d.setHours(0,0,0,0);
+    var ed = new Date();
+    ed.setMonth(ed.getMonth() - 1);
+    ed.setHours(23,59,59,999);
+
+    var startDate,endDate;
+    if(req.body.start_date === ''){
+        startDate = ed;
+    }else{
+        startDate = new Date(req.body.start_date);
+        startDate.setHours(0,0,0,0);
+    }
+
+    if(req.body.end_date === ''){
+        endDate = d;
+    }else{
+        endDate = new Date(req.body.end_date);
+        endDate.setHours(23,59,59,999);
+    }
+
+
     const options = {
         page: +req.body.page, // Default 1
         paginate: +req.body.pagesize, // Default 25
         order: [['id', 'DESC']],
         where: {
-            user: { [Op.like]: `%`+req.body.key+`%` },
             creator: resellerId,
+            active: { [Op.like]: `%`+req.body.active+`%` },
+            status: { [Op.like]: `%`+req.body.status+`%` },
+            createdAt: {
+                [Op.between]: [startDate, endDate]
+            },
             creator_type:'reseller'
         }
     }
