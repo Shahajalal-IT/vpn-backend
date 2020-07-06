@@ -15,13 +15,13 @@ exports.resellerLogin = (req, res, next) => {
     );
 
     let fetchReseller;
-    reseller.findOne({where:{user: decodedToken.user.username}})
+    reseller.findOne({where:{user: decodedToken.user.username, status:1}})
         .then(user => {
             if(!user){
                 return res.status(201).json(
                     {
                         error: true,
-                        msg: "User Not Found"
+                        msg: "User Not Found Or Not Activated"
                     }
                 );
 
