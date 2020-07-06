@@ -49,6 +49,8 @@ exports.getAllResTransByResellerId = (req, res, next) => {
                                 p_balance:obj.p_balance,
                                 c_balance:obj.c_balance,
                                 price:obj.price,
+                                createdAt:obj.createdAt,
+                                updatedAt:obj.updatedAt
                             };
                             finalDocuments.push(newObj);
                         }
