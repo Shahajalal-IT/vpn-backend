@@ -33,19 +33,21 @@ exports.getAllUserByReseller = (req, res, next) => {
         endDate.setHours(23,59,59,999);
     }
 
-    var activeArray = [0,1]
-    if(+req.body.active === 0){
-        activeArray = [0]
-    }else if(+req.body.active === 1){
-        activeArray = [1]
+    let activeArray =[]
+    if(req.body.active === "") {
+        activeArray = [0,1]
+    } else {
+        activeArray = [+req.body.active]
     }
 
-    var statusArray = [0,1]
-    if(+req.body.status === 0){
-        statusArray = [0]
-    }else if(+req.body.status === 1){
-        statusArray = [1]
+    let statusArray = []
+    if(req.body.status === ""){
+        statusArray = [0,1]
+    }else{
+        statusArray = [+req.body.status]
     }
+
+    console.log(statusArray);
 
     const options = {
         page: +req.body.page, // Default 1
@@ -61,6 +63,7 @@ exports.getAllUserByReseller = (req, res, next) => {
             creator_type:'reseller'
         }
     }
+
 
     user.paginate(options)
         .then(
