@@ -53,8 +53,8 @@ exports.getAllUserByReseller = (req, res, next) => {
         order: [['id', 'DESC']],
         where: {
             creator: resellerId,
-            active: { [Op.between]: activeArray },
-            status: { [Op.between]: statusArray },
+            active: { [Op.in]: activeArray },
+            status: { [Op.in]: statusArray },
             createdAt: {
                 [Op.between]: [startDate, endDate]
             },
