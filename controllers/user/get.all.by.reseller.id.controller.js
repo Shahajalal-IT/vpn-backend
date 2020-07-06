@@ -33,6 +33,19 @@ exports.getAllUserByReseller = (req, res, next) => {
         endDate.setHours(23,59,59,999);
     }
 
+    var activeArray = [0,1]
+    if(+req.body.active === 0){
+        activeArray = [0]
+    }else if(+req.body.active === 1){
+        activeArray = [1]
+    }
+
+    var statusArray = [0,1]
+    if(+req.body.status === 0){
+        statusArray = [0]
+    }else if(+req.body.status === 1){
+        statusArray = [1]
+    }
 
     const options = {
         page: +req.body.page, // Default 1
@@ -40,8 +53,8 @@ exports.getAllUserByReseller = (req, res, next) => {
         order: [['id', 'DESC']],
         where: {
             creator: resellerId,
-            active: { [Op.like]: `%`+req.body.active+`%` },
-            status: { [Op.like]: `%`+req.body.status+`%` },
+            active: { [Op.between]: activeArray },
+            status: { [Op.between]: statusArray },
             createdAt: {
                 [Op.between]: [startDate, endDate]
             },
