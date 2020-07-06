@@ -73,6 +73,13 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                     newUser.phone_unique = req.body.phone_unique
                 }
 
+                if(user.status === 0){
+                    return res.status(201).json({
+                        msg: "User Not Activated",
+                        error:true
+                    })
+                }
+
                 if(user.phone_unique !=='' && user.phone_unique !== req.body.phone_unique){
                     return res.status(201).json({
                         msg: "Already Used In Another Device",
