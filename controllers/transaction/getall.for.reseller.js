@@ -8,11 +8,6 @@ const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
 exports.getAllTransaction = (req, res, next) => {
     const resellerId = req.resellerData.userId;
-    // const fetchedData = req.body.data;
-    // const decodedToken = jwt.verify(
-    //     fetchedData,
-    //     process.env.SECRET
-    // );
     var d = new Date();
     d.setHours(0,0,0,0);
     var ed = new Date();
@@ -34,15 +29,37 @@ exports.getAllTransaction = (req, res, next) => {
         endDate.setHours(23,59,59,999);
     }
 
-    var where = {
-        given_by: resellerId,
-        createdAt: {
-            [Op.between]: [startDate, endDate]
-        },
-        given_by_type:'reseller'
-    };
+    let options = {};
+    if(req.body.id === ''){
+        options = {
+            page: +req.body.page, // Default 1
+            paginate: +req.body.pagesize, // Default 25
+            order: [['id', 'DESC']],
+            where: {
+                given_by: resellerId,
+                createdAt: {
+                    [Op.between]: [startDate, endDate]
+                },
+                given_by_type:'reseller'
+            }
+        }
+    }else{
+        options = {
+            page: +req.body.page, // Default 1
+            paginate: +req.body.pagesize, // Default 25
+            order: [['id', 'DESC']],
+            where: {
+                given_by: resellerId,
+                given_to: req.body.id,
+                createdAt: {
+                    [Op.between]: [startDate, endDate]
+                },
+                given_by_type:'reseller'
+            }
+        }
+    }
 
-    transaction.findAll({where:where})
+    transaction.paginate(options)
         .then(
             documents => {
 

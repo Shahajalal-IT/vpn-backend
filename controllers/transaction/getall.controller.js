@@ -61,7 +61,7 @@ exports.getAllTransaction = (req, res, next) => {
     transaction.paginate(options)
         .then(
             documents => {
-                if(documents.length === 0){
+                if(documents.total === 0){
                     res.status(200).json({
                         data: [],
                         msg: "No Data Available",
@@ -70,7 +70,7 @@ exports.getAllTransaction = (req, res, next) => {
                 }
                 var finalDocuments = [];
                 var i=0;
-                documents.forEach(function(obj) {
+                documents.docs.forEach(function(obj) {
 
                         reseller.findByPk(obj.given_to).then(result => {
                             if(result === null){
@@ -90,7 +90,7 @@ exports.getAllTransaction = (req, res, next) => {
 
                             }
 
-                            if (i === documents.length - 1) {
+                            if (i === documents.docs.length - 1) {
                                 res.status(200).json({
                                     data: finalDocuments,
                                     msg: "Successfully Read Transaction Data",
