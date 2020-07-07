@@ -8,11 +8,6 @@ const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
 exports.getAllTransaction = (req, res, next) => {
     const adminId = req.adminData.userId;
-    // const fetchedData = req.body.data;
-    // const decodedToken = jwt.verify(
-    //     fetchedData,
-    //     process.env.SECRET
-    // );
     var d = new Date();
     d.setHours(0,0,0,0);
     var ed = new Date();
@@ -33,16 +28,37 @@ exports.getAllTransaction = (req, res, next) => {
         endDate = new Date(req.body.endDate);
         endDate.setHours(23,59,59,999);
     }
-
-    var where = {
-        given_by: adminId,
-        given_by_type:'admin',
-        createdAt: {
-            [Op.between]: [startDate, endDate]
+    let options = {};
+    if(req.body.id === ''){
+        options = {
+            page: +req.body.page, // Default 1
+            paginate: +req.body.pagesize, // Default 25
+            order: [['id', 'DESC']],
+            where: {
+                given_by: adminId,
+                given_by_type:'admin',
+                createdAt: {
+                    [Op.between]: [startDate, endDate]
+                }
+            }
         }
-    };
+    }else{
+        options = {
+            page: +req.body.page, // Default 1
+            paginate: +req.body.pagesize, // Default 25
+            order: [['id', 'DESC']],
+            where: {
+                given_by: adminId,
+                given_by_type:'admin',
+                given_to:req.body.id,
+                createdAt: {
+                    [Op.between]: [startDate, endDate]
+                }
+            }
+        }
+    }
 
-    transaction.findAll({where:where})
+    transaction.paginate(options)
         .then(
             documents => {
                 if(documents.length === 0){
