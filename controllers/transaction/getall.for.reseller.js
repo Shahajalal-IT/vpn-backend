@@ -58,7 +58,7 @@ exports.getAllTransaction = (req, res, next) => {
             }
         }
     }
-    reseller.findAll({attributes: ['id', 'user']},{where:{creator: resellerId, role: 'sub_reseller'}})
+    reseller.findAll({ attributes: ['id', 'user'], where:{creator: resellerId, role: 'sub_reseller'}})
         .then(
             resellers => {
                 transaction.paginate(options)
