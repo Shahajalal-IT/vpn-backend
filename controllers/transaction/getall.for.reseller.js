@@ -9,10 +9,10 @@ const jwt = require('jsonwebtoken');
 exports.getAllTransaction = (req, res, next) => {
     const resellerId = req.resellerData.userId;
     var d = new Date();
-    d.setHours(0,0,0,0);
+    d.setHours(23,59,59,999);
     var ed = new Date();
     ed.setMonth(ed.getMonth() - 1);
-    ed.setHours(23,59,59,999);
+    ed.setHours(0,0,0,0);
 
     var startDate,endDate;
     if(req.body.startDate === ''){
