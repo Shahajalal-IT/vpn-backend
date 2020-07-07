@@ -69,6 +69,9 @@ exports.getAllTransaction = (req, res, next) => {
                                 res.status(200).json({
                                     data: [],
                                     msg: "No Data Available",
+                                    pages:1,
+                                    total:0,
+                                    resellers: resellers,
                                     error: false
                                 })
                             }
