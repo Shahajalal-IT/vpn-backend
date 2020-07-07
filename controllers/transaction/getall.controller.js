@@ -58,6 +58,10 @@ exports.getAllTransaction = (req, res, next) => {
         }
     }
 
+    reseller.findAll({where:{creator: adminId }})
+        .then(
+            documents => {
+
     transaction.paginate(options)
         .then(
             documents => {
@@ -94,6 +98,9 @@ exports.getAllTransaction = (req, res, next) => {
                                 res.status(200).json({
                                     data: finalDocuments,
                                     msg: "Successfully Read Transaction Data",
+                                    pages:documents.pages,
+                                    total:documents.total,
+                                    resellers: documents,
                                     error: false
                                 })
                             }
@@ -103,6 +110,7 @@ exports.getAllTransaction = (req, res, next) => {
                 });
             }
         )
+            })
         .catch(error => {
             console.log(error)
             return res.status(400).json({error: true, msg: "Transaction Reading Was Unsuccessful",err: error})
