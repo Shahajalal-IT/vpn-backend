@@ -29,7 +29,7 @@ exports.getAllResTransByResellerId = (req, res, next) => {
                         res.status(200).json({
                             data: [],
                             pages: 1,
-                            total: 1,
+                            total: 0,
                             reseller_name: reseller.user,
                             msg: "Successfully Read User Data",
                             error: false
