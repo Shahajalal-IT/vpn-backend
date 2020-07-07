@@ -7,7 +7,7 @@ const Op = db.Sequelize.Op;
 
 exports.getAllForDropdown = (req, res, next) => {
     const adminId = req.adminData.userId;
-    reseller.findAll({where:{creator: adminId }})
+    reseller.findAll({where:{creator: adminId, role:'reseller' }})
         .then(
             documents => {
                 res.status(200).json({
