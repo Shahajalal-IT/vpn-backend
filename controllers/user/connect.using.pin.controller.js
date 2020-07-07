@@ -16,6 +16,12 @@ exports.connectVpnUsingPin =  (req, res, next) => {
         }
     })
         .then(user => {
+            if(user === null){
+                return res.status(201).json({
+                    msg: "invalid Pin",
+                    error:true
+                })
+            }
             var newUser;
             var expired_at;
             for(var i=1;i<=12;i++){

@@ -17,6 +17,12 @@ exports.connectVpn =  (req, res, next) => {
         }
     })
         .then(user => {
+            if(user === null){
+                return res.status(201).json({
+                    msg: "invalid User or password",
+                    error:true
+                })
+            }
             var newUser;
             var expired_at;
             for(var i=1;i<=12;i++){
