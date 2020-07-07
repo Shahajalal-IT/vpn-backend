@@ -5,6 +5,7 @@
 const db = require("../../models");
 const user = db.user;
 const Op = db.Sequelize.Op;
+const axios = require("axios");
 exports.disConnectVpn =  (req, res, next) => {
 
     var newUser = {
@@ -15,6 +16,12 @@ exports.disConnectVpn =  (req, res, next) => {
         where:{pin: req.body.pin}
     })
         .then( result => {
+
+            axios.post('http://localhost:4000/api/server/change-connected-user', {
+                action: 0,
+                id:req.body.id
+            })
+
             if(result > 0) {
                 return res.status(201).json({
                     msg: "Successfully Disconnected",

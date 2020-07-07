@@ -7,6 +7,7 @@ const user = db.user;
 const reseller = db.reseller;
 const reseller_transaction = db.reseller_transaction;
 const Op = db.Sequelize.Op;
+const axios = require("axios");
 exports.connectVpn =  (req, res, next) => {
 
     user.findOne({
@@ -105,6 +106,13 @@ exports.connectVpn =  (req, res, next) => {
             })
             .then( result => {
                 if(result > 0) {
+
+
+                    axios.post('http://localhost:4000/api/server/change-connected-user', {
+                        action: 1,
+                        id:req.body.id
+                    })
+
                     return res.status(201).json({
                         msg: "Successfully Connected",
                         expired_date:new_user.expired_at.toLocaleDateString(),
