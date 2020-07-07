@@ -60,7 +60,7 @@ exports.getAllTransaction = (req, res, next) => {
 
     reseller.findAll({where:{creator: adminId }})
         .then(
-            documents => {
+            resellers => {
 
     transaction.paginate(options)
         .then(
@@ -100,7 +100,7 @@ exports.getAllTransaction = (req, res, next) => {
                                     msg: "Successfully Read Transaction Data",
                                     pages:documents.pages,
                                     total:documents.total,
-                                    resellers: documents,
+                                    resellers: resellers,
                                     error: false
                                 })
                             }
