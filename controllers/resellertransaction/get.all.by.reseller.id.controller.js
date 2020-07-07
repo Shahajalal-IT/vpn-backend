@@ -30,6 +30,7 @@ exports.getAllResTransByResellerId = (req, res, next) => {
                             data: [],
                             pages: 1,
                             total: 1,
+                            reseller_name: reseller.user,
                             msg: "Successfully Read User Data",
                             error: false
                         })
