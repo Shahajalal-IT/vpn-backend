@@ -58,7 +58,7 @@ exports.getAllTransaction = (req, res, next) => {
         }
     }
 
-    reseller.findAll({where:{creator: adminId }})
+    reseller.findAll({attributes: ['id', 'user']},{where:{creator: adminId }})
         .then(
             resellers => {
 
