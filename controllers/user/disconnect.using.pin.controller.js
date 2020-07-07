@@ -17,7 +17,7 @@ exports.disConnectVpn =  (req, res, next) => {
     })
         .then( result => {
 
-            axios.post('http://localhost:4000/api/server/change-connected-user', {
+            axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
                 action: 0,
                 id:req.body.id
             })
