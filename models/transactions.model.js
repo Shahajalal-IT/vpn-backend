@@ -1,45 +1,52 @@
 /**
  * Transactions Model-----------------------
  */
-const sequelizePaginate = require('sequelize-paginate')
-module.exports = (sequelize, Sequelize) => {
-    const Transactions = sequelize.define("transactions", {
-        given_by: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        given_by_type: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        given_to: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        previous_balance: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        current_balance: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        transaction_type: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        notes: {
-            type: Sequelize.STRING
-        },
-        admin_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "admins",
-                key:   "id"
-            }
-        },
-    });
 
-    sequelizePaginate.paginate(Transactions)
-    return Transactions;
-};
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
+const Schema = mongoose.Schema;
+const TransactionSchema = new Schema({
+    given_by: {
+        type: mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    given_by_type: {
+        type: String,
+        required:true
+    },
+    given_to: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    },
+    previous_balance: {
+        type: Number,
+        required: true
+    },
+    current_balance: {
+        type: Number,
+        required: true
+    },
+    transaction_type: {
+        type: Number,
+        required: true
+    },
+    notes: {
+        type: String
+    },
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admins',
+        required:true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+})
+TransactionSchema.plugin(mongoosePaginate);
+const Transactions = mongoose.model('transactions', TransactionSchema)
+module.exports = Transactions;

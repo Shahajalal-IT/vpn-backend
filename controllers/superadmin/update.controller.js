@@ -2,9 +2,8 @@
 /**
 * Update Super Admin Controller
 */
-const db = require("../../models");
-const superAdmin = db.superadmin;
-const Op = db.Sequelize.Op;
+
+const superAdmin = require("../../models/superadmin.model");;
 const bcrypt = require('bcryptjs');
 exports.updateSuperAdmin =  (req, res, next) => {
 
@@ -19,11 +18,9 @@ exports.updateSuperAdmin =  (req, res, next) => {
         newsuperAdmin.password =  bcrypt.hashSync(req.body.password, 8);
     }
 
-    superAdmin.update(newsuperAdmin,{
-        where:{id: req.body.id}
-    })
+    superAdmin.updateOne({_id: req.body._id}, newsuperAdmin)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Super Admin",
                     error:false

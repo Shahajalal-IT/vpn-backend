@@ -1,55 +1,63 @@
 /**
  * Reseller Model-----------------------
-*/
-const sequelizePaginate = require('sequelize-paginate')
-module.exports = (sequelize, Sequelize) => {
-    const Reseller = sequelize.define("resellers", {
-        user: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        role: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        balance: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        status: {
-            type: Sequelize.INTEGER,
-        },
-        ios_price: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        android_price: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        creator: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        admin_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "admins",
-                key:   "id"
-            }
-        },
-    });
+ */
 
-    sequelizePaginate.paginate(Reseller)
-    return Reseller;
-};
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+const Schema = mongoose.Schema;
+const ResellerSchema = new Schema({
+    user: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    role: {
+        type: String,
+        required: true
+    },
+    balance: {
+        type: Number,
+        required: true
+    },
+    ios_price: {
+        type: Number,
+        required: true
+    },
+    android_price: {
+        type: Number,
+        required: true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+    status: {
+        type:Number,
+        required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admins',
+        required:true
+    }
+});
+ResellerSchema.plugin(mongoosePaginate);
+const Resellers = mongoose.model('resellers', ResellerSchema)
+module.exports = Resellers;

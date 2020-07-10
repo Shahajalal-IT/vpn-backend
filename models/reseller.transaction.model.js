@@ -1,46 +1,45 @@
 /**
  * Reseller Transaction Model-----------------------
  */
-const sequelizePaginate = require('sequelize-paginate')
-module.exports = (sequelize, Sequelize) => {
-    const ResellerTransactions = sequelize.define("reseller_transaction", {
-        reseller_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "resellers",
-                key:   "id"
-            },
-            allowNull: false
-        },
-        user_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "users",
-                key:   "id"
-            },
-            allowNull: false
-        },
-        p_balance: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        c_balance: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        price: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        admin_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "admins",
-                key:   "id"
-            }
-        },
-    });
 
-    sequelizePaginate.paginate(ResellerTransactions)
-    return ResellerTransactions;
-};
+const mongoose = require('mongoose')
+const mongoosePaginate = require('mongoose-paginate-v2');
+const Schema = mongoose.Schema;
+const ResellerTransactionSchema = new Schema({
+    reseller_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'resellers'
+    },
+    user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users'
+    },
+    p_balance: {
+        type: Number,
+        required: true
+    },
+    c_balance: {
+        type: Number,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
+    },
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admins',
+        required:true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+})
+ResellerTransactionSchema.plugin(mongoosePaginate);
+const ResellerTransactions = mongoose.model('reseller_transaction', ResellerTransactionSchema)
+module.exports = ResellerTransactions;

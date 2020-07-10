@@ -1,24 +1,34 @@
 /**
  * Super Admin Model-----------------------
-*/
+ */
 
-module.exports = (sequelize, Sequelize) => {
-    const SuperAdmin = sequelize.define("superAdmins", {
-        user: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-    });
+var mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+var SuperAdminSchema = new Schema({
+    user: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+})
 
-    return SuperAdmin;
-};
+const SuperAdmins = mongoose.model('superAdmins', SuperAdminSchema)
+
+module.exports = SuperAdmins;

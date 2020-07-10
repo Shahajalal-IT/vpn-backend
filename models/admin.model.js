@@ -1,46 +1,55 @@
 /**
  * Admin Model-----------------------
-*/
+ */
 
-module.exports = (sequelize, Sequelize) => {
-    const Admin = sequelize.define("admins", {
-        user: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        name: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        site_name: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        site_title: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        status: {
-            type: Sequelize.INTEGER,
-        },
-        creator: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "superAdmins",
-                key:   "id"
-            }
-        },
-    });
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
+const AdminSchema = new Schema({
+    user: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    site_name: {
+        type: String,
+        required: true
+    },
+    site_title: {
+        type: String,
+        required: true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+    status: {
+        type:Number,
+        required: true
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'superAdmins',
+        required:true
+    }
+})
 
-    return Admin;
-};
+const Admins = mongoose.model('admins', AdminSchema)
+
+module.exports = Admins;

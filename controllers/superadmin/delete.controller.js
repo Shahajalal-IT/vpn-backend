@@ -1,17 +1,14 @@
 /**
  * Super Admin Delete Controller
 */
-const db = require("../../models");
-const superAdmin = db.superadmin;
-const Op = db.Sequelize.Op;
+
+const superAdmin = require("../../models/superadmin.model");
 
 exports.deleteSuperAdmin = (req, res, next) => {
 
-    superAdmin.destroy({
-        where: { id: req.body.id }
-    })
+    superAdmin.deleteOne({_id: req.body._id})
         .then(result => {
-            if(result > 0){
+            if(result.n > 0){
                 return res.status(201).json({
                     msg: "Successfully Deleted Super Admin",
                     error:false

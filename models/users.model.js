@@ -1,64 +1,71 @@
 /**
  * User Model-----------------------
-*/
-const sequelizePaginate = require('sequelize-paginate')
-module.exports = (sequelize, Sequelize) => {
-    const Users = sequelize.define("users", {
-        pin: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        user: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true
-        },
-        password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        phone_unique: {
-            type: Sequelize.STRING,
-        },
-        creator: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-        },
-        creator_type: {
-            type: Sequelize.STRING,
-            allowNull: false,
-        },
-        activated_at: {
-            type: Sequelize.DATE
-        },
-        expired_at: {
-            type: Sequelize.DATE
-        },
-        type: {
-            type: Sequelize.INTEGER,
-        },
-        active: {
-            type: Sequelize.INTEGER,
-        },
-        status: {
-            type: Sequelize.INTEGER,
-        },
-        notes: {
-            type: Sequelize.STRING,
-        },
-        device: {
-            type: Sequelize.STRING,
-        },
-        admin_id: {
-            type: Sequelize.INTEGER,
-            references: {
-                model: "admins",
-                key:   "id"
-            }
-        },
-    });
+ */
 
-    sequelizePaginate.paginate(Users)
-    return Users;
-};
+const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+const Schema = mongoose.Schema;
+const UserSchema = new Schema({
+    pin: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    user: {
+        type: String,
+        required: true,
+        unique:true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    phone_unique: {
+        type: String
+    },
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        required:true
+    },
+    creator_type: {
+        type: String,
+        required: true
+    },
+    activated_at: {
+        type: Date
+    },
+    expired_at: {
+        type: Date
+    },
+    type: {
+        type: Number,
+    },
+    active: {
+        type: Number,
+    },
+    status: {
+        type: Number,
+    },
+    notes: {
+        type: String,
+    },
+    device: {
+        type: String,
+    },
+    created_at: {
+        type: Date,
+        default: Date.now()
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now()
+    },
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'admins',
+        required:true
+    }
+});
+UserSchema.plugin(mongoosePaginate);
+const Users = mongoose.model('users', UserSchema)
+module.exports = Users;
