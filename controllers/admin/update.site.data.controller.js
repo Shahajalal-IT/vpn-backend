@@ -1,10 +1,8 @@
 /**
  * Update Site Data Controller
  */
-const bcrypt = require('bcryptjs');
-const db = require("../../models");
-const admin = db.admin;
-const Op = db.Sequelize.Op;
+
+const admin = require("../../models/admin.model");
 const jwt = require('jsonwebtoken');
 exports.updateAdminSiteData=  (req, res, next) => {
 
@@ -18,9 +16,9 @@ exports.updateAdminSiteData=  (req, res, next) => {
         site_name: decodedToken.site_name
     };
 
-    admin.update(newAdmin,{where:{id: req.adminData.userId}})
+    admin.updateOne({_id: req.adminData.userId}, newAdmin)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Site Data",
                     error:false

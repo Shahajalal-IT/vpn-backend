@@ -2,9 +2,7 @@
  * Update Admin Profile Controller
  */
 const bcrypt = require('bcryptjs');
-const db = require("../../models");
-const admin = db.admin;
-const Op = db.Sequelize.Op;
+const admin = require("../../models/admin.model");
 const jwt = require('jsonwebtoken');
 exports.updateAdmin=  (req, res, next) => {
 
@@ -13,7 +11,7 @@ exports.updateAdmin=  (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
-    var newAdmin = {
+    let newAdmin = {
         name: decodedToken.name,
         email: decodedToken.email
     };
@@ -22,9 +20,9 @@ exports.updateAdmin=  (req, res, next) => {
         newAdmin.password =  bcrypt.hashSync(decodedToken.password, 8);
     }
 
-    admin.update(newAdmin,{where:{id: req.adminData.userId}})
+    admin.updateOne({_id: req.adminData.userId}, newAdmin)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Profile",
                     error:false

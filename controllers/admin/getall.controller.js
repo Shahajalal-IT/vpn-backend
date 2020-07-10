@@ -1,13 +1,12 @@
 /**
  * Get All Admin Controller
 */
-const db = require("../../models");
-const admin = db.admin;
-const Op = db.Sequelize.Op;
+
+const admin = require("../../models/admin.model");
 
 exports.getAllAdmin = (req, res, next) => {
     const superAdminId = req.superAdminData.userId;
-    admin.findAll({where:{creator: superAdminId }})
+    admin.find({creator: superAdminId })
         .then(
         documents => {
             res.status(200).json({

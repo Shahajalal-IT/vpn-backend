@@ -1,9 +1,8 @@
 /**
 * Admin Login Controller
 */
-const db = require("../../models");
-const admin = db.admin;
-const Op = db.Sequelize.Op;
+
+const admin = require("../../models/admin.model");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -15,10 +14,11 @@ exports.adminLogin = (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
-    console.log(decodedToken);
+
     let fetchAdmin;
     admin.findOne({
-        where:{user: decodedToken.user.username,status: 1}
+        user: decodedToken.user.username,
+        status: 1
     })
         .then(user => {
             if(!user){
@@ -40,7 +40,7 @@ exports.adminLogin = (req, res, next) => {
                     msg: "Auth Failed"
                 });
             }
-            const token = jwt.sign({id: fetchAdmin.id,role:"admin"}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchAdmin._id,role:"admin"}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({

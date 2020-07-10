@@ -1,26 +1,26 @@
 /**
  * Update Admin Controller
 */
-const db = require("../../models");
-const admin = db.admin;
-const Op = db.Sequelize.Op;
+
+const admin = require("../../models/admin.model");
 const bcrypt = require('bcryptjs');
 exports.updateAdmin =  (req, res, next) => {
 
     var newAdmin = {
         user: req.body.user,
-        email: req.body.email
+        email: req.body.email,
+        name: req.body.name,
+        site_name: req.body.site_name,
+        site_title: req.body.site_title
     };
 
     if(req.body.password !== ''){
         newAdmin.password =  bcrypt.hashSync(req.body.password, 8);
     }
 
-    admin.update(newAdmin,{
-        where:{id: req.body.id}
-    })
+    admin.updateOne({_id: req.body._id}, newAdmin)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Admin",
                     error:false
