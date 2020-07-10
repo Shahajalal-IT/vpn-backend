@@ -1,10 +1,9 @@
 /**
  * Cut balance from Sub Reseller Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const transaction = db.transaction;
-const Op = db.Sequelize.Op;
+
+const reseller = require("../../models/resellers.model");
+const transaction = require("../../models/transactions.model");
 const jwt = require('jsonwebtoken');
 exports.cutBalanceReseller=  (req, res, next) => {
     const resellerId = req.resellerData.userId;
@@ -15,14 +14,14 @@ exports.cutBalanceReseller=  (req, res, next) => {
         process.env.SECRET
     );
 
-    reseller.findByPk(resellerId).then(fatherReseller => {
+    reseller.findById(resellerId).then(fatherReseller => {
         var fatherbalance = fatherReseller.balance + +decodedToken.amount;
 
         var fatherUpdateData = {
             balance: fatherbalance
         }
 
-    reseller.findByPk(decodedToken.reseller_id)
+    reseller.findById(decodedToken.reseller_id)
         .then( reseller => {
             if(reseller.balance <= 0 || +decodedToken.amount > reseller.balance){
                 return res.status(201).json({
@@ -37,7 +36,7 @@ exports.cutBalanceReseller=  (req, res, next) => {
             balance: balance
         };
 
-        const transactionData = {
+        const transactionData = new transaction({
             given_by:resellerId,
             given_by_type:'reseller',
             given_to:decodedToken.reseller_id,
@@ -46,15 +45,15 @@ exports.cutBalanceReseller=  (req, res, next) => {
             transaction_type: 2,
             admin_id: reseller.admin_id,
             notes:decodedToken.notes
-        }
+        });
 
-        reseller.update(newReseller,{where:{id: decodedToken.reseller_id}})
+        reseller.updateOne({_id: decodedToken.reseller_id},newReseller)
             .then( result => {
-                if(result > 0) {
-                    transaction.create(transactionData).then(result => {
+                if(result.n > 0) {
+                    transactionData.save().then(result => {
                         console.log('Successfully Created Transaction')
                     });
-                    reseller.update(fatherUpdateData,{where:{id:resellerId}}).then(result => {
+                    reseller.updateOne({_id:resellerId},fatherUpdateData).then(result => {
                         console.log('Reseller balance cut successfully')
                     })
                     return res.status(201).json({

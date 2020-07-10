@@ -1,9 +1,8 @@
 /**
  * SubReseller Delete Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 exports.deleteReseller = (req, res, next) => {
     const fetchedData = req.body.data;
@@ -11,11 +10,11 @@ exports.deleteReseller = (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
-    reseller.destroy({
-        where:{id: decodedToken.id, creator: req.resellerData.userId}
+    reseller.deleteOne({
+        _id: decodedToken._id, creator: req.resellerData.userId
     })
         .then(result => {
-            if(result > 0){
+            if(result.n > 0){
                 return res.status(201).json({
                     msg: "Successfully Deleted SubReseller",
                     error:false

@@ -1,45 +1,43 @@
 /**
  * Send Home page value For Reseller Controller
  */
-const db = require("../../models");
-const admin = db.admin;
-const reseller = db.reseller;
-const user = db.user;
-const Op = db.Sequelize.Op;
 
+const admin = require("../../models/admin.model");
+const reseller = require("../../models/resellers.model");
+const user = require("../../models/users.model");
 exports.sendHomePageData = (req, res, next) => {
     const resellerId = req.resellerData.userId;
 
     var data = {};
 
-    reseller.count({where:{creator: resellerId, role:'sub_reseller'}})
+    reseller.countDocuments({creator: resellerId, role:'sub_reseller'})
         .then(
             documents => {
                 data.resellerCount = documents;
-                user.count({where:{creator: resellerId,creator_type:'reseller'}}).then(ownuser => {
+                user.countDocuments({creator: resellerId,creator_type:'reseller'}).then(ownuser => {
                     data.ownAccount = ownuser;
-                    reseller.findAll({where:{role:'sub_reseller',creator:resellerId}}).then(allsub =>{
+                    reseller.find({role:'sub_reseller',creator:resellerId}).then(allsub =>{
 
                         var all_sub_id=[];
                         allsub.map(sub =>{
-                            all_sub_id.push(sub.id)
+                            all_sub_id.push(sub._id)
                         })
 
 
-                    user.count({where:{creator_type:'reseller', creator:{
-                                [Op.in]: all_sub_id
-                            }}}).then(resellerAccount => {
+                    user.countDocuments({creator_type:'reseller', creator:{
+                                $in: all_sub_id
+                            }}).then(resellerAccount => {
                         data.resellerAccount = resellerAccount;
-                        user.count({where:{creator: resellerId,creator_type:'reseller',active:1}}).then(onlineAccount => {
+                        user.countDocuments({creator: resellerId,creator_type:'reseller',active:1}).then(onlineAccount => {
                             data.online = onlineAccount;
-                            user.count({where:{creator: resellerId,creator_type:'reseller',status:1}}).then(activeAccount => {
+                            user.countDocuments({creator: resellerId,creator_type:'reseller',status:1}).then(activeAccount => {
                                 data.activeAccount = activeAccount;
-                                user.count({where:{creator: resellerId,creator_type:'reseller',expired_at:{
-                                            [Op.lt]: Date.now()
-                                        }}}).then(expiredAccount => {
+                                user.countDocuments({creator: resellerId,creator_type:'reseller',expired_at:{
+                                        $lt: Date.now()
+                                        }}).then(expiredAccount => {
                                     data.expiredAccount = expiredAccount;
 
-                                    reseller.findAll({where:{creator: resellerId,role:'sub_reseller'},attributes: ['id', 'user']})
+                                    reseller.find({creator: resellerId,role:'sub_reseller'}, {id:1, user:1})
                                         .then(
                                             resellerList => {
                                                 data.resellerList = resellerList;

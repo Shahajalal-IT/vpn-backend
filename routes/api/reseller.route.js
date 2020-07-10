@@ -55,37 +55,37 @@ router.post('/send-reseller-data', resellerAuth, sendResellerData.getResellerInf
 const createSubReseller = require('../../controllers/reseller/create.subreseller.controller');
 router.post('/create-sub-reseller', resellerAuth, createSubReseller.createReseller);
 
-// //Get All Sub Reseller For Dropdown--------------------------
-// const getAllSubReseller = require('../../controllers/reseller/getall.subreseller.for.dropdown.controller');
-// router.post('/get-all-sub-reseller-for-dropdown', resellerAuth, getAllSubReseller.getAllForDropdown);
-//
-// //Add Balance To Sub Reseller--------------------------
-// const addBalanceToSubReseller = require('../../controllers/reseller/addbalance.to.subreseller.controller');
-// router.post('/add-balance-to-sub-reseller', resellerAuth, addBalanceToSubReseller.addBalanceReseller);
-//
-// //Cut Balance from Sub Reseller--------------------------
-// const cutBalanceFromSubReseller = require('../../controllers/reseller/cutbalance.from.subreseller.controller');
-// router.post('/cut-balance-from-sub-reseller', resellerAuth, cutBalanceFromSubReseller.cutBalanceReseller);
-//
-// //Delete Sub Reseller--------------------------
-// const deleteSubReseller = require('../../controllers/reseller/delete.subreseller.controller');
-// router.post('/delete-sub-reseller', resellerAuth, deleteSubReseller.deleteReseller);
-//
-// //Get All Sub Reseller--------------------------
-// const getallSubReseller = require('../../controllers/reseller/getall.subreseller.controller');
-// router.post('/getall-sub-reseller', resellerAuth, getallSubReseller.getAllReseller);
-//
-// //Send Home Page Value--------------------------
-// const sendHomePageValue = require('../../controllers/reseller/send.home.page.data.controller');
-// router.post('/send-home-page-value', resellerAuth, sendHomePageValue.sendHomePageData);
-//
-// //Update Reseller Profile--------------------------
-// const updateResellerProfile = require('../../controllers/reseller/update.reseller.profile.controller');
-// router.post('/update-reseller-profile', resellerAuth, updateResellerProfile.updateReseller);
-//
-// //Get all sub reseller by id--------------------------
-// const getAllSubresellerById = require('../../controllers/reseller/get.all.sub.reseller.by.id');
-// router.post('/get-all-sub-reseller-by-id', adminAuth, getAllSubresellerById.getAllReseller);
+//Get All Sub Reseller For Dropdown--------------------------
+const getAllSubReseller = require('../../controllers/reseller/getall.subreseller.for.dropdown.controller');
+router.post('/get-all-sub-reseller-for-dropdown', resellerAuth, getAllSubReseller.getAllForDropdown);
+
+//Add Balance To Sub Reseller--------------------------
+const addBalanceToSubReseller = require('../../controllers/reseller/addbalance.to.subreseller.controller');
+router.post('/add-balance-to-sub-reseller', resellerAuth, addBalanceToSubReseller.addBalanceReseller);
+
+//Cut Balance from Sub Reseller--------------------------
+const cutBalanceFromSubReseller = require('../../controllers/reseller/cutbalance.from.subreseller.controller');
+router.post('/cut-balance-from-sub-reseller', resellerAuth, cutBalanceFromSubReseller.cutBalanceReseller);
+
+//Delete Sub Reseller--------------------------
+const deleteSubReseller = require('../../controllers/reseller/delete.subreseller.controller');
+router.post('/delete-sub-reseller', resellerAuth, deleteSubReseller.deleteReseller);
+
+//Get All Sub Reseller--------------------------
+const getallSubReseller = require('../../controllers/reseller/getall.subreseller.controller');
+router.post('/getall-sub-reseller', resellerAuth, getallSubReseller.getAllReseller);
+
+//Send Home Page Value--------------------------
+const sendHomePageValue = require('../../controllers/reseller/send.home.page.data.controller');
+router.post('/send-home-page-value', resellerAuth, sendHomePageValue.sendHomePageData);
+
+//Update Reseller Profile--------------------------
+const updateResellerProfile = require('../../controllers/reseller/update.reseller.profile.controller');
+router.post('/update-reseller-profile', resellerAuth, updateResellerProfile.updateReseller);
+
+//Get all sub reseller by id--------------------------
+const getAllSubresellerById = require('../../controllers/reseller/get.all.sub.reseller.by.id');
+router.post('/get-all-sub-reseller-by-id', adminAuth, getAllSubresellerById.getAllReseller);
 
 // Export the Router
 module.exports = router;

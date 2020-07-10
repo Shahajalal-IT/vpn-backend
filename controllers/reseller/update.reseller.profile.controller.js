@@ -2,9 +2,7 @@
  * Update Reseller Profile Controller
  */
 const bcrypt = require('bcryptjs');
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 exports.updateReseller=  (req, res, next) => {
 
@@ -22,9 +20,9 @@ exports.updateReseller=  (req, res, next) => {
         newReseller.password =  bcrypt.hashSync(decodedToken.password, 8);
     }
 
-    reseller.update(newReseller,{where:{id: req.resellerData.userId}})
+    reseller.updateOne({_id: req.resellerData.userId},newReseller)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Profile",
                     error:false
