@@ -1,13 +1,11 @@
 /**
  * Get All Reseller Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
 
+const reseller = require("../../models/resellers.model");
 exports.getAllForDropdown = (req, res, next) => {
     const adminId = req.adminData.userId;
-    reseller.findAll({where:{creator: adminId, role:'reseller' }})
+    reseller.find({creator: adminId, role:'reseller' })
         .then(
             documents => {
                 res.status(200).json({

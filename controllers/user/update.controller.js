@@ -20,7 +20,7 @@ exports.updateUser =  (req, res, next) => {
     };
 
     user.updateOne({
-        _id: decodedToken.id
+        _id: decodedToken._id
     },newUser)
         .then( result => {
             if(result.n > 0) {

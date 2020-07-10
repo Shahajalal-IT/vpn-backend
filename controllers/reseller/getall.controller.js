@@ -1,37 +1,47 @@
 /**
 * Get All Reseller Controller
 */
-const db = require("../../models");
-const reseller = db.reseller;
-const admin = db.admin;
-const Op = db.Sequelize.Op;
 
+const reseller = require("../../models/resellers.model");
+const admin = require("../../models/admin.model");
 exports.getAllReseller = (req, res, next) => {
     const adminId = req.adminData.userId;
-    const options = {
-        page: +req.body.page, // Default 1
-        paginate: +req.body.pagesize, // Default 25
-        order: [['id', 'DESC']],
-        where: {
-            user: { [Op.like]: `%`+req.body.key+`%` },
-            admin_id: adminId,
-            role:'reseller'
-        }
+
+    const query = {
+        user: {$regex: req.body.key, $options: 'i'},
+        admin_id: adminId,
+        role:'reseller'
     }
-    reseller.paginate(options)
+
+    const options = {
+        page: +req.body.page,
+        limit: +req.body.pagesize,
+        sort: {created_at: -1}
+    }
+    reseller.paginate(query,options)
         .then(
             documents => {
+
+                if(documents.totalDocs === 0){
+                    res.status(200).json({
+                        data: [],
+                        pages: 1,
+                        total: 1,
+                        msg: "Successfully Read Reseller Data",
+                        error: false
+                    })
+                }
 
                 var finalDocuments = [];
                 var i=0;
                 documents.docs.forEach(function(obj) {
                     if(obj.role === 'reseller'){
-                        admin.findByPk(obj.creator).then(result => {
+                        admin.findById(obj.creator).then(result => {
                             if(result === null){
 
                             }else{
                                 var newObj = {
-                                    id:obj.id,
+                                    _id:obj._id,
                                     user:obj.user,
                                     password:obj.password,
                                     email:obj.email,
@@ -49,8 +59,8 @@ exports.getAllReseller = (req, res, next) => {
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
+                                    pages:documents.totalPages,
+                                    total:documents.totalDocs,
                                     msg: "Successfully Read Reseller Data",
                                     error:false
                                 })
@@ -58,12 +68,12 @@ exports.getAllReseller = (req, res, next) => {
                             i++;
                         })
                     }else{
-                        reseller.findByPk(obj.creator).then(result => {
+                        reseller.findById(obj.creator).then(result => {
                             if(result === null){
 
                             }else{
                                 var newObj = {
-                                    id:obj.id,
+                                    _id:obj._id,
                                     user:obj.user,
                                     password:obj.password,
                                     email:obj.email,
@@ -81,8 +91,8 @@ exports.getAllReseller = (req, res, next) => {
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
+                                    pages:documents.totalPages,
+                                    total:documents.totalDocs,
                                     msg: "Successfully Read Reseller Data",
                                     error:false
                                 })

@@ -1,19 +1,17 @@
 /**
  * Get Reseller Information Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const admin = db.admin;
-const Op = db.Sequelize.Op;
 
+const reseller = require("../../models/resellers.model");
+const admin = require("../../models/admin.model");
 exports.getResellerInfo = (req, res, next) => {
     const resellerId = req.resellerData.userId;
 
     reseller.findOne({
-        where:{id: resellerId}
+        _id: resellerId
     })
         .then(result => {
-            admin.findByPk(result.admin_id).then(admin_info => {
+            admin.findById(result.admin_id).then(admin_info => {
                 res.status(200).json({
                     data: result,
                     site_name: admin_info.site_name,

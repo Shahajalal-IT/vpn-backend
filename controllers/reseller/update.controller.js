@@ -1,10 +1,9 @@
 /**
 * Update Reseller Controller
 */
+
+const reseller = require("../../models/resellers.model");
 const bcrypt = require('bcryptjs');
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
 const jwt = require('jsonwebtoken');
 exports.updateReseller=  (req, res, next) => {
 
@@ -24,9 +23,9 @@ exports.updateReseller=  (req, res, next) => {
         newReseller.password =  bcrypt.hashSync(decodedToken.password, 8);
     }
 
-    reseller.update(newReseller,{where:{id: decodedToken.id}})
+    reseller.update({_id: decodedToken._id},newReseller)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated Reseller",
                     error:false
@@ -36,7 +35,6 @@ exports.updateReseller=  (req, res, next) => {
             }
         })
         .catch((err) => {
-            console.log(err);
             return res.status(400).json({error: true,status: 201, msg: "Problem in Updating Reseller",err: err})
         })
 

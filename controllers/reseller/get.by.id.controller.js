@@ -2,13 +2,11 @@
 /**
  * Get User By ID Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
 
+const reseller = require("../../models/resellers.model");
 exports.getResellerById =  (req, res, next) => {
 
-    reseller.findByPk(req.body.id)
+    reseller.findById(req.body._id)
         .then( result => {
             if(result) {
                 return res.status(201).json({

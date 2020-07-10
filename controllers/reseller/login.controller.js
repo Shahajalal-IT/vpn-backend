@@ -3,9 +3,7 @@
  */
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+const reseller = require("../../models/resellers.model");
 exports.resellerLogin = (req, res, next) => {
 
     const fetchedData = req.body.data;
@@ -15,7 +13,7 @@ exports.resellerLogin = (req, res, next) => {
     );
 
     let fetchReseller;
-    reseller.findOne({where:{user: decodedToken.user.username, status:1}})
+    reseller.findOne({user: decodedToken.user.username, status:1})
         .then(user => {
             if(!user){
                 return res.status(201).json(
@@ -36,7 +34,7 @@ exports.resellerLogin = (req, res, next) => {
                     msg: "Auth Failed"
                 });
             }
-            const token = jwt.sign({id: fetchReseller.id,role:"reseller"}, process.env.SECRET, {
+            const token = jwt.sign({id: fetchReseller._id,role:"reseller"}, process.env.SECRET, {
                 expiresIn: "1h"
             });
             return res.status(201).json({

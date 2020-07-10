@@ -2,10 +2,9 @@
 /**
  * Reseller create Controller------
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const transaction = db.transaction;
-const Op = db.Sequelize.Op;
+
+const reseller = require("../../models/resellers.model");
+const transaction = require("../../models/transactions.model");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 exports.createReseller =  (req, res, next) => {
@@ -18,7 +17,7 @@ exports.createReseller =  (req, res, next) => {
     const hash = bcrypt.hashSync(decodedToken.password, 8);
     const AdminId = req.adminData.userId;
 
-    const newReseller = {
+    const newReseller = new reseller({
         user: decodedToken.username,
         password: hash,
         email: decodedToken.email,
@@ -30,14 +29,14 @@ exports.createReseller =  (req, res, next) => {
         creator: AdminId,
         admin_id: AdminId,
 
-    };
+    });
 
-    reseller.create(newReseller).then((result) => {
-        const token = jwt.sign({id: result.id,role:"reseller"}, process.env.SECRET, {
+    newReseller.save().then((result) => {
+        const token = jwt.sign({id: result._id,role:"reseller"}, process.env.SECRET, {
             expiresIn: "1h"
         });
 
-        const transactionData = {
+        const transactionData = new transaction({
             given_by:AdminId,
             given_by_type:'admin',
             given_to:result.id,
@@ -46,9 +45,9 @@ exports.createReseller =  (req, res, next) => {
             transaction_type: 1,
             admin_id: AdminId,
             notes:'Creating and First Transaction'
-        }
+        });
 
-        transaction.create(transactionData).then(result => {
+        transactionData.save().then(result => {
             console.log('Successfully Created Transaction')
         });
 
@@ -58,7 +57,6 @@ exports.createReseller =  (req, res, next) => {
             error:false
         })
     }).catch((err) => {
-        console.log(err);
         return res.status(400).json({error: true,status: 201, msg: "Reseller Creation was Unsuccessful",err: err})
     })
 

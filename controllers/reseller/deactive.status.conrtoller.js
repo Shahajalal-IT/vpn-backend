@@ -2,9 +2,8 @@
 /**
  * Deactive Reseller Controller
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 exports.deactiveStatus =  (req, res, next) => {
     const fetchedData = req.body.data;
@@ -16,11 +15,11 @@ exports.deactiveStatus =  (req, res, next) => {
         status:0
     };
 
-    reseller.update(newReseller,{
-        where:{id: decodedToken.id}
-    })
+    reseller.updateOne({
+        _id: decodedToken._id
+    },newReseller)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Changed Status",
                     error:false
@@ -30,7 +29,7 @@ exports.deactiveStatus =  (req, res, next) => {
             }
         })
         .catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "Problem in Changed Status",err: err})
         })
 
