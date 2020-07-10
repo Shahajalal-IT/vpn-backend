@@ -40,8 +40,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
                             if(result === null){
 
                             }else{
-                                var newObj = {
-                                    id:obj.id,
+                                const newObj = {
+                                    _id:obj._id,
                                     pin:obj.pin,
                                     user:obj.user,
                                     password:obj.password,
@@ -75,8 +75,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
                             if(result === null){
 
                             }else{
-                                var newObj = {
-                                    id:obj.id,
+                                const newObj = {
+                                    _id:obj._id,
                                     pin:obj.pin,
                                     user:obj.user,
                                     password:obj.password,

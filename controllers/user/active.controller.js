@@ -2,9 +2,8 @@
 /**
  * Active User Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 exports.activeUser =  (req, res, next) => {
     const fetchedData = req.body.data;
@@ -16,11 +15,11 @@ exports.activeUser =  (req, res, next) => {
         status:1
     };
 
-    user.update(newUser,{
-        where:{id: decodedToken.id}
-    })
+    user.update({
+        _id: decodedToken._id
+    },newUser)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Activated User",
                     error:false
@@ -30,7 +29,7 @@ exports.activeUser =  (req, res, next) => {
             }
         })
         .catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "Problem in Activation Data",err: err})
         })
 

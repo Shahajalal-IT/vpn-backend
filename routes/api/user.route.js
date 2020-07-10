@@ -38,27 +38,27 @@ router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByA
 //Update User--------------------------
 const updateUser = require('../../controllers/user/update.controller');
 router.post('/update-user', updateUser.updateUser);
-//
-// //Get User By ID--------------------------
-// const getUserById = require('../../controllers/user/get.by.id.controller');
-// router.post('/get-user-by-id', getUserById.getUserById);
-//
-// //Get User By user--------------------------
-// const getUserByUser = require('../../controllers/user/get.by.user.controller');
-// router.post('/get-user-by-user', getUserByUser.getUserByUser);
-//
-// //Deactive User By ID--------------------------
-// const deactiveUser = require('../../controllers/user/deactive.controller');
-// router.post('/deactive-user', deactiveUser.deactiveUser);
-//
-// //Active User By ID--------------------------
-// const activeUser = require('../../controllers/user/active.controller');
-// router.post('/active-user', activeUser.activeUser);
-//
-// //Get All User by Reseller--------------------------
-// const getAllUserByReseller = require('../../controllers/user/get.all.by.reseller.controller');
-// router.post('/get-all-user-by-reseller',resellerAuth, getAllUserByReseller.getAllUserByReseller);
-//
+
+//Get User By ID--------------------------
+const getUserById = require('../../controllers/user/get.by.id.controller');
+router.post('/get-user-by-id', getUserById.getUserById);
+
+//Get User By user--------------------------
+const getUserByUser = require('../../controllers/user/get.by.user.controller');
+router.post('/get-user-by-user', getUserByUser.getUserByUser);
+
+//Deactive User By ID--------------------------
+const deactiveUser = require('../../controllers/user/deactive.controller');
+router.post('/deactive-user', deactiveUser.deactiveUser);
+
+//Active User By ID--------------------------
+const activeUser = require('../../controllers/user/active.controller');
+router.post('/active-user', activeUser.activeUser);
+
+//Get All User by Reseller--------------------------
+const getAllUserByReseller = require('../../controllers/user/get.all.by.reseller.controller');
+router.post('/get-all-user-by-reseller',resellerAuth, getAllUserByReseller.getAllUserByReseller);
+
 // //Reset Phone Unique--------------------------
 // const resetPhoneUnique = require('../../controllers/user/reset.phone_unique.controller');
 // router.post('/reset-phone-unique', resetPhoneUnique.resetPhoneUnique);

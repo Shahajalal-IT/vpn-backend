@@ -2,9 +2,8 @@
 /**
  * Deactive User Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 exports.deactiveUser =  (req, res, next) => {
 
@@ -18,11 +17,11 @@ exports.deactiveUser =  (req, res, next) => {
         status:0
     };
 
-    user.update(newUser,{
-        where:{id: decodedToken.id}
-    })
+    user.update({
+        _id: decodedToken._id
+    },newUser)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Deactivated User",
                     error:false

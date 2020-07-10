@@ -2,13 +2,11 @@
 /**
  * Get User By ID Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
 
+const user = require("../../models/users.model");
 exports.getUserById =  (req, res, next) => {
 
-    user.findByPk(req.body.id)
+    user.findById(req.body._id)
         .then( result => {
             if(result) {
                 return res.status(201).json({

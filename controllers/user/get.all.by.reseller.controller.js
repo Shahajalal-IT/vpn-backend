@@ -1,30 +1,31 @@
 /**
  * Get All Users by Reseller Controller
  */
-const db = require("../../models");
-const user = db.user;
-const admin = db.admin;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
+const admin = require("../../models/admin.model");
+const reseller = require("../../models/resellers.model");
 
 exports.getAllUserByReseller = (req, res, next) => {
 
     const resellerId = req.resellerData.userId;
-    const options = {
-        page: +req.body.page, // Default 1
-        paginate: +req.body.pagesize, // Default 25
-        order: [['id', 'DESC']],
-        where: {
-            user: { [Op.like]: `%`+req.body.key+`%` },
-            creator: resellerId,
-            creator_type:'reseller'
-        }
+
+    const query = {
+        user: {$regex: req.body.key, $options: 'i'},
+        creator: resellerId,
+        creator_type:'reseller'
     }
 
-    user.paginate(options)
+    const options = {
+        page: +req.body.page,
+        limit: +req.body.pagesize,
+        sort: {created_at: -1}
+    }
+
+    user.paginate(query,options)
         .then(
             documents => {
-                if(documents.total === 0){
+                if(documents.totalDocs === 0){
                     res.status(200).json({
                         data: [],
                         pages: 1,
@@ -36,12 +37,12 @@ exports.getAllUserByReseller = (req, res, next) => {
                 var finalDocuments = [];
                 var i=0;
                 documents.docs.forEach(function(obj) {
-                    reseller.findByPk(obj.creator).then(result => {
+                    reseller.findById(obj.creator).then(result => {
                         if(result === null){
 
                         }else{
                             var newObj = {
-                                id:obj.id,
+                                _id:obj._id,
                                 pin:obj.pin,
                                 user:obj.user,
                                 password:obj.password,
@@ -62,8 +63,8 @@ exports.getAllUserByReseller = (req, res, next) => {
                         if(i === documents.docs.length-1){
                             res.status(200).json({
                                 data: finalDocuments,
-                                pages:documents.pages,
-                                total:documents.total,
+                                pages:documents.totalPages,
+                                total:documents.totalDocs,
                                 msg: "Successfully Read User Data",
                                 error:false
                             })
