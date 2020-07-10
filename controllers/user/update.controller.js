@@ -2,9 +2,8 @@
 /**
  * Update User Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 exports.updateUser =  (req, res, next) => {
 
@@ -20,11 +19,11 @@ exports.updateUser =  (req, res, next) => {
         notes: decodedToken.notes
     };
 
-    user.update(newUser,{
-        where:{id: decodedToken.id}
-    })
+    user.updateOne({
+        _id: decodedToken.id
+    },newUser)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Updated User",
                     error:false
