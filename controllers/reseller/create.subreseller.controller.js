@@ -2,10 +2,9 @@
 /**
  * SubReseller create Controller------
  */
-const db = require("../../models");
-const reseller = db.reseller;
-const transaction = db.transaction;
-const Op = db.Sequelize.Op;
+
+const reseller = require("../../models/resellers.model");
+const transaction = require("../../models/transactions.model");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 exports.createReseller =  (req, res, next) => {
@@ -18,9 +17,7 @@ exports.createReseller =  (req, res, next) => {
     const hash = bcrypt.hashSync(decodedToken.password, 8);
     const ResellerId = req.resellerData.userId;
 
-
-
-    reseller.findByPk(ResellerId).then(resellerResult => {
+    reseller.findById(ResellerId).then(resellerResult => {
 
         var fatherbalance = +resellerResult.balance - +decodedToken.balance;
 
@@ -32,7 +29,7 @@ exports.createReseller =  (req, res, next) => {
             return res.status(400).json({error: true,status: 201, msg: "Not Succificient Balance"})
         }
 
-        const newReseller = {
+        const newReseller = new reseller({
             user: decodedToken.username,
             password: hash,
             email: decodedToken.email,
@@ -44,14 +41,14 @@ exports.createReseller =  (req, res, next) => {
             creator: ResellerId,
             admin_id: resellerResult.admin_id,
 
-        };
+        });
 
-        reseller.create(newReseller).then((result) => {
-            const token = jwt.sign({id: result.id}, process.env.SECRET, {
+        newReseller.save().then((result) => {
+            const token = jwt.sign({id: result._id}, process.env.SECRET, {
                 expiresIn: "1h"
             });
 
-            const transactionData = {
+            const transactionData = new transaction({
                 given_by:ResellerId,
                 given_by_type:'reseller',
                 given_to:result.id,
@@ -60,13 +57,13 @@ exports.createReseller =  (req, res, next) => {
                 transaction_type: 1,
                 admin_id: resellerResult.admin_id,
                 notes:'Creating and First Transaction'
-            }
+            });
 
-            transaction.create(transactionData).then(result => {
+            transactionData.save().then(result => {
                 console.log('Successfully Created Transaction')
             });
 
-            reseller.update(fatherUpdateData,{where:{id:ResellerId}}).then(result => {
+            reseller.updateOne({_id:ResellerId},fatherUpdateData).then(result => {
                 console.log('Reseller balance cut successfully')
             })
 
