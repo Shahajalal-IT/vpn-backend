@@ -34,7 +34,7 @@ exports.getAllTransaction = (req, res, next) => {
         query = {
             given_by: adminId,
             given_by_type:'admin',
-            createdAt: {
+            created_at: {
                 $gte:startDate,
                 $lte:endDate
             }
@@ -50,8 +50,8 @@ exports.getAllTransaction = (req, res, next) => {
         query = {
             given_by: adminId,
             given_by_type:'admin',
-            given_to:req.body.id,
-            createdAt: {
+            given_to:req.body._id,
+            created_at: {
                 $gte:startDate,
                 $lte:endDate
             }

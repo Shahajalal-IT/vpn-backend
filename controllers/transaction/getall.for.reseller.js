@@ -30,12 +30,12 @@ exports.getAllTransaction = (req, res, next) => {
 
     let options = {};
     let query = {};
-    if(req.body.id === ''){
+    if(req.body._id === ''){
 
         query = {
             given_by: resellerId,
             given_by_type:'reseller',
-            createdAt: {
+            created_at: {
                 $gte:startDate,
                 $lte:endDate
             }
@@ -52,7 +52,7 @@ exports.getAllTransaction = (req, res, next) => {
             given_by: resellerId,
             given_to: req.body._id,
             given_by_type:'reseller',
-            createdAt: {
+            created_at: {
                 $gte:startDate,
                 $lte:endDate
             }
