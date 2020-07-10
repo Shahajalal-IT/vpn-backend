@@ -1,31 +1,31 @@
 /**
  * Get All Users by Reseller Id Controller
  */
-const db = require("../../models");
-const user = db.user;
-const admin = db.admin;
-const reseller_transaction = db.reseller_transaction;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
 
+const user = require("../../models/users.model");
+const admin = require("../../models/admin.model");
+const reseller_transaction = require("../../models/reseller.transaction.model");
+const reseller = require("../../models/resellers.model");
 exports.getAllResTransByResellerId = (req, res, next) => {
 
     const adminId = req.adminData.userId
     const resellerId = req.body.id;
-    const options = {
-        page: +req.body.page, // Default 1
-        paginate: +req.body.pagesize, // Default 25
-        order: [['id', 'DESC']],
-        where: {
-            reseller_id: resellerId,
-            admin_id: adminId
-        }
+
+    const query = {
+        reseller_id: resellerId,
+        admin_id: adminId
     }
-    reseller.findByPk(resellerId).then(reseller => {
-        reseller_transaction.paginate(options)
+
+    const options = {
+        page: +req.body.page,
+        limit: +req.body.pagesize,
+        sort: {created_at: -1}
+    }
+    reseller.findById(resellerId).then(reseller => {
+        reseller_transaction.paginate(query,options)
             .then(
                 documents => {
-                    if(documents.total === 0){
+                    if(documents.totalDocs === 0){
                         res.status(200).json({
                             data: [],
                             pages: 1,
@@ -38,12 +38,12 @@ exports.getAllResTransByResellerId = (req, res, next) => {
                     var finalDocuments = [];
                     var i=0;
                     documents.docs.forEach(function(obj) {
-                        user.findByPk(obj.user_id).then(result => {
+                        user.findById(obj.user_id).then(result => {
                             if(result === null){
 
                             }else{
                                 var newObj = {
-                                    id:obj.id,
+                                    _id:obj._id,
                                     reseller_id:obj.reseller_id,
                                     user_id:obj.user_id,
                                     user:result.pin,
@@ -60,8 +60,8 @@ exports.getAllResTransByResellerId = (req, res, next) => {
                                 res.status(200).json({
                                     reseller_name: reseller.user,
                                     data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
+                                    pages:documents.totalPages,
+                                    total:documents.totalDocs,
                                     msg: "Successfully Read User Data",
                                     error:false
                                 })

@@ -1,10 +1,9 @@
 /**
  * Get All Transaction Controller
  */
-const db = require("../../models");
-const transaction = db.transaction;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const transaction = require("../../models/transactions.model");
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 exports.getAllTransaction = (req, res, next) => {
     const resellerId = req.resellerData.userId;
@@ -30,42 +29,49 @@ exports.getAllTransaction = (req, res, next) => {
     }
 
     let options = {};
+    let query = {};
     if(req.body.id === ''){
-        options = {
-            page: +req.body.page, // Default 1
-            paginate: +req.body.pagesize, // Default 25
-            order: [['id', 'DESC']],
-            where: {
-                given_by: resellerId,
-                createdAt: {
-                    [Op.between]: [startDate, endDate]
-                },
-                given_by_type:'reseller'
+
+        query = {
+            given_by: resellerId,
+            given_by_type:'reseller',
+            createdAt: {
+                $gte:startDate,
+                $lte:endDate
             }
+        }
+
+        options = {
+            page: +req.body.page,
+            limit: +req.body.pagesize,
+            sort: {created_at: -1}
         }
     }else{
-        options = {
-            page: +req.body.page, // Default 1
-            paginate: +req.body.pagesize, // Default 25
-            order: [['id', 'DESC']],
-            where: {
-                given_by: resellerId,
-                given_to: req.body.id,
-                createdAt: {
-                    [Op.between]: [startDate, endDate]
-                },
-                given_by_type:'reseller'
+
+        query = {
+            given_by: resellerId,
+            given_to: req.body._id,
+            given_by_type:'reseller',
+            createdAt: {
+                $gte:startDate,
+                $lte:endDate
             }
         }
+
+        options = {
+            page: +req.body.page,
+            limit: +req.body.pagesize,
+            sort: {created_at: -1}
+        }
     }
-    reseller.findAll({ attributes: ['id', 'user'], where:{creator: resellerId, role: 'sub_reseller'}})
+    reseller.find({ creator: resellerId, role: 'sub_reseller'},{id:1,user:1})
         .then(
             resellers => {
-                transaction.paginate(options)
+                transaction.paginate(query,options)
                     .then(
                         documents => {
 
-                            if (documents.total === 0) {
+                            if (documents.totalDocs === 0) {
                                 res.status(200).json({
                                     data: [],
                                     msg: "No Data Available",
@@ -79,13 +85,13 @@ exports.getAllTransaction = (req, res, next) => {
                             var i = 0;
                             documents.docs.forEach(function (obj) {
 
-                                reseller.findByPk(obj.given_to).then(result => {
+                                reseller.findById(obj.given_to).then(result => {
 
                                     if (result === null) {
 
                                     } else {
                                         var newObj = {
-                                            id: obj.id,
+                                            _id: obj._id,
                                             given_to: result.user,
                                             given_to_id: obj.given_to,
                                             previous_balance: obj.previous_balance,
@@ -102,8 +108,8 @@ exports.getAllTransaction = (req, res, next) => {
                                         res.status(200).json({
                                             data: finalDocuments,
                                             msg: "Successfully Read Transaction Data",
-                                            pages:documents.pages,
-                                            total:documents.total,
+                                            pages:documents.totalPages,
+                                            total:documents.totalDocs,
                                             resellers: resellers,
                                             error: false
                                         })
