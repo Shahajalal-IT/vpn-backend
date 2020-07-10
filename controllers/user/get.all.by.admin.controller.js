@@ -9,20 +9,21 @@ const reseller = require("../../models/resellers.model");
 exports.getAllUserByAdmin = (req, res, next) => {
 
     const adminId = req.adminData.userId;
+    const query = {
+        user: {$regex: req.body.key, $options: 'i'},
+        admin_id: adminId
+    }
     const options = {
-        page: +req.body.page, // Default 1
-        paginate: +req.body.pagesize, // Default 25
-        order: [['id', 'DESC']],
-        where: {
-            user: { [Op.like]: `%`+req.body.key+`%` },
-            admin_id: adminId
-        }
+        page: +req.body.page,
+        limit: +req.body.pagesize,
+        sort: {created_at: -1},
     }
 
-    user.paginate(options)
+    user.paginate(query,options)
         .then(
             documents => {
-                if(documents.total === 0){
+
+                if(documents.totalDocs === 0){
                     res.status(200).json({
                         data: [],
                         pages: 1,
@@ -35,7 +36,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                 var i=0;
                 documents.docs.forEach(function(obj) {
                     if(obj.creator_type === 'admin'){
-                        admin.findByPk(obj.creator).then(result => {
+                        admin.findById(obj.creator).then(result => {
                             if(result === null){
 
                             }else{
@@ -61,8 +62,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
+                                    pages:documents.totalPages,
+                                    total:documents.totalDocs,
                                     msg: "Successfully Read User Data",
                                     error:false
                                 })
@@ -70,7 +71,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
                             i++;
                         })
                     }else{
-                        reseller.findByPk(obj.creator).then(result => {
+                        reseller.findById(obj.creator).then(result => {
                             if(result === null){
 
                             }else{
@@ -96,8 +97,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
                             if(i === documents.docs.length-1){
                                 res.status(200).json({
                                     data: finalDocuments,
-                                    pages:documents.pages,
-                                    total:documents.total,
+                                    pages:documents.totalPages,
+                                    total:documents.totalDocs,
                                     msg: "Successfully Read User Data",
                                     error:false
                                 })

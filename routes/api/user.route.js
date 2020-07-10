@@ -33,7 +33,7 @@ router.post('/create-bulk-user-by-admin', adminAuth, createBulkUserByAdmin.creat
 
 //Get All User By Admin--------------------------
 const getAllUserByAdmin = require('../../controllers/user/get.all.by.admin.controller');
-router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByAdmin);
+router.post('/get-all-user-by-admin',  getAllUserByAdmin.getAllUserByAdmin);
 
 // //Update User--------------------------
 // const updateUser = require('../../controllers/user/update.controller');
