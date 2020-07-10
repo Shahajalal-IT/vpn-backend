@@ -3,10 +3,8 @@
  * User create By Reseller Controller------
  */
 
-const db = require("../../models");
-const user = db.user;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+const user = require("../../models/users.model");
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 
 exports.createUser =  (req, res, next) => {
@@ -17,8 +15,8 @@ exports.createUser =  (req, res, next) => {
         process.env.SECRET
     );
 
-    reseller.findByPk(resellerId).then(result => {
-        const newUser = {
+    reseller.findById(resellerId).then(result => {
+        const newUser = new user({
             pin: decodedToken.pin,
             user: decodedToken.username,
             password: decodedToken.password,
@@ -30,14 +28,19 @@ exports.createUser =  (req, res, next) => {
             creator: resellerId,
             creator_type: 'reseller',
             admin_id: result.admin_id
-        };
-        user.create(newUser).then((result) => {
-            return res.status(201).json({
-                msg: "Successfully Created User",
-                error:false
-            })
+        });
+        newUser.save().then((result) => {
+            if(result){
+                return res.status(201).json({
+                    msg: "Successfully Created User",
+                    error:false
+                })
+            }else{
+                return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
+            }
+
         }).catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
         });
     })

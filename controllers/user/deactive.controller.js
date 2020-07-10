@@ -17,7 +17,7 @@ exports.deactiveUser =  (req, res, next) => {
         status:0
     };
 
-    user.update({
+    user.updateOne({
         _id: decodedToken._id
     },newUser)
         .then( result => {
@@ -31,7 +31,7 @@ exports.deactiveUser =  (req, res, next) => {
             }
         })
         .catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "Problem in Deactivation Data",err: err})
         })
 

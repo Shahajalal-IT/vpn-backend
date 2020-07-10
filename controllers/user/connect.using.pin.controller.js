@@ -2,18 +2,15 @@
 /**
  * Connect Vpn Using Pin Controller
  */
-const db = require("../../models");
-const user = db.user;
-const reseller = db.reseller;
-const reseller_transaction = db.reseller_transaction;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
+const reseller = require("../../models/resellers.model");
+const reseller_transaction = require("../../models/reseller.transaction.model");
 const axios = require("axios");
 exports.connectVpnUsingPin =  (req, res, next) => {
 
     user.findOne({
-        where:{
             pin: req.body.pin
-        }
     })
         .then(user => {
             if(user === null){
@@ -34,26 +31,26 @@ exports.connectVpnUsingPin =  (req, res, next) => {
             if(user.activated_at === null){
 
                 if(user.creator_type === 'reseller'){
-                    reseller.findByPk(user.creator).then(result => {
+                    reseller.findById(user.creator).then(result => {
                         var newBalance = +result.balance - 1;
                         var newRes = {
                             balance: newBalance
                         }
 
-                        var resellerTransaction = {
-                            reseller_id: result.id,
-                            user_id:user.id,
-                            p_balance:+result.balance,
-                            c_balance:newBalance,
-                            price:user.device === 'android'?result.android_price:result.ios_price,
-                            admin_id:result.admin_id
-                        }
+                        var resellerTransaction = new reseller_transaction({
+                            reseller_id: result._id,
+                            user_id: user._id,
+                            p_balance: +result.balance,
+                            c_balance: newBalance,
+                            price: user.device === 'android'?result.android_price:result.ios_price,
+                            admin_id: result.admin_id
+                        });
 
-                        reseller.update(newRes,{
-                            where:{id: result.id}
-                        }).then(resu => {
+                        reseller.updateOne({
+                            _id: result._id
+                        },newRes).then(resu => {
 
-                            reseller_transaction.create(resellerTransaction).then(res_t=>{
+                            resellerTransaction.save().then(res_t=>{
                                 console.log('Balance Cut Successfully');
                             })
                         })
@@ -103,17 +100,17 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 error:true
             })
         }
-        user.update(new_user,
+        user.updateOne(
             {
-                where:{pin: req.body.pin}
-            })
+                pin: req.body.pin
+            },new_user)
             .then( result => {
-                if(result > 0) {
+                if(result.n > 0) {
 
                     axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
                         action: 1,
                         id:req.body.id
-                    })
+                    });
 
                     return res.status(201).json({
                         msg: "Successfully Connected",
@@ -125,7 +122,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 }
             })
             .catch((err) => {
-                console.log(err);
+
                 return res.status(400).json({error: true,status: 201, msg: "Problem in Connecting Vpn",err: err})
             })
     })

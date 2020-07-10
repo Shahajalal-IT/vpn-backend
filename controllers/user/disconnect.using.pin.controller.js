@@ -2,9 +2,8 @@
 /**
  * Disconnect Vpn Using Pin Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const axios = require("axios");
 exports.disConnectVpn =  (req, res, next) => {
 
@@ -12,27 +11,28 @@ exports.disConnectVpn =  (req, res, next) => {
         active: 0,
     };
 
-    user.update(newUser,{
-        where:{pin: req.body.pin}
-    })
+    user.updateOne({
+        pin: req.body.pin
+    },newUser)
         .then( result => {
 
-            axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
-                action: 0,
-                id:req.body.id
-            })
+            if(result.n > 0) {
 
-            if(result > 0) {
+                axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
+                    action: 0,
+                    id:req.body.id
+                });
+
                 return res.status(201).json({
                     msg: "Successfully Disconnected",
                     error:false
-                })
+                });
             }else {
                 return res.status(400).json({error: true,status: 201, msg: "Problem in Disconnected Vpn"})
             }
         })
         .catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "Problem in Disconnected Vpn",err: err})
         })
 }

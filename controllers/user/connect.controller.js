@@ -2,19 +2,16 @@
 /**
  * Connect Vpn Controller
  */
-const db = require("../../models");
-const user = db.user;
-const reseller = db.reseller;
-const reseller_transaction = db.reseller_transaction;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
+const reseller = require("../../models/resellers.model");
+const reseller_transaction = require("../../models/reseller.transaction.model");
 const axios = require("axios");
 exports.connectVpn =  (req, res, next) => {
 
     user.findOne({
-        where:{
-            user: req.body.user,
-            password: req.body.password
-        }
+        user: req.body.user,
+        password: req.body.password
     })
         .then(user => {
             if(user === null){
@@ -35,25 +32,25 @@ exports.connectVpn =  (req, res, next) => {
             if(user.activated_at === null){
 
                 if(user.creator_type === 'reseller'){
-                    reseller.findByPk(user.creator).then(result => {
+                    reseller.findById(user.creator).then(result => {
                         var newBalance = +result.balance - 1;
                         var newRes = {
                             balance: newBalance
                         }
 
-                        var resellerTransaction = {
-                            reseller_id: result.id,
-                            user_id:user.id,
+                        var resellerTransaction = new reseller_transaction({
+                            reseller_id: result._id,
+                            user_id:user._id,
                             p_balance:+result.balance,
                             c_balance:newBalance,
                             price:user.device === 'android'?result.android_price:result.ios_price,
                             admin_id:result.admin_id
-                        }
+                        });
 
-                        reseller.update(newRes,{
-                            where:{id: result.id}
-                        }).then(resu => {
-                            reseller_transaction.create(resellerTransaction).then(res_t=>{
+                        reseller.updateOne({
+                            _id: result._id
+                        },newRes).then(resu => {
+                            resellerTransaction.save().then(res_t=>{
                                 console.log('Balance Cut Successfully');
                             })
                         })
@@ -106,13 +103,11 @@ exports.connectVpn =  (req, res, next) => {
         }
 
 
-        user.update(new_user,
-            {
-                where:{user: req.body.user, password: req.body.password}
-            })
+        user.updateOne({
+            user: req.body.user, password: req.body.password
+        },new_user)
             .then( result => {
-                if(result > 0) {
-
+                if(result.n > 0) {
 
                     axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
                         action: 1,

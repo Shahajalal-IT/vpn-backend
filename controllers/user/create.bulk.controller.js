@@ -2,10 +2,9 @@
 /**
  * Bulk User create By Reseller Controller------
  */
-const db = require("../../models");
-const user = db.user;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
+const reseller = require("../../models/resellers.model");
 const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring')
 exports.createUser =  (req, res, next) => {
@@ -22,13 +21,12 @@ exports.createUser =  (req, res, next) => {
         randonPin.add(decodedToken.username_prefix+randomstring.generate(6))
     }
     let sendData = [];
-    reseller.findByPk(resellerId).then(resellerResult => {
-
+    reseller.findById(resellerId).then(resellerResult => {
 
         let i = 0;
         for (const value of randonPin.values()) {
             const pass = randomstring.generate(6);
-            const newUser = {
+            const newUser = new user({
                 pin: value,
                 user: value,
                 password: pass,
@@ -40,11 +38,9 @@ exports.createUser =  (req, res, next) => {
                 creator: resellerId,
                 creator_type: 'reseller',
                 admin_id: resellerResult.admin_id
-            };
-
+            });
             sendData.push(newUser);
-
-            user.create(newUser).then(result => {
+            newUser.save().then(result => {
                 i++;
                 if(i === randonPin.size){
                     return res.status(201).json({
@@ -57,8 +53,6 @@ exports.createUser =  (req, res, next) => {
                 return res.status(400).json({error: true,status: 201, msg: "User Creation unsuccessful",err: error})
             })
         }
-
-
     })
 
 

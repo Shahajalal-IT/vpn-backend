@@ -2,9 +2,8 @@
 /**
  * Reset Phone Unique Controller
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 exports.resetPhoneUnique =  (req, res, next) => {
 
@@ -17,11 +16,11 @@ exports.resetPhoneUnique =  (req, res, next) => {
         phone_unique:""
     };
 
-    user.update(newUser,{
-        where:{id: decodedToken.id}
-    })
+    user.updateOne({
+        _id: decodedToken._id
+    },newUser)
         .then( result => {
-            if(result > 0) {
+            if(result.n > 0) {
                 return res.status(201).json({
                     msg: "Successfully Reset Phone Unique",
                     error:false
@@ -31,7 +30,7 @@ exports.resetPhoneUnique =  (req, res, next) => {
             }
         })
         .catch((err) => {
-            console.log(err);
+
             return res.status(400).json({error: true,status: 201, msg: "Problem in Resetting Phone Unique",err: err})
         })
 
