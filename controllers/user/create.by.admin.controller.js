@@ -3,9 +3,7 @@
  * User create By Admin Controller------
  */
 
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 
 exports.createUser =  (req, res, next) => {
@@ -16,7 +14,7 @@ exports.createUser =  (req, res, next) => {
         process.env.SECRET
     );
 
-    const newUser = {
+    const newUser = new user({
         pin: decodedToken.pin,
         user: decodedToken.username,
         password: decodedToken.password,
@@ -28,12 +26,17 @@ exports.createUser =  (req, res, next) => {
         creator: adminId,
         creator_type: 'admin',
         admin_id: adminId
-    };
-    user.create(newUser).then((result) => {
-        return res.status(201).json({
-            msg: "Successfully Created User",
-            error:false
-        })
+    });
+    newUser.save().then((result) => {
+        if(result){
+            return res.status(201).json({
+                msg: "Successfully Created User",
+                error:false
+            })
+        }else{
+            return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
+        }
+
     }).catch((err) => {
         console.log(err);
         return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})

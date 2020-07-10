@@ -1,11 +1,10 @@
 /**
  * Get All Users by Admin Controller
  */
-const db = require("../../models");
-const user = db.user;
-const admin = db.admin;
-const reseller = db.reseller;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
+const admin = require("../../models/admin.model");
+const reseller = require("../../models/resellers.model");
 
 exports.getAllUserByAdmin = (req, res, next) => {
 

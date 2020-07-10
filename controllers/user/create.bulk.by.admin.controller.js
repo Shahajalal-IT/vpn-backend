@@ -2,9 +2,8 @@
 /**
  * User create By Admin Controller------
  */
-const db = require("../../models");
-const user = db.user;
-const Op = db.Sequelize.Op;
+
+const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
 const randomstring = require('randomstring')
 exports.createUser =  (req, res, next) => {
@@ -25,7 +24,7 @@ exports.createUser =  (req, res, next) => {
     let i = 0;
     for (const value of randonPin.values()) {
         const pass = randomstring.generate(6);
-        const newUser = {
+        const newUser = new user({
             pin: value,
             user: value,
             password: pass,
@@ -37,11 +36,11 @@ exports.createUser =  (req, res, next) => {
             creator: adminId,
             creator_type: 'admin',
             admin_id: adminId
-        };
+        });
 
         sendData.push(newUser);
 
-        user.create(newUser).then(result => {
+        newUser.save().then(result => {
             i++;
             if(i === randonPin.size){
                 return res.status(201).json({

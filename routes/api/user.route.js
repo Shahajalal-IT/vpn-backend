@@ -6,7 +6,7 @@ const adminAuth = require('../../auth/admin.auth');
 // //User Create--------------------------
 // const createUser = require('../../controllers/user/create.controller');
 // router.post('/create', resellerAuth, createUser.createUser);
-//
+
 // //Bulk User Create by reseller--------------------------
 // const bulkcreateUserByReseller = require('../../controllers/user/create.bulk.controller');
 // router.post('/create-bulk-by-reseller', resellerAuth, bulkcreateUserByReseller.createUser);
@@ -22,19 +22,19 @@ const adminAuth = require('../../auth/admin.auth');
 // //Vpn Disconnect--------------------------
 // const disConnectUser = require('../../controllers/user/disconnect.controller');
 // router.post('/disconnect', disConnectUser.disConnectVpn);
-//
-// //Create User By Admin--------------------------
-// const createUserByAdmin = require('../../controllers/user/create.by.admin.controller');
-// router.post('/create-user-by-admin', adminAuth, createUserByAdmin.createUser);
-//
-// //Create Bulk User By Admin--------------------------
-// const createBulkUserByAdmin = require('../../controllers/user/create.bulk.by.admin.controller');
-// router.post('/create-bulk-user-by-admin', adminAuth, createBulkUserByAdmin.createUser);
-//
-// //Get All User By Admin--------------------------
-// const getAllUserByAdmin = require('../../controllers/user/get.all.by.admin.controller');
-// router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByAdmin);
-//
+
+//Create User By Admin--------------------------
+const createUserByAdmin = require('../../controllers/user/create.by.admin.controller');
+router.post('/create-user-by-admin', adminAuth, createUserByAdmin.createUser);
+
+//Create Bulk User By Admin--------------------------
+const createBulkUserByAdmin = require('../../controllers/user/create.bulk.by.admin.controller');
+router.post('/create-bulk-user-by-admin', adminAuth, createBulkUserByAdmin.createUser);
+
+//Get All User By Admin--------------------------
+const getAllUserByAdmin = require('../../controllers/user/get.all.by.admin.controller');
+router.post('/get-all-user-by-admin', adminAuth, getAllUserByAdmin.getAllUserByAdmin);
+
 // //Update User--------------------------
 // const updateUser = require('../../controllers/user/update.controller');
 // router.post('/update-user', updateUser.updateUser);
