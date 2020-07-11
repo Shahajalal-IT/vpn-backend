@@ -97,6 +97,7 @@ exports.getAllUserByReseller = (req, res, next) => {
                                 status:obj.status,
                                 notes:obj.notes,
                                 device:obj.device,
+                                created_at:obj.created_at
                             };
                             finalDocuments.push(newObj);
                         }
