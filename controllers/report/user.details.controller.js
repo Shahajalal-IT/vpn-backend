@@ -85,7 +85,8 @@ exports.sendUserDetails = (req, res, next) => {
                                                                             balance: 1,
                                                                             android_price: 1,
                                                                             ios_price: 1,
-                                                                            status: 1
+                                                                            status: 1,
+                                                                            created_at:1
                                                                         })
                                                                             .then(
                                                                                 resellerList => {
