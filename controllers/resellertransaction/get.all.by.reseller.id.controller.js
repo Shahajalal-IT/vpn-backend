@@ -9,7 +9,7 @@ const reseller = require("../../models/resellers.model");
 exports.getAllResTransByResellerId = (req, res, next) => {
 
     const adminId = req.adminData.userId
-    const resellerId = req.body.id;
+    const resellerId = req.body._id;
 
     const query = {
         reseller_id: resellerId,
