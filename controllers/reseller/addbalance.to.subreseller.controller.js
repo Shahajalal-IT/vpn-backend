@@ -39,7 +39,7 @@ exports.addBalanceReseller=  (req, res, next) => {
             previous_balance: balance - +decodedToken.amount,
             current_balance: balance,
             transaction_type: 1,
-            admin_id: reseller.admin_id,
+            admin_id: fatherReseller.admin_id,
             notes:decodedToken.notes
         });
 

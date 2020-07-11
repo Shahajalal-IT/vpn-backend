@@ -95,9 +95,9 @@ exports.getAllTransaction = (req, res, next) => {
                                     given_to_id: obj.given_to,
                                     previous_balance: obj.previous_balance,
                                     current_balance: obj.current_balance,
-                                    transaction_type: result.transaction_type,
+                                    transaction_type: obj.transaction_type,
                                     notes: obj.notes,
-                                    createdAt: obj.createdAt
+                                    created_at: obj.created_at
                                 };
                                 finalDocuments.push(newObj);
 
