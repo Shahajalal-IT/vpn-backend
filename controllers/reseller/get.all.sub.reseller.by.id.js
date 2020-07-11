@@ -10,7 +10,7 @@ exports.getAllReseller = (req, res, next) => {
 
     const query = {
         user: {$regex: req.body.key, $options: 'i'},
-        creator: req.body.id,
+        creator: req.body._id,
         role: 'sub_reseller',
         admin_id: adminId
     }
