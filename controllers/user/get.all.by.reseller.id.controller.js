@@ -11,10 +11,10 @@ exports.getAllUserByReseller = (req, res, next) => {
     const resellerId = req.body._id;
 
     var d = new Date();
-    d.setHours(0,0,0,0);
+    d.setHours(23,59,59,999);
     var ed = new Date();
     ed.setMonth(ed.getMonth() - 1);
-    ed.setHours(23,59,59,999);
+    ed.setHours(0,0,0,0);
 
     var startDate,endDate;
     if(req.body.start_date === ''){
