@@ -11,7 +11,7 @@ exports.deleteReseller = (req, res, next) => {
         process.env.SECRET
     );
     reseller.deleteOne({
-        _id: decodedToken._id, creator: req.adminData.userId
+        _id: decodedToken._id
     })
         .then(result => {
             if(result.n > 0){

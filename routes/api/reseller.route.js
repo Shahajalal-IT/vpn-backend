@@ -9,7 +9,7 @@ router.post('/create', adminAuth, reseller.createReseller);
 
 //Delete Reseller--------------------------
 const deleteReseller = require('../../controllers/reseller/delete.controller');
-router.post('/delete', adminAuth, deleteReseller.deleteReseller);
+router.post('/delete', deleteReseller.deleteReseller);
 
 //Update Reseller--------------------------
 const updateReseller = require('../../controllers/reseller/update.controller');
