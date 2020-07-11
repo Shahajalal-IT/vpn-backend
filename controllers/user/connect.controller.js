@@ -29,7 +29,7 @@ exports.connectVpn =  (req, res, next) => {
                     expired_at = new Date(expired_at);
                 }
             }
-            if(user.activated_at === null){
+            if(user.activated_at === undefined){
 
                 if(user.creator_type === 'reseller'){
                     reseller.findById(user.creator).then(result => {
@@ -74,7 +74,7 @@ exports.connectVpn =  (req, res, next) => {
                     active: 1,
                 };
 
-                if(user.phone_unique ===''){
+                if(user.phone_unique === undefined){
                     newUser.phone_unique = req.body.phone_unique
                 }
 

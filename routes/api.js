@@ -25,4 +25,8 @@ router.use('/transaction', transaction);
 let reseller_transaction = require('./api/reseller.transaction.route');
 router.use('/reseller-transaction', reseller_transaction);
 
+// Admin Report Routes------------------
+let report = require('./api/report.route');
+router.use('/report', report);
+
 module.exports = router;

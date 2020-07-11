@@ -28,8 +28,9 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                     expired_at = new Date(expired_at);
                 }
             }
-            if(user.activated_at === null){
 
+
+            if(user.activated_at === undefined){
                 if(user.creator_type === 'reseller'){
                     reseller.findById(user.creator).then(result => {
                         var newBalance = +result.balance - 1;
@@ -73,7 +74,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                     active: 1,
                 };
 
-                if(user.phone_unique ===''){
+                if(user.phone_unique === undefined){
                     newUser.phone_unique = req.body.phone_unique
                 }
 
@@ -122,7 +123,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 }
             })
             .catch((err) => {
-
+                console.log(err)
                 return res.status(400).json({error: true,status: 201, msg: "Problem in Connecting Vpn",err: err})
             })
     })
