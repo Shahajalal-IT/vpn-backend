@@ -49,7 +49,7 @@ exports.getAllUserByReseller = (req, res, next) => {
         creator: resellerId,
         active: { $in: activeArray },
         status: { $in: statusArray },
-        createdAt: {
+        created_at: {
             $gte:startDate,
             $lte:endDate
         },
