@@ -22,6 +22,14 @@ const ResellerTransactionSchema = new Schema({
         type: Number,
         required: true
     },
+    p_due: {
+        type: Number,
+        required: true
+    },
+    c_due: {
+        type: Number,
+        required: true
+    },
     price: {
         type: Number,
         required: true

@@ -34,8 +34,21 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                 if(user.creator_type === 'reseller'){
                     reseller.findById(user.creator).then(result => {
                         var newBalance = +result.balance - 1;
-                        var newRes = {
-                            balance: newBalance
+                        var newRes = {};
+                        let due;
+
+                        if(user.device === 'android'){
+                            due = +result.due + +result.android_price
+                            newRes = {
+                                balance: newBalance,
+                                due: due
+                            }
+                        }else{
+                            due = +result.due + +result.ios_price
+                            newRes = {
+                                balance: newBalance,
+                                due: due
+                            }
                         }
 
                         var resellerTransaction = new reseller_transaction({
@@ -43,6 +56,8 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                             user_id: user._id,
                             p_balance: +result.balance,
                             c_balance: newBalance,
+                            p_due: +result.due,
+                            c_due: due,
                             price: user.device === 'android'?result.android_price:result.ios_price,
                             admin_id: result.admin_id
                         });
