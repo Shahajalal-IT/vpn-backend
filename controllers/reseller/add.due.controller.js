@@ -3,7 +3,7 @@
  */
 
 const reseller = require("../../models/resellers.model");
-const dues = require("../../models/due");
+const dues = require("../../models/due.model");
 const jwt = require('jsonwebtoken');
 exports.addDueReseller=  (req, res, next) => {
     const adminId = req.adminData.userId;
