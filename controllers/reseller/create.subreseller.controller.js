@@ -35,6 +35,7 @@ exports.createReseller =  (req, res, next) => {
             email: decodedToken.email,
             role: 'sub_reseller',
             balance: decodedToken.balance,
+            due: 0,
             status: 1,
             ios_price: decodedToken.ios_price,
             android_price: decodedToken.android_price,

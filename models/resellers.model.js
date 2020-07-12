@@ -28,6 +28,9 @@ const ResellerSchema = new Schema({
         type: Number,
         required: true
     },
+    due: {
+        type: Number
+    },
     ios_price: {
         type: Number,
         required: true

@@ -87,5 +87,13 @@ router.post('/update-reseller-profile', resellerAuth, updateResellerProfile.upda
 const getAllSubresellerById = require('../../controllers/reseller/get.all.sub.reseller.by.id');
 router.post('/get-all-sub-reseller-by-id', adminAuth, getAllSubresellerById.getAllReseller);
 
+//Add Due to reseller--------------------------
+const addDueToReseller = require('../../controllers/reseller/add.due.controller');
+router.post('/add-due', adminAuth, addDueToReseller.addDueReseller);
+
+//Add Due to sub Reseller--------------------------
+const addDueToSubReseller = require('../../controllers/reseller/add.due.to.subreseller.controller');
+router.post('/add-due-to-sub-reseller', resellerAuth, addDueToSubReseller.addDueReseller);
+
 // Export the Router
 module.exports = router;
