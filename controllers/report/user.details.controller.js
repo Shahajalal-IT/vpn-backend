@@ -9,6 +9,12 @@ const transaction = require("../../models/transactions.model");
 exports.sendUserDetails = (req, res, next) => {
     const adminId = req.adminData.userId;
 
+    let startDate = new Date();
+    startDate.setHours(0,0,0,0);
+
+    let endDate = new Date();
+    endDate.setHours(23,59,59,999);
+
     var data = {};
 
                 user.countDocuments({creator: adminId, creator_type:'admin'}).then(ownuser => {
@@ -20,7 +26,10 @@ exports.sendUserDetails = (req, res, next) => {
                             user.countDocuments({
                                 creator: adminId,
                                 creator_type: 'admin',
-                                created_at: {$eq: Date.now()}
+                                created_at: {
+                                    $gte:startDate,
+                                    $lte:endDate
+                                }
                             }).then(todaycreatedbyadmin => {
                                 data.todaycreatedbyadmin = todaycreatedbyadmin;
                                 user.countDocuments({
@@ -31,7 +40,10 @@ exports.sendUserDetails = (req, res, next) => {
                                     user.countDocuments({
                                         admin_id: adminId,
                                         creator_type: 'reseller',
-                                        created_at: {$eq: Date.now()}
+                                        created_at: {
+                                            $gte:startDate,
+                                            $lte:endDate
+                                        }
                                     }).then(todaysellbyreseller => {
                                         data.todaysellbyreseller = todaysellbyreseller;
                                         user.countDocuments({admin_id: adminId, active: 1}).then(onlineAccount => {
