@@ -2,6 +2,7 @@
  * Add Due To Reseller Controller
  */
 
+const admin = require("../../models/admin.model");
 const reseller = require("../../models/resellers.model");
 const dues = require("../../models/due.model");
 const jwt = require('jsonwebtoken');
@@ -13,40 +14,44 @@ exports.addDueReseller=  (req, res, next) => {
         process.env.SECRET
     );
 
+    admin.findById(adminId).then(adminData => {
+
     reseller.findById(decodedToken.reseller_id)
         .then( reseller => {
-            due = reseller.due - +decodedToken.amount;
-            return due;
-        }).then(due => {
-        var newReseller = {
-            due: due
-        };
-        const dueData = new dues({
-            taken_by:adminId,
-            taken_by_type:'admin',
-            given_by:decodedToken.reseller_id,
-            previous_due: due + +decodedToken.amount,
-            current_due: due,
-            notes: decodedToken.notes,
-            admin_id: adminId,
-        });
+            var due = reseller.due - +decodedToken.amount;
 
-        reseller.updateOne({_id: decodedToken.reseller_id},newReseller)
-            .then( result => {
-                if(result.n > 0) {
+            var newReseller = {
+                due: due
+            };
+            const dueData = new dues({
+                taken_by: adminId,
+                taken_by_type: 'admin',
+                taken_by_name: adminData.user,
+                given_by: decodedToken.reseller_id,
+                given_by_name: reseller.user,
+                previous_due: due + +decodedToken.amount,
+                current_due: due,
+                notes: decodedToken.notes,
+                admin_id: adminId,
+            });
 
-                    dueData.save().then(result => {
-                        console.log('Successfully Created Due')
-                    });
+            reseller.updateOne({_id: decodedToken.reseller_id}, newReseller)
+                .then(result => {
+                    if (result.n > 0) {
 
-                    return res.status(201).json({
-                        msg: "Successfully Received Payment",
-                        error:false
-                    })
-                }else {
-                    return res.status(400).json({error: true,status: 201, msg: "Problem in Receiving Payment"})
-                }
-            })
+                        dueData.save().then(result => {
+                            console.log('Successfully Created Due')
+                        });
+
+                        return res.status(201).json({
+                            msg: "Successfully Received Payment",
+                            error: false
+                        })
+                    } else {
+                        return res.status(400).json({error: true, status: 201, msg: "Problem in Receiving Payment"})
+                    }
+                })
+        })
             .catch((err) => {
                 console.log(err);
                 return res.status(400).json({error: true,status: 201, msg: "Problem in Receiving Payment",err: err})

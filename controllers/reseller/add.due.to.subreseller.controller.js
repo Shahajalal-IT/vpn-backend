@@ -17,16 +17,17 @@ exports.addDueReseller=  (req, res, next) => {
 
         reseller.findById(decodedToken.reseller_id)
             .then( reseller => {
-                due = reseller.due - +decodedToken.amount;
-                return due;
-            }).then(due => {
+                var due = reseller.due - +decodedToken.amount;
+
             var newReseller = {
                 due: due
             };
             const dueData = new dues({
                 taken_by:resellerId,
+                taken_by_name: fatherReseller.user,
                 taken_by_type:'reseller',
                 given_by:decodedToken.reseller_id,
+                given_by_name: reseller.user,
                 previous_due: due + +decodedToken.amount,
                 current_due: due,
                 admin_id: fatherReseller.admin_id,

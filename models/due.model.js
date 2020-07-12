@@ -15,9 +15,17 @@ const DueSchema = new Schema({
         type: String,
         required:true
     },
+    taken_by_name: {
+        type: String,
+        required:true
+    },
     given_by: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    given_by_name: {
+        type: String,
+        required:true
     },
     previous_due: {
         type: Number,

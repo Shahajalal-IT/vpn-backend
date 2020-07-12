@@ -53,6 +53,8 @@ exports.connectVpn =  (req, res, next) => {
 
                         var resellerTransaction = new reseller_transaction({
                             reseller_id: result._id,
+                            reseller_name: result.user,
+                            user_name: user.user,
                             user_id: user._id,
                             p_balance: +result.balance,
                             c_balance: newBalance,

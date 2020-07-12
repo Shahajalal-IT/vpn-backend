@@ -10,6 +10,14 @@ const ResellerTransactionSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'resellers'
     },
+    reseller_name: {
+        type: String,
+        required: true
+    },
+    user_name: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
