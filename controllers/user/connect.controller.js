@@ -55,6 +55,7 @@ exports.connectVpn =  (req, res, next) => {
                             reseller_id: result._id,
                             reseller_name: result.user,
                             user_name: user.user,
+                            creator: result.creator,
                             user_id: user._id,
                             p_balance: +result.balance,
                             c_balance: newBalance,

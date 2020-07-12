@@ -18,6 +18,10 @@ const ResellerTransactionSchema = new Schema({
         type: String,
         required: true
     },
+    creator: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
