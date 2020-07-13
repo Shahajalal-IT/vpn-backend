@@ -19,8 +19,10 @@ exports.sendUserDetails = (req, res, next) => {
 
                 user.countDocuments({creator: adminId, creator_type:'admin'}).then(ownuser => {
                     data.ownAccount = ownuser;
+
                     user.countDocuments({creator: adminId, creator_type:'admin',device:'android'}).then(androiduser => {
                         data.androiduser = androiduser;
+                        console.log(data);
                         user.countDocuments({creator: adminId, creator_type: 'admin', device: 'ios'}).then(iosuser => {
                             data.iosuser = iosuser;
                             user.countDocuments({
@@ -32,6 +34,7 @@ exports.sendUserDetails = (req, res, next) => {
                                 }
                             }).then(todaycreatedbyadmin => {
                                 data.todaycreatedbyadmin = todaycreatedbyadmin;
+
                                 user.countDocuments({
                                     admin_id: adminId,
                                     creator_type: 'reseller'
@@ -105,8 +108,20 @@ exports.sendUserDetails = (req, res, next) => {
                                                                                     data.resellerList = resellerList;
 
                                                                                     transaction.find({given_by: adminId, given_by_type:'admin',}).then(transactiondata => {
+
+                                                                                        if(transactiondata.length === 0){
+                                                                                            data.transaction = transactiondata;
+
+                                                                                            res.status(200).json({
+                                                                                                data: data,
+                                                                                                msg: "Successfully Read User Details Data",
+                                                                                                error: false
+                                                                                            })
+                                                                                        }
+
                                                                                         var finalDocuments = [];
                                                                                         var i=0;
+
                                                                                         transactiondata.forEach(function(obj) {
 
                                                                                             reseller.findById(obj.given_to).then(result => {
@@ -129,6 +144,7 @@ exports.sendUserDetails = (req, res, next) => {
 
                                                                                                 if (i === transactiondata.length - 1) {
                                                                                                     data.transaction = finalDocuments;
+
                                                                                                     res.status(200).json({
                                                                                                         data: data,
                                                                                                         msg: "Successfully Read User Details Data",
@@ -143,6 +159,7 @@ exports.sendUserDetails = (req, res, next) => {
                                                                                 }
                                                                             )
                                                                             .catch(error => {
+                                                                                console.log(error)
                                                                                 return res.status(400).json({
                                                                                     error: true,
                                                                                     msg: "Reseller Reading Was Unsuccessful",
@@ -165,6 +182,7 @@ exports.sendUserDetails = (req, res, next) => {
             }
         )
         .catch(error => {
+            console.log(error)
             return res.status(400).json({error: true, msg: "Home Page Reading Was Unsuccessful",err: error})
         })
 };

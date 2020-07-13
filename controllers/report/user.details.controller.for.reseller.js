@@ -105,6 +105,17 @@ exports.sendUserDetails = (req, res, next) => {
                                                                             data.resellerList = resellerList;
 
                                                                             transaction.find({given_by: resellerId, given_by_type:'reseller',}).then(transactiondata => {
+
+                                                                                if(transactiondata.length === 0){
+                                                                                    data.transaction = transactiondata;
+
+                                                                                    res.status(200).json({
+                                                                                        data: data,
+                                                                                        msg: "Successfully Read User Details Data",
+                                                                                        error: false
+                                                                                    })
+                                                                                }
+
                                                                                 var finalDocuments = [];
                                                                                 var i=0;
                                                                                 transactiondata.forEach(function(obj) {
