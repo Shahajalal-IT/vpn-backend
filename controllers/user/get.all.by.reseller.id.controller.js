@@ -11,6 +11,7 @@ exports.getAllUserByReseller = (req, res, next) => {
     const resellerId = req.body._id;
 
     var d = new Date();
+    d.setDate(d.getDate() + 1);
     d.setHours(23,59,59,999);
     var ed = new Date();
     ed.setMonth(ed.getMonth() - 1);
