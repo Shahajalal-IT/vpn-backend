@@ -41,7 +41,7 @@ exports.getAllUserByReseller = (req, res, next) => {
 
     let statusArray = []
     if(req.body.status === ""){
-        statusArray = [0,1]
+        statusArray = [0,1,3]
     }else{
         statusArray = [+req.body.status]
     }
