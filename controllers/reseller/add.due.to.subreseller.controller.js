@@ -16,8 +16,8 @@ exports.addDueReseller=  (req, res, next) => {
     reseller.findById(resellerId).then(fatherReseller => {
 
         reseller.findById(decodedToken.reseller_id)
-            .then( reseller => {
-                var due = reseller.due - +decodedToken.amount;
+            .then( resellerData => {
+                var due = resellerData.due - +decodedToken.amount;
 
             var newReseller = {
                 due: due
@@ -27,7 +27,7 @@ exports.addDueReseller=  (req, res, next) => {
                 taken_by_name: fatherReseller.user,
                 taken_by_type:'reseller',
                 given_by:decodedToken.reseller_id,
-                given_by_name: reseller.user,
+                given_by_name: resellerData.user,
                 previous_due: due + +decodedToken.amount,
                 current_due: due,
                 admin_id: fatherReseller.admin_id,
