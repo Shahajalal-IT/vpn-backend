@@ -114,7 +114,23 @@ exports.connectVpnUsingPin =  (req, res, next) => {
             return newUser;
         }).then(new_user => {
         if(new_user.expired_at < Date.now()){
-            return res.status(201).json({
+
+            let expiredUser = {
+                status: 3
+            };
+
+            user.updateOne(
+                {
+                    pin: req.body.pin
+                },expiredUser).then(resultsexp => {
+                    if(resultsexp.n > 0){
+                        console.log(resultsexp)
+                    }
+            }).catch(exerror => {
+                console.log(exerror);
+            })
+
+            return res.status(400).json({
                 msg: "Date Expired",
                 error:true
             })
