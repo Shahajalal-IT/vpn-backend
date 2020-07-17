@@ -75,5 +75,13 @@ router.post('/disconnect-using-pin', disConnectUsingPin.disConnectVpn);
 const getAllVPNUserByResId = require('../../controllers/user/get.all.by.reseller.id.controller');
 router.post('/get-all-user-by-reseller-id', getAllVPNUserByResId.getAllUserByReseller);
 
+//Get all Vpn User by Reseller id--------------------------
+const connectVpnUsingUser = require('../../controllers/user/connect.using.user');
+router.get('/connect-using-user', connectVpnUsingUser.connectVpnUsingPin);
+
+//Get all Vpn User by Reseller id--------------------------
+const disconnectVpnUsingUser = require('../../controllers/user/disconnect.user');
+router.get('/disconnect-using-user', disconnectVpnUsingUser.disConnectVpn);
+
 // Export the Router
 module.exports = router;
