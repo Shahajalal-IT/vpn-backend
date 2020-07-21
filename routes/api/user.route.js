@@ -17,11 +17,11 @@ router.post('/delete', deleteUser.deleteUser);
 
 //Vpn Connect--------------------------
 const connectUser = require('../../controllers/user/connect.controller');
-router.post('/connect', connectUser.connectVpn);
+router.get('/connect', connectUser.connectVpnUsingPin);
 
 //Vpn Disconnect--------------------------
 const disConnectUser = require('../../controllers/user/disconnect.controller');
-router.post('/disconnect', disConnectUser.disConnectVpn);
+router.get('/disconnect', disConnectUser.disConnectVpn);
 
 //Create User By Admin--------------------------
 const createUserByAdmin = require('../../controllers/user/create.by.admin.controller');

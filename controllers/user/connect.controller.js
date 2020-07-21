@@ -1,25 +1,37 @@
 
 /**
- * Connect Vpn Controller
+ * Connect Vpn Using User Controller
  */
 
 const user = require("../../models/users.model");
 const reseller = require("../../models/resellers.model");
 const reseller_transaction = require("../../models/reseller.transaction.model");
-const axios = require("axios");
-exports.connectVpn =  (req, res, next) => {
+exports.connectVpnUsingPin =  (req, res, next) => {
+
+    let main_str = req.query.user;
+    let splited_str = main_str.split('javed');
+    const getuser = splited_str[0];
+    const phone_unique = splited_str[1];
+    const device = splited_str[2];
 
     user.findOne({
-        user: req.body.user,
-        password: req.body.password
+        user: getuser
     })
         .then(user => {
             if(user === null){
-                return res.status(201).json({
-                    msg: "invalid User or password",
-                    error:true
-                })
+                return res.send('');
             }
+
+            if(device === '0'){
+                if(user.device !== 'android'){
+                    return res.send('');
+                }
+            }else{
+                if(user.device !== 'ios'){
+                    return res.send('');
+                }
+            }
+
             var newUser;
             var expired_at;
             for(var i=1;i<=12;i++){
@@ -29,8 +41,9 @@ exports.connectVpn =  (req, res, next) => {
                     expired_at = new Date(expired_at);
                 }
             }
-            if(user.activated_at === undefined){
 
+
+            if(user.activated_at === undefined){
                 if(user.creator_type === 'reseller'){
                     reseller.findById(user.creator).then(result => {
                         var newBalance = +result.balance - 1;
@@ -68,6 +81,7 @@ exports.connectVpn =  (req, res, next) => {
                         reseller.updateOne({
                             _id: result._id
                         },newRes).then(resu => {
+
                             resellerTransaction.save().then(res_t=>{
                                 console.log('Balance Cut Successfully');
                             })
@@ -78,12 +92,11 @@ exports.connectVpn =  (req, res, next) => {
                 newUser = {
                     activated_at: Date.now(),
                     expired_at: expired_at,
-                    phone_unique:req.body.phone_unique,
+                    phone_unique:phone_unique,
                     active: 1,
                     status: 1
 
                 };
-
             }else {
 
                 newUser = {
@@ -93,34 +106,29 @@ exports.connectVpn =  (req, res, next) => {
                 };
 
                 if(user.phone_unique === undefined){
-                    newUser.phone_unique = req.body.phone_unique
+                    newUser.phone_unique = phone_unique
                 }
 
                 if(user.status === 0){
-                    return res.status(201).json({
-                        msg: "User Not Activated",
-                        error:true
-                    })
+                    return res.send('');
                 }
 
-                if(user.phone_unique !=='' && user.phone_unique !== req.body.phone_unique){
-                    return res.status(201).json({
-                        msg: "Already Used In Another Device",
-                        error:true
-                    })
+                if(user.phone_unique !=='' && user.phone_unique !== phone_unique){
+                    return res.send('');
                 }
             }
 
             return newUser;
         }).then(new_user => {
         if(new_user.expired_at < Date.now()){
+
             let expiredUser = {
                 status: 3
             };
 
             user.updateOne(
                 {
-                    pin: req.body.pin
+                    user: getuser
                 },expiredUser).then(resultsexp => {
                 if(resultsexp.n > 0){
                     console.log(resultsexp)
@@ -129,36 +137,23 @@ exports.connectVpn =  (req, res, next) => {
                 console.log(exerror);
             })
 
-            return res.status(400).json({
-                msg: "Date Expired",
-                error:true
-            })
+            return res.send('');
         }
-
-
-        user.updateOne({
-            user: req.body.user, password: req.body.password
-        },new_user)
+        user.updateOne(
+            {
+                user: getuser
+            },new_user)
             .then( result => {
                 if(result.n > 0) {
 
-                    axios.post('http://fontend.trytorun.xyz:3900/api/server/change-connected-user', {
-                        action: 1,
-                        id:req.body.id
-                    })
-
-                    return res.status(201).json({
-                        msg: "Successfully Connected",
-                        expired_date:new_user.expired_at.toLocaleDateString(),
-                        error:false
-                    })
+                    return res.send('Ok');
                 }else {
-                    return res.status(400).json({error: true,status: 201, msg: "Problem in Connecting Vpn"})
+                    return res.send('');
                 }
             })
-            .catch((err) => {
-                console.log(err);
-                return res.status(400).json({error: true,status: 201, msg: "Problem in Connecting Vpn",err: err})
-            })
+
+    }).catch((err) => {
+        console.log(err)
+        return res.send('');
     })
 }
