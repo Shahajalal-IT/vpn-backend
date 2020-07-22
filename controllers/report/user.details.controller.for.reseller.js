@@ -104,7 +104,7 @@ exports.sendUserDetails = (req, res, next) => {
                                                                         resellerList => {
                                                                             data.resellerList = resellerList;
 
-                                                                            transaction.find({given_by: resellerId, given_by_type:'reseller',}).then(transactiondata => {
+                                                                            transaction.find({given_by: resellerId, given_by_type:'reseller'}).populate('given_to').then(transactiondata => {
 
                                                                                 if(transactiondata.length === 0){
                                                                                     data.transaction = transactiondata;
@@ -116,40 +116,13 @@ exports.sendUserDetails = (req, res, next) => {
                                                                                     })
                                                                                 }
 
-                                                                                var finalDocuments = [];
-                                                                                var i=0;
-                                                                                transactiondata.forEach(function(obj) {
-
-                                                                                    reseller.findById(obj.given_to).then(result => {
-                                                                                        if(result === null){
-
-                                                                                        }else {
-                                                                                            var newObj = {
-                                                                                                _id: obj._id,
-                                                                                                given_to: result.user,
-                                                                                                given_to_id: obj.given_to,
-                                                                                                previous_balance: obj.previous_balance,
-                                                                                                current_balance: obj.current_balance,
-                                                                                                transaction_type: obj.transaction_type,
-                                                                                                notes: obj.notes,
-                                                                                                created_at: obj.created_at
-                                                                                            };
-                                                                                            finalDocuments.push(newObj);
-
-                                                                                        }
-
-                                                                                        if (i === transactiondata.length - 1) {
-                                                                                            data.transaction = finalDocuments;
-                                                                                            res.status(200).json({
-                                                                                                data: data,
-                                                                                                msg: "Successfully Read User Details Data",
-                                                                                                error: false
-                                                                                            })
-                                                                                        }
-                                                                                        i++;
-                                                                                    })
-
+                                                                                data.transaction = transactiondata;
+                                                                                res.status(200).json({
+                                                                                    data: data,
+                                                                                    msg: "Successfully Read User Details Data",
+                                                                                    error: false
                                                                                 })
+
                                                                             })
                                                                         }
                                                                     )
