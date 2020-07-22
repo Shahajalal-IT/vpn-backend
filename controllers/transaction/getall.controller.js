@@ -44,7 +44,8 @@ exports.getAllTransaction = (req, res, next) => {
         options = {
             page: +req.body.page,
             limit: +req.body.pagesize,
-            sort: {created_at: -1}
+            sort: {created_at: -1},
+            populate:'given_to'
         }
     }else{
 
@@ -61,7 +62,8 @@ exports.getAllTransaction = (req, res, next) => {
         options = {
             page: +req.body.page,
             limit: +req.body.pagesize,
-            sort: {created_at: -1}
+            sort: {created_at: -1},
+            populate:'given_to'
         }
     }
 
@@ -82,42 +84,14 @@ exports.getAllTransaction = (req, res, next) => {
                         error: false
                     })
                 }
-                var finalDocuments = [];
-                var i=0;
-                documents.docs.forEach(function(obj) {
-
-                        reseller.findById(obj.given_to).then(result => {
-                            if(result === null){
-
-                            }else {
-                                var newObj = {
-                                    _id: obj._id,
-                                    given_to: result.user,
-                                    given_to_id: obj.given_to,
-                                    previous_balance: obj.previous_balance,
-                                    current_balance: obj.current_balance,
-                                    transaction_type: obj.transaction_type,
-                                    notes: obj.notes,
-                                    created_at: obj.created_at
-                                };
-                                finalDocuments.push(newObj);
-
-                            }
-
-                            if (i === documents.docs.length - 1) {
-                                res.status(200).json({
-                                    data: finalDocuments,
-                                    msg: "Successfully Read Transaction Data",
-                                    pages:documents.totalPages,
-                                    total:documents.totalDocs,
-                                    resellers: resellers,
-                                    error: false
-                                })
-                            }
-                            i++;
-                        })
-
-                });
+                res.status(200).json({
+                    data: documents.docs,
+                    msg: "Successfully Read Transaction Data",
+                    pages:documents.totalPages,
+                    total:documents.totalDocs,
+                    resellers: resellers,
+                    error: false
+                })
             }
         )
             })

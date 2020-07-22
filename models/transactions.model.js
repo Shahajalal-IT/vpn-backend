@@ -16,7 +16,8 @@ const TransactionSchema = new Schema({
     },
     given_to: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'resellers',
     },
     previous_balance: {
         type: Number,
