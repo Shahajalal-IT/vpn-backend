@@ -83,5 +83,9 @@ router.get('/connect-using-user', connectVpnUsingUser.connectVpnUsingPin);
 const disconnectVpnUsingUser = require('../../controllers/user/disconnect.user');
 router.get('/disconnect-using-user', disconnectVpnUsingUser.disConnectVpn);
 
+//Get Expire Date--------------------------
+const getExpireDate = require('../../controllers/user/get_expire_date.controller');
+router.post('/get-expire-date', getExpireDate.getExpireDate);
+
 // Export the Router
 module.exports = router;
