@@ -24,6 +24,7 @@ exports.createUser =  (req, res, next) => {
         notes: decodedToken.notes,
         device: decodedToken.device,
         creator: adminId,
+        onModel:'admins',
         creator_type: 'admin',
         admin_id: adminId
     });

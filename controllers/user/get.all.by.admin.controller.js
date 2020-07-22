@@ -18,12 +18,13 @@ exports.getAllUserByAdmin = (req, res, next) => {
         page: +req.body.page,
         limit: +req.body.pagesize,
         sort: {created_at: -1},
+        populate:'creator'
     }
 
     user.paginate(query,options)
         .then(
             documents => {
-
+                console.log(documents.docs);
                 if(documents.totalDocs === 0){
                     res.status(200).json({
                         data: [],

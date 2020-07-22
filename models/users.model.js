@@ -25,7 +25,13 @@ const UserSchema = new Schema({
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,
-        required:true
+        required:true,
+        refPath: 'onModel'
+    },
+    onModel: {
+        type: String,
+        required: true,
+        enum: ['admins', 'resellers']
     },
     creator_type: {
         type: String,
