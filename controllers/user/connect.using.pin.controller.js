@@ -92,7 +92,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
                     active: 1,
                 };
 
-                if(user.phone_unique === undefined){
+                if(user.phone_unique === ''){
                     newUser.phone_unique = req.body.phone_unique
                 }
 
