@@ -40,6 +40,7 @@ exports.createReseller =  (req, res, next) => {
             ios_price: decodedToken.ios_price,
             android_price: decodedToken.android_price,
             creator: ResellerId,
+            onModel:'resellers',
             admin_id: resellerResult.admin_id,
 
         });

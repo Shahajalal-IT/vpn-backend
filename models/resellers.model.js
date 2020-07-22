@@ -54,7 +54,13 @@ const ResellerSchema = new Schema({
     },
     creator: {
         type: mongoose.Schema.Types.ObjectId,
-        required:true
+        required:true,
+        refPath: 'onModel'
+    },
+    onModel: {
+        type: String,
+        required: true,
+        enum: ['admins', 'resellers']
     },
     admin_id: {
         type: mongoose.Schema.Types.ObjectId,

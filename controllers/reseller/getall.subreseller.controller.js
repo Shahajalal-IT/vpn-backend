@@ -15,7 +15,8 @@ exports.getAllReseller = (req, res, next) => {
     const options = {
         page: +req.body.page,
         limit: +req.body.pagesize,
-        sort: {created_at: -1}
+        sort: {created_at: -1},
+        populate:'creator'
     }
     reseller.paginate(query,options)
         .then(
@@ -30,44 +31,12 @@ exports.getAllReseller = (req, res, next) => {
                     })
                 }
 
-                var finalDocuments = [];
-                var i=0;
-                documents.docs.forEach(function(obj) {
-
-                        reseller.findById(obj.creator).then(result => {
-
-                            if(result === null){
-
-                            }else{
-                                var newObj = {
-                                    _id: obj._id,
-                                    user: obj.user,
-                                    password: obj.password,
-                                    email: obj.email,
-                                    role: obj.role,
-                                    balance: obj.balance,
-                                    status: obj.status,
-                                    ios_price: obj.ios_price,
-                                    android_price: obj.android_price,
-                                    created_by: result.user,
-                                    creator_id: result.id,
-                                };
-                                finalDocuments.push(newObj);
-                            }
-
-                                if (i === documents.docs.length - 1) {
-                                    res.status(200).json({
-                                        data: finalDocuments,
-                                        pages:documents.totalPages,
-                                        total:documents.totalDocs,
-                                        msg: "Successfully Read Reseller Data",
-                                        error: false
-                                    })
-                                }
-                                i++;
-
-                        })
-
+                res.status(200).json({
+                    data: documents.docs,
+                    pages:documents.totalPages,
+                    total:documents.totalDocs,
+                    msg: "Successfully Read Reseller Data",
+                    error: false
                 });
             }
         )
