@@ -16,28 +16,13 @@ exports.sendBillingsDetails = (req, res, next) => {
         data.due = allDue;
         reseller_transaction.find({creator: resellerId}).then(allResellerTransaction => {
             data.reseller_transaction = allResellerTransaction;
-            reseller.find({creator: resellerId, role: 'sub_reseller', due: {$lt: 0}}).then(minus_value => {
-                data.minus_value = minus_value;
-                reseller.find({creator: resellerId, role: 'sub_reseller', due: {$eq: 0}}).then(zero_value => {
-                    data.zero_value = zero_value;
-                    reseller.find({creator: resellerId, role: 'sub_reseller', due: {$gt: 0}}).then(plus_value => {
-                        data.plus_value = plus_value;
-                        reseller.countDocuments({creator: resellerId, role: 'sub_reseller', due: {$lt: 0}}).then(minus_count => {
-                            data.minus_count = minus_count;
-                            reseller.countDocuments({creator: resellerId, role: 'sub_reseller', due: {$eq: 0}}).then(zero_count => {
-                                data.zero_count = zero_count;
-                                reseller.countDocuments({creator: resellerId, role: 'sub_reseller', due: {$gt: 0}}).then(plus_count => {
-                                    data.plus_count = plus_count;
+            reseller.find({creator: resellerId, role: 'sub_reseller'}).then(bill => {
+                data.bill = bill;
 
-                                    res.status(200).json({
-                                        data: data,
-                                        msg: "Successfully Read Billings Details Data",
-                                        error: false
-                                    })
-                                })
-                            })
-                        })
-                    })
+                res.status(200).json({
+                    data: data,
+                    msg: "Successfully Read Billings Details Data",
+                    error: false
                 })
             })
         })
