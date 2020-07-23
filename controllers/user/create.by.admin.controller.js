@@ -39,7 +39,7 @@ exports.createUser =  (req, res, next) => {
         }
 
     }).catch((err) => {
-
+        console.log(err);
         return res.status(400).json({error: true,status: 201, msg: "User Creation was Unsuccessful",err: err})
     });
 }

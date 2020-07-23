@@ -3,9 +3,14 @@
  */
 
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const mongoosePaginate = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
+    serial: {
+        type: Number,
+        unique:true
+    },
     pin: {
         type: String,
         required: true,
@@ -73,5 +78,6 @@ const UserSchema = new Schema({
     }
 });
 UserSchema.plugin(mongoosePaginate);
+UserSchema.plugin(AutoIncrement, {inc_field: 'serial'});
 const Users = mongoose.model('users', UserSchema)
 module.exports = Users;

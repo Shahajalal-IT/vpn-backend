@@ -16,7 +16,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
     const options = {
         page: +req.body.page,
         limit: +req.body.pagesize,
-        sort: {created_at: -1},
+        sort: {serial: -1},
         populate:'creator'
     }
 
