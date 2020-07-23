@@ -18,7 +18,7 @@ exports.createUser =  (req, res, next) => {
     const randonPin = new Set()
 
     while (randonPin.size < +decodedToken.no_of_account) {
-        randonPin.add(decodedToken.username_prefix+randomstring.generate(6))
+        randonPin.add(decodedToken.username_prefix+randomstring.generate({ length: 5, charset: 'numeric'}))
     }
     let sendData = [];
     reseller.findById(resellerId).then(resellerResult => {
