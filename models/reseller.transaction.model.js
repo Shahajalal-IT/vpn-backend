@@ -14,7 +14,7 @@ const ResellerTransactionSchema = new Schema({
         type: String,
         required: true
     },
-    user_name: {
+    pin: {
         type: String,
         required: true
     },
