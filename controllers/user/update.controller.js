@@ -14,8 +14,6 @@ exports.updateUser =  (req, res, next) => {
     );
     var newUser = {
         pin: decodedToken.pin,
-        user: decodedToken.username,
-        password: decodedToken.password,
         notes: decodedToken.notes
     };
 

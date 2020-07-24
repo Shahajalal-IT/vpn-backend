@@ -11,7 +11,7 @@ exports.getAllUserByReseller = (req, res, next) => {
     const resellerId = req.resellerData.userId;
 
     const query = {
-        user: {$regex: req.body.key, $options: 'i'},
+        pin: {$regex: req.body.key, $options: 'i'},
         creator: resellerId,
         creator_type:'reseller'
     }

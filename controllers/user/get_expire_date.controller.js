@@ -7,7 +7,7 @@ const user = require("../../models/users.model");
 exports.getExpireDate =  (req, res, next) => {
 
     user.findOne({
-        user: req.body.user
+        pin: req.body.user
     })
         .then(user => {
 

@@ -18,8 +18,6 @@ exports.createUser =  (req, res, next) => {
     reseller.findById(resellerId).then(result => {
         const newUser = new user({
             pin: decodedToken.pin,
-            user: decodedToken.username,
-            password: decodedToken.password,
             type: decodedToken.duration,
             active: 0,
             status: 0,

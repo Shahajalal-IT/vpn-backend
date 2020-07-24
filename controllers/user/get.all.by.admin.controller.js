@@ -10,7 +10,7 @@ exports.getAllUserByAdmin = (req, res, next) => {
 
     const adminId = req.adminData.userId;
     const query = {
-        user: {$regex: req.body.key, $options: 'i'},
+        pin: {$regex: req.body.key, $options: 'i'},
         admin_id: adminId
     }
     const options = {

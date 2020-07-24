@@ -15,7 +15,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
     const device = splited_str[2];
 
     user.findOne({
-        user: getuser
+        pin: getuser
     })
         .then(user => {
             if(user === null){
@@ -128,7 +128,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
 
             user.updateOne(
                 {
-                    user: getuser
+                    pin: getuser
                 },expiredUser).then(resultsexp => {
                 if(resultsexp.n > 0){
                     console.log(resultsexp)
@@ -141,7 +141,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
         }
         user.updateOne(
             {
-                user: getuser
+                pin: getuser
             },new_user)
             .then( result => {
                 if(result.n > 0) {

@@ -9,7 +9,7 @@ const reseller_transaction = require("../../models/reseller.transaction.model");
 exports.connectVpnUsingPin =  (req, res, next) => {
 
     user.findOne({
-        user: req.query.user
+        pin: req.query.user
     })
         .then(user => {
             if(user === null){
@@ -102,7 +102,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
 
             user.updateOne(
                 {
-                    user: req.query.user
+                    pin: req.query.user
                 },expiredUser).then(resultsexp => {
                 if(resultsexp.n > 0){
                     console.log(resultsexp)
@@ -115,7 +115,7 @@ exports.connectVpnUsingPin =  (req, res, next) => {
         }
         user.updateOne(
             {
-                user: req.query.user
+                pin: req.query.user
             },new_user)
             .then( result => {
                 if(result.n > 0) {

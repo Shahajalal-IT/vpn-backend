@@ -6,7 +6,7 @@
 const user = require("../../models/users.model");
 exports.getUserByUser =  (req, res, next) => {
 
-    user.findOne({user:req.body.user})
+    user.findOne({pin:req.body.user})
         .then( result => {
             if(result) {
                 return res.status(201).json({
