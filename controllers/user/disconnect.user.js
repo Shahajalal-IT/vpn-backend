@@ -11,7 +11,7 @@ exports.disConnectVpn =  (req, res, next) => {
     };
 
     user.updateOne({
-        pin: req.query.user
+        pin: req.query.pin
     },newUser)
         .then( result => {
 

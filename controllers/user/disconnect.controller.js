@@ -6,7 +6,7 @@
 const user = require("../../models/users.model");
 exports.disConnectVpn =  (req, res, next) => {
 
-    let main_str = req.query.user;
+    let main_str = req.query.pin;
     let splited_str = main_str.split('javed');
     const getuser = splited_str[0];
     const phone_unique = splited_str[1];

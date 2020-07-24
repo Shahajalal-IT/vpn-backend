@@ -21,12 +21,13 @@ exports.connectVpnUsingPin =  (req, res, next) => {
             }
             var newUser;
             var expired_at;
-            for(var i=1;i<=12;i++){
-                if(user.type === i){
-                    var today = new Date();
-                    expired_at = today.setMonth(today.getMonth() + i);
-                    expired_at = new Date(expired_at);
-                }
+            var today = new Date();
+            if(user.type === 1){
+                expired_at = today.setMonth(today.getMonth() + 1);
+                expired_at = new Date(expired_at);
+            }else{
+                expired_at = today.setDate(today.getDate() + 1);
+                expired_at = new Date(expired_at);
             }
 
 
