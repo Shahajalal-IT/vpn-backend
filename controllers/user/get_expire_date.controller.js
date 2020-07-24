@@ -13,7 +13,7 @@ exports.getExpireDate =  (req, res, next) => {
 
             return res.status(201).json({
                 msg: "Successfully Got Expire Date",
-                data: user.expired_at,
+                data: user.expired_at.toLocaleDateString(),
                 error:false
             })
 
