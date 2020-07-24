@@ -5,7 +5,8 @@
 
 const user = require("../../models/users.model");
 const jwt = require('jsonwebtoken');
-const randomstring = require('randomstring')
+const randomstring = require('randomstring');
+const sortJsonArray = require('sort-json-array');
 exports.createUser =  (req, res, next) => {
     const adminId = req.adminData.userId;
     const fetchedData = req.body.data;
@@ -39,16 +40,17 @@ exports.createUser =  (req, res, next) => {
         newUser.save().then(result => {
             i++;
             let nData = {
+                serial: result.serial,
                 pin: result.pin,
-                serial: result.serial
             };
             sendData.push(nData);
 
             if(i === randonPin.size){
+
                 return res.status(201).json({
                     msg: `Successfully Created `+ i +` Users`,
                     error:false,
-                    data:sendData
+                    data:sortJsonArray(sendData, 'serial','asc')
                 })
             }
         }).catch(error => {
