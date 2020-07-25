@@ -87,5 +87,9 @@ router.get('/disconnect-using-user', disconnectVpnUsingUser.disConnectVpn);
 const getExpireDate = require('../../controllers/user/get_expire_date.controller');
 router.post('/get-expire-date', getExpireDate.getExpireDate);
 
+//Delete Selected--------------------------
+const deleteSelected = require('../../controllers/user/delete.selected.controller');
+router.post('/delete-selected', deleteSelected.deleteUser);
+
 // Export the Router
 module.exports = router;
