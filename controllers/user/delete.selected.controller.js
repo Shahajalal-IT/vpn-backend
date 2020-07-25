@@ -10,28 +10,31 @@ exports.deleteUser = (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
-    console.log(decodedToken.ids);
-    // user.deleteOne({
-    //     _id: decodedToken._id
-    // })
-    //     .then(result => {
-    //         if(result.n > 0){
-    //             return res.status(201).json({
-    //                 msg: "Successfully Deleted User",
-    //                 error:false
-    //             })
-    //         }else{
-    //             return res.status(401).json({
-    //                 msg: "Failed To Delete User",
-    //                 error:true
-    //             })
-    //         }
-    //     })
-    //     .catch(error => {
-    //
-    //         return res.status(401).json({
-    //             msg: "Failed To Delete User",
-    //             error:true
-    //         })
-    //     })
+    let i = 0;
+    for (const value of decodedToken.ids.length) {
+        user.deleteOne({
+            _id: value
+        })
+            .then(result => {
+                if(result.n > 0){
+                    i++;
+                    if(i===decodedToken.ids.length){
+                        return res.status(201).json({
+                            msg: `Successfully Deleted `+i+` User`,
+                            error:false
+                        })
+                    }
+
+                }else{
+
+                }
+            })
+            .catch(error => {
+
+                return res.status(401).json({
+                    msg: "Failed To Delete User",
+                    error:true
+                })
+            })
+    }
 }
