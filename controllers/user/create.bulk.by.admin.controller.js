@@ -55,6 +55,7 @@ exports.createUser =  (req, res, next) => {
             }
         }).catch(error => {
             console.log(error);
+            return res.status(400).json({error: true,status: 400, msg: "Bulk User Creation Unsuccessful",error: error})
         })
 
     }

@@ -29,4 +29,8 @@ router.use('/reseller-transaction', reseller_transaction);
 let report = require('./api/report.route');
 router.use('/report', report);
 
+// Mobile Api Routes------------------
+let mobile_api = require('./api/mobile.api.route');
+router.use('/mobile-api', mobile_api);
+
 module.exports = router;
