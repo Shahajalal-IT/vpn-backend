@@ -11,7 +11,7 @@ exports.deleteUser = (req, res, next) => {
         process.env.SECRET
     );
     let i = 0;
-    for (const value of decodedToken.ids.length) {
+    for (const value of decodedToken.ids) {
         user.deleteOne({
             _id: value
         })
@@ -30,7 +30,7 @@ exports.deleteUser = (req, res, next) => {
                 }
             })
             .catch(error => {
-
+                console.log(error);
                 return res.status(401).json({
                     msg: "Failed To Delete User",
                     error:true
