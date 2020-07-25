@@ -50,11 +50,18 @@ exports.getAllUserByReseller = (req, res, next) => {
 
         let creatorArray = [];
         if(req.body.creator_type === ""){
-
+            creatorArray.push(resellerId);
+            allsub.map(sub => {
+                creatorArray.push(sub._id)
+            })
+        }else if(req.body.creator_type === "own"){
+            creatorArray = [resellerId];
+        }else{
+            allsub.map(sub => {
+                creatorArray.push(sub._id)
+            })
         }
-        allsub.map(sub => {
-            creatorArray.push(sub._id)
-        })
+
 
         const query = {
             active: {$in: activeArray},
@@ -64,7 +71,7 @@ exports.getAllUserByReseller = (req, res, next) => {
                 $lte: endDate
             },
             pin: {$regex: req.body.key, $options: 'i'},
-            creator: resellerId,
+            creator: {$in: creatorArray},
             creator_type: 'reseller'
         }
 
