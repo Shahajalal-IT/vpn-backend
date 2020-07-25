@@ -47,6 +47,13 @@ exports.getAllUserByAdmin = (req, res, next) => {
         statusArray = [+req.body.status]
     }
 
+    let creator_typeArray=[];
+    if(req.body.creator_type === ""){
+        creator_typeArray = ['reseller','admin'];
+    }else{
+        creator_typeArray = [req.body.creator_type]
+    }
+
     const query = {
         active: { $in: activeArray },
         status: { $in: statusArray },
@@ -55,7 +62,8 @@ exports.getAllUserByAdmin = (req, res, next) => {
             $lte:endDate
         },
         pin: {$regex: req.body.key, $options: 'i'},
-        admin_id: adminId
+        admin_id: adminId,
+        creator_type: { $in: creator_typeArray },
     }
     const options = {
         page: +req.body.page,

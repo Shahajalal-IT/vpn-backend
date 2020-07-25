@@ -46,49 +46,60 @@ exports.getAllUserByReseller = (req, res, next) => {
         statusArray = [+req.body.status]
     }
 
-    const query = {
-        active: { $in: activeArray },
-        status: { $in: statusArray },
-        created_at: {
-            $gte:startDate,
-            $lte:endDate
-        },
-        pin: {$regex: req.body.key, $options: 'i'},
-        creator: resellerId,
-        creator_type:'reseller'
-    }
+    reseller.find({role:'sub_reseller',creator:resellerId}).then(allsub => {
 
-    const options = {
-        page: +req.body.page,
-        limit: +req.body.pagesize,
-        sort: {serial: -1},
-        populate:'creator'
-    }
+        let creatorArray = [];
+        if(req.body.creator_type === ""){
 
-    user.paginate(query,options)
-        .then(
-            documents => {
-                if(documents.totalDocs === 0){
+        }
+        allsub.map(sub => {
+            creatorArray.push(sub._id)
+        })
+
+        const query = {
+            active: {$in: activeArray},
+            status: {$in: statusArray},
+            created_at: {
+                $gte: startDate,
+                $lte: endDate
+            },
+            pin: {$regex: req.body.key, $options: 'i'},
+            creator: resellerId,
+            creator_type: 'reseller'
+        }
+
+        const options = {
+            page: +req.body.page,
+            limit: +req.body.pagesize,
+            sort: {serial: -1},
+            populate: 'creator'
+        }
+
+        user.paginate(query, options)
+            .then(
+                documents => {
+                    if (documents.totalDocs === 0) {
+                        res.status(200).json({
+                            data: [],
+                            pages: 1,
+                            total: 1,
+                            msg: "Successfully Read User Data",
+                            error: false
+                        })
+                    }
+
                     res.status(200).json({
-                        data: [],
-                        pages: 1,
-                        total: 1,
+                        data: documents.docs,
+                        pages: documents.totalPages,
+                        total: documents.totalDocs,
                         msg: "Successfully Read User Data",
                         error: false
                     })
+
                 }
-
-                res.status(200).json({
-                    data: documents.docs,
-                    pages:documents.totalPages,
-                    total:documents.totalDocs,
-                    msg: "Successfully Read User Data",
-                    error:false
-                })
-
-            }
-        )
-        .catch(error => {
-            return res.status(400).json({error: true, msg: "User Reading Was Unsuccessful",err: error})
-        })
+            )
+            .catch(error => {
+                return res.status(400).json({error: true, msg: "User Reading Was Unsuccessful", err: error})
+            })
+    });
 };
