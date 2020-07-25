@@ -10,7 +10,49 @@ exports.getAllUserByReseller = (req, res, next) => {
 
     const resellerId = req.resellerData.userId;
 
+    var d = new Date();
+    d.setDate(d.getDate() + 1);
+    d.setHours(23,59,59,999);
+    var ed = new Date();
+    ed.setMonth(ed.getMonth() - 1);
+    ed.setHours(0,0,0,0);
+
+    var startDate,endDate;
+    if(req.body.start_date === ''){
+        startDate = ed;
+    }else{
+        startDate = new Date(req.body.start_date);
+        startDate.setHours(0,0,0,0);
+    }
+
+    if(req.body.end_date === ''){
+        endDate = d;
+    }else{
+        endDate = new Date(req.body.end_date);
+        endDate.setHours(23,59,59,999);
+    }
+
+    let activeArray =[]
+    if(req.body.active === "") {
+        activeArray = [0,1]
+    } else {
+        activeArray = [+req.body.active]
+    }
+
+    let statusArray = []
+    if(req.body.status === ""){
+        statusArray = [0,1,3]
+    }else{
+        statusArray = [+req.body.status]
+    }
+
     const query = {
+        active: { $in: activeArray },
+        status: { $in: statusArray },
+        created_at: {
+            $gte:startDate,
+            $lte:endDate
+        },
         pin: {$regex: req.body.key, $options: 'i'},
         creator: resellerId,
         creator_type:'reseller'
