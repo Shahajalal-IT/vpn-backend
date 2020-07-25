@@ -47,10 +47,18 @@ exports.createUser =  (req, res, next) => {
 
             if(i === randonPin.size){
 
+                sendData.sort(function (a, b) {
+                    if (a.serial < b.serial)
+                        return -1;
+                    if (a.serial > b.serial)
+                        return 1;
+                    return 0;
+                })
+
                 return res.status(201).json({
                     msg: `Successfully Created `+ i +` Users`,
                     error:false,
-                    data:sortJsonArray(sendData, 'serial','asc')
+                    data: sendData
                 })
             }
         }).catch(error => {
