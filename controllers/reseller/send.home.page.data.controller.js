@@ -9,7 +9,7 @@ exports.sendHomePageData = (req, res, next) => {
     const resellerId = req.resellerData.userId;
 
     var data = {};
-
+    var all_sub_id=[];
     reseller.countDocuments({creator: resellerId, role:'sub_reseller'})
         .then(
             documents => {
@@ -17,22 +17,26 @@ exports.sendHomePageData = (req, res, next) => {
                 user.countDocuments({creator: resellerId,creator_type:'reseller'}).then(ownuser => {
                     data.ownAccount = ownuser;
                     reseller.find({role:'sub_reseller',creator:resellerId}).then(allsub =>{
-
-                        var all_sub_id=[];
                         allsub.map(sub =>{
                             all_sub_id.push(sub._id)
                         })
-
 
                     user.countDocuments({creator_type:'reseller', creator:{
                                 $in: all_sub_id
                             }}).then(resellerAccount => {
                         data.resellerAccount = resellerAccount;
-                        user.countDocuments({creator: resellerId,creator_type:'reseller',active:1}).then(onlineAccount => {
+                        all_sub_id.push(resellerId);
+                        user.countDocuments({creator: {
+                                $in: all_sub_id
+                            },creator_type:'reseller',active:1}).then(onlineAccount => {
                             data.online = onlineAccount;
-                            user.countDocuments({creator: resellerId,creator_type:'reseller',status:1}).then(activeAccount => {
+                            user.countDocuments({creator: {
+                                    $in: all_sub_id
+                                },creator_type:'reseller',status:1}).then(activeAccount => {
                                 data.activeAccount = activeAccount;
-                                user.countDocuments({creator: resellerId,creator_type:'reseller',expired_at:{
+                                user.countDocuments({creator: {
+                                        $in: all_sub_id
+                                    },creator_type:'reseller',expired_at:{
                                         $lt: Date.now()
                                         }}).then(expiredAccount => {
                                     data.expiredAccount = expiredAccount;
