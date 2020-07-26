@@ -16,10 +16,18 @@ exports.createUser =  (req, res, next) => {
         fetchedData,
         process.env.SECRET
     );
+
+    if(+decodedToken.no_of_account > 100){
+        return res.status(201).json({
+            msg: `Your Bulk User Creation Limit is 100`,
+            error:true,
+        })
+    }
+
     const randonPin = new Set()
 
     while (randonPin.size < +decodedToken.no_of_account) {
-        randonPin.add(decodedToken.username_prefix+parseInt(Date.now() * Math.random()))
+        randonPin.add(decodedToken.username_prefix+randomstring.generate({ length: 7, charset: 'numeric'}))
     }
     let sendData = [];
     reseller.findById(resellerId).then(resellerResult => {

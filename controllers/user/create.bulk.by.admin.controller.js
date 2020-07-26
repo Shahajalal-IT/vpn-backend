@@ -17,7 +17,7 @@ exports.createUser =  (req, res, next) => {
     const randonPin = new Set()
 
     while (randonPin.size < +decodedToken.no_of_account) {
-        randonPin.add(decodedToken.username_prefix+parseInt(Date.now() * Math.random()))
+        randonPin.add(decodedToken.username_prefix+randomstring.generate({ length: 7, charset: 'numeric'}))
     }
 
     let sendData = [];
